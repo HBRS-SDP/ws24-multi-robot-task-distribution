@@ -9,7 +9,10 @@ The project aims to migrate a multi-robot task distribution system, originally d
 ## Features
 
 1) The system will be able to run and simulate in ROS2, provinding a stable environment for multi-robot communication.
-2) 
+
+## Scope
+
+
 
 ## Tools/Software Used
 
