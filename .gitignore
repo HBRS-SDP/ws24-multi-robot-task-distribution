@@ -9,3 +9,6 @@
 */.idea*
 *.idea
 *.vscode
+/build
+/install
+/log
