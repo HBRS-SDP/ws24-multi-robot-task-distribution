@@ -32,9 +32,8 @@ def generate_launch_description():
         'robot_description': Command([
             'xacro ',
             PathJoinSubstitution([
-                turtlebot3_description_dir, 'urdf', 'turtlebot3_burger.urdf.xacro'
-            ]),
-            ' --inorder'
+                turtlebot3_description_dir, 'urdf', 'turtlebot3_burger.urdf'
+            ])
         ])
     }
 
