@@ -1,0 +1,6 @@
+source;share/empty_simulation/hook/pythonpath.ps1
+source;share/empty_simulation/hook/pythonpath.dsv
+source;share/empty_simulation/hook/pythonpath.sh
+source;share/empty_simulation/hook/ament_prefix_path.ps1
+source;share/empty_simulation/hook/ament_prefix_path.dsv
+source;share/empty_simulation/hook/ament_prefix_path.sh
