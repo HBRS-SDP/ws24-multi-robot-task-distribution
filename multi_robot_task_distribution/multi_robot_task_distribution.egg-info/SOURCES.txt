@@ -1,0 +1,14 @@
+package.xml
+setup.cfg
+setup.py
+multi_robot_task_distribution/__init__.py
+multi_robot_task_distribution.egg-info/PKG-INFO
+multi_robot_task_distribution.egg-info/SOURCES.txt
+multi_robot_task_distribution.egg-info/dependency_links.txt
+multi_robot_task_distribution.egg-info/requires.txt
+multi_robot_task_distribution.egg-info/top_level.txt
+multi_robot_task_distribution.egg-info/zip-safe
+resource/multi_robot_task_distribution
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py
