@@ -1,9 +1,0 @@
-/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2/CMakeFiles/uninstall.dir
-/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2/CMakeFiles/turtlebot3_navigation2_uninstall.dir
-/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2/CMakeFiles/test.dir
-/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2/CMakeFiles/edit_cache.dir
-/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2/CMakeFiles/rebuild_cache.dir
-/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2/CMakeFiles/list_install_components.dir
-/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2/CMakeFiles/install.dir
-/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2/CMakeFiles/install/local.dir
-/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2/CMakeFiles/install/strip.dir
