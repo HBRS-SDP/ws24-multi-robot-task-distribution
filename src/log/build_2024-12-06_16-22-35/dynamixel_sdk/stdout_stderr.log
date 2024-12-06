@@ -1,0 +1,64 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.10 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/behrouz/ws24-multi-robot-task-distribution/src/build/dynamixel_sdk
+[ 30%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk.dir/src/dynamixel_sdk/group_sync_read.cpp.o[0m
+[ 30%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk.dir/src/dynamixel_sdk/group_bulk_read.cpp.o[0m
+[ 30%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk.dir/src/dynamixel_sdk/group_bulk_write.cpp.o[0m
+[ 40%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk.dir/src/dynamixel_sdk/packet_handler.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk.dir/src/dynamixel_sdk/group_sync_write.cpp.o[0m
+[ 60%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk.dir/src/dynamixel_sdk/protocol1_packet_handler.cpp.o[0m
+[ 80%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk.dir/src/dynamixel_sdk/port_handler_linux.cpp.o[0m
+[ 80%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk.dir/src/dynamixel_sdk/protocol2_packet_handler.cpp.o[0m
+[ 90%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk.dir/src/dynamixel_sdk/port_handler.cpp.o[0m
+[100%] [32m[1mLinking CXX shared library libdynamixel_sdk.so[0m
+[100%] Built target dynamixel_sdk
+-- Install configuration: ""
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include/
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/protocol1_packet_handler.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/packet_handler.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/protocol2_packet_handler.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/port_handler_windows.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/port_handler.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/group_sync_write.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/group_sync_read.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/port_handler_linux.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/group_bulk_write.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/group_bulk_read.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/dynamixel_sdk.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/port_handler_arduino.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/include//dynamixel_sdk/port_handler_mac.h
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/lib/libdynamixel_sdk.so
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/environment/library_path.sh
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/environment/library_path.dsv
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/ament_index/resource_index/package_run_dependencies/dynamixel_sdk
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/ament_index/resource_index/parent_prefix_path/dynamixel_sdk
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/environment/ament_prefix_path.sh
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/environment/ament_prefix_path.dsv
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/environment/path.sh
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/environment/path.dsv
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/local_setup.bash
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/local_setup.sh
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/local_setup.zsh
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/local_setup.dsv
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/package.dsv
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/ament_index/resource_index/packages/dynamixel_sdk
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/cmake/ament_cmake_export_libraries-extras.cmake
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/cmake/dynamixel_sdkConfig.cmake
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/cmake/dynamixel_sdkConfig-version.cmake
+-- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/package.xml

@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: turtlebot3-example
+Version: 2.1.5
+Summary: Examples of Different TurtleBot3 Usage.
+Home-page: UNKNOWN
+Author: ['Ryan Shim', 'Gilbert']
+Author-email: ['jhshim@robotis.com', 'kkjong@robotis.com']
+Maintainer: Will Son
+Maintainer-email: willson@robotis.com
+License: Apache License, Version 2.0
+Keywords: ROS,ROS2,examples,rclpy
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development
+
+UNKNOWN
+

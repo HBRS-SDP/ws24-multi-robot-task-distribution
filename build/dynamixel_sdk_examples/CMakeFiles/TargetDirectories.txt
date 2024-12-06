@@ -1,0 +1,10 @@
+/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_examples/CMakeFiles/uninstall.dir
+/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_examples/CMakeFiles/dynamixel_sdk_examples_uninstall.dir
+/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_examples/CMakeFiles/read_write_node.dir
+/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_examples/CMakeFiles/test.dir
+/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_examples/CMakeFiles/edit_cache.dir
+/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_examples/CMakeFiles/rebuild_cache.dir
+/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_examples/CMakeFiles/list_install_components.dir
+/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_examples/CMakeFiles/install.dir
+/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_examples/CMakeFiles/install/local.dir
+/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_examples/CMakeFiles/install/strip.dir

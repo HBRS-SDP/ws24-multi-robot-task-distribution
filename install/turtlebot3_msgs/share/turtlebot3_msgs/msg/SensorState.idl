@@ -1,0 +1,68 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from turtlebot3_msgs/msg/SensorState.msg
+// generated code does not contain a copyright notice
+
+#include "std_msgs/msg/Header.idl"
+
+module turtlebot3_msgs {
+  module msg {
+    module SensorState_Constants {
+      const uint8 BUMPER_FORWARD = 1;
+      const uint8 BUMPER_BACKWARD = 2;
+      @verbatim (language="comment", text=
+        "Cliff sensor states (states are combined, when multiple cliff sensors are triggered)")
+      const uint8 CLIFF = 1;
+      @verbatim (language="comment", text=
+        "Sonar sensor states (states are combined, when multiple sonar sensors are triggered)")
+      const uint8 SONAR = 1;
+      @verbatim (language="comment", text=
+        "Illumination sensor (states are combined, when multiple illumination sensors are triggered)")
+      const uint8 ILLUMINATION = 1;
+      @verbatim (language="comment", text=
+        "Button states (states are combined, when multiple buttons are pressed)")
+      const uint8 BUTTON0 = 1;
+      const uint8 BUTTON1 = 2;
+      @verbatim (language="comment", text=
+        "Motor errors")
+      const uint8 ERROR_LEFT_MOTOR = 1;
+      const uint8 ERROR_RIGHT_MOTOR = 2;
+      @verbatim (language="comment", text=
+        "Motor torque")
+      const uint8 TORQUE_ON = 1;
+      const uint8 TORQUE_OFF = 2;
+    };
+    @verbatim (language="comment", text=
+      "CONSTANTS" "\n"
+      "" "\n"
+      "Bumper states (states are combined, when multiple bumpers are pressed)")
+    struct SensorState {
+      @verbatim (language="comment", text=
+        "Messages")
+      std_msgs::msg::Header header;
+
+      uint8 bumper;
+
+      float cliff;
+
+      float sonar;
+
+      float illumination;
+
+      uint8 led;
+
+      uint8 button;
+
+      boolean torque;
+
+      @verbatim (language="comment", text=
+        "(-2,147,483,648 ~ 2,147,483,647)")
+      int32 left_encoder;
+
+      @verbatim (language="comment", text=
+        "(-2,147,483,648 ~ 2,147,483,647)")
+      int32 right_encoder;
+
+      float battery;
+    };
+  };
+};

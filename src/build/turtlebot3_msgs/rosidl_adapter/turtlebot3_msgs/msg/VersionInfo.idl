@@ -1,0 +1,24 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from turtlebot3_msgs/msg/VersionInfo.msg
+// generated code does not contain a copyright notice
+
+
+module turtlebot3_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Messages")
+    struct VersionInfo {
+      @verbatim (language="comment", text=
+        "<yyyy>.<mm>.<dd>        : hardware version of Turtlebot3 (ex. 2017.05.23)")
+      string hardware;
+
+      @verbatim (language="comment", text=
+        "<major>.<minor>.<patch> : firmware version of OpenCR")
+      string firmware;
+
+      @verbatim (language="comment", text=
+        "<major>.<minor>.<patch> : software version of Turtlebot3 ROS packages")
+      string software;
+    };
+  };
+};

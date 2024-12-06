@@ -1,0 +1,6 @@
+/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_msgs/rosidl_adapter/turtlebot3_msgs:msg/SensorState.idl
+/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_msgs/rosidl_adapter/turtlebot3_msgs:msg/Sound.idl
+/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_msgs/rosidl_adapter/turtlebot3_msgs:msg/VersionInfo.idl
+/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_msgs/rosidl_adapter/turtlebot3_msgs:srv/Sound.idl
+/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_msgs/rosidl_adapter/turtlebot3_msgs:srv/Dqn.idl
+/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_msgs/rosidl_adapter/turtlebot3_msgs:action/Patrol.idl

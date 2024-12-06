@@ -1,0 +1,33 @@
+[1.057s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/src/empty_simulation': PYTHONPATH=/home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/empty_simulation build --build-base /home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/build install --record /home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/install.log --single-version-externally-managed install_data
+[1.301s] running egg_info
+[1.302s] creating ../../build/empty_simulation/empty_simulation.egg-info
+[1.302s] writing ../../build/empty_simulation/empty_simulation.egg-info/PKG-INFO
+[1.303s] writing dependency_links to ../../build/empty_simulation/empty_simulation.egg-info/dependency_links.txt
+[1.303s] writing entry points to ../../build/empty_simulation/empty_simulation.egg-info/entry_points.txt
+[1.303s] writing requirements to ../../build/empty_simulation/empty_simulation.egg-info/requires.txt
+[1.303s] writing top-level names to ../../build/empty_simulation/empty_simulation.egg-info/top_level.txt
+[1.303s] writing manifest file '../../build/empty_simulation/empty_simulation.egg-info/SOURCES.txt'
+[1.305s] reading manifest file '../../build/empty_simulation/empty_simulation.egg-info/SOURCES.txt'
+[1.306s] writing manifest file '../../build/empty_simulation/empty_simulation.egg-info/SOURCES.txt'
+[1.306s] running build
+[1.306s] running build_py
+[1.306s] creating /home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/build
+[1.306s] creating /home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/build/lib
+[1.306s] creating /home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/build/lib/empty_simulation
+[1.306s] copying empty_simulation/__init__.py -> /home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/build/lib/empty_simulation
+[1.306s] running install
+[1.307s] running install_lib
+[1.308s] creating /home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/lib/python3.10/site-packages/empty_simulation
+[1.308s] copying /home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/build/lib/empty_simulation/__init__.py -> /home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/lib/python3.10/site-packages/empty_simulation
+[1.309s] byte-compiling /home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/lib/python3.10/site-packages/empty_simulation/__init__.py to __init__.cpython-310.pyc
+[1.309s] running install_data
+[1.309s] creating /home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/share/ament_index
+[1.309s] creating /home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/share/ament_index/resource_index
+[1.309s] creating /home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/share/ament_index/resource_index/packages
+[1.309s] copying resource/empty_simulation -> /home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/share/ament_index/resource_index/packages
+[1.309s] copying package.xml -> /home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/share/empty_simulation
+[1.309s] running install_egg_info
+[1.313s] Copying ../../build/empty_simulation/empty_simulation.egg-info to /home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/lib/python3.10/site-packages/empty_simulation-0.0.0-py3.10.egg-info
+[1.314s] running install_scripts
+[1.334s] writing list of installed files to '/home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/install.log'
+[1.372s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/src/empty_simulation' returned '0': PYTHONPATH=/home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/empty_simulation build --build-base /home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/build install --record /home/behrouz/ws24-multi-robot-task-distribution/build/empty_simulation/install.log --single-version-externally-managed install_data

@@ -1,0 +1,50 @@
+[0.027s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake /home/behrouz/ws24-multi-robot-task-distribution/src/turtlebot3/turtlebot3_navigation2 -DCMAKE_INSTALL_PREFIX=/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2
+[0.304s] -- The C compiler identification is GNU 11.4.0
+[0.304s] -- The CXX compiler identification is GNU 11.4.0
+[0.304s] -- Detecting C compiler ABI info
+[0.304s] -- Detecting C compiler ABI info - done
+[0.304s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.304s] -- Detecting C compile features
+[0.304s] -- Detecting C compile features - done
+[0.305s] -- Detecting CXX compiler ABI info
+[0.314s] -- Detecting CXX compiler ABI info - done
+[0.321s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.321s] -- Detecting CXX compile features
+[0.321s] -- Detecting CXX compile features - done
+[0.326s] -- Found ament_cmake: 1.3.10 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.488s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.649s] -- Configuring done
+[0.651s] -- Generating done
+[0.652s] -- Build files have been written to: /home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2
+[0.658s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake /home/behrouz/ws24-multi-robot-task-distribution/src/turtlebot3/turtlebot3_navigation2 -DCMAKE_INSTALL_PREFIX=/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2
+[0.660s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2 -- -j16 -l16
+[0.698s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2 -- -j16 -l16
+[0.749s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2
+[0.762s] -- Install configuration: ""
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/launch
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/launch/navigation2.launch.py
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/map
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/map/map.yaml
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/map/map.pgm
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/param
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/param/burger.yaml
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/param/waffle_pi.yaml
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/param/waffle.yaml
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/rviz
+[0.767s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/rviz/tb3_navigation2.rviz
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/ament_index/resource_index/package_run_dependencies/turtlebot3_navigation2
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/ament_index/resource_index/parent_prefix_path/turtlebot3_navigation2
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/environment/ament_prefix_path.sh
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/environment/ament_prefix_path.dsv
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/environment/path.sh
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/environment/path.dsv
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/local_setup.bash
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/local_setup.sh
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/local_setup.zsh
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/local_setup.dsv
+[0.768s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/package.dsv
+[0.769s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/ament_index/resource_index/packages/turtlebot3_navigation2
+[0.769s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/cmake/turtlebot3_navigation2Config.cmake
+[0.769s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/cmake/turtlebot3_navigation2Config-version.cmake
+[0.769s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_navigation2/share/turtlebot3_navigation2/package.xml
+[0.772s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_navigation2

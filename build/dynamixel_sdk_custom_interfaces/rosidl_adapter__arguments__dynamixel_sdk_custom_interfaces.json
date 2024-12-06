@@ -1,0 +1,7 @@
+{
+  "package_name": "dynamixel_sdk_custom_interfaces",
+  "non_idl_tuples": [
+    "/home/behrouz/ws24-multi-robot-task-distribution/src/DynamixelSDK/dynamixel_sdk_custom_interfaces:msg/SetPosition.msg",
+    "/home/behrouz/ws24-multi-robot-task-distribution/src/DynamixelSDK/dynamixel_sdk_custom_interfaces:srv/GetPosition.srv"
+  ]
+}

@@ -1,0 +1,46 @@
+[0.027s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer': CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake /home/behrouz/ws24-multi-robot-task-distribution/src/turtlebot3/turtlebot3_cartographer -DCMAKE_INSTALL_PREFIX=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer
+[0.264s] -- The C compiler identification is GNU 11.4.0
+[0.264s] -- The CXX compiler identification is GNU 11.4.0
+[0.264s] -- Detecting C compiler ABI info
+[0.264s] -- Detecting C compiler ABI info - done
+[0.265s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.265s] -- Detecting C compile features
+[0.265s] -- Detecting C compile features - done
+[0.265s] -- Detecting CXX compiler ABI info
+[0.267s] -- Detecting CXX compiler ABI info - done
+[0.274s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.274s] -- Detecting CXX compile features
+[0.274s] -- Detecting CXX compile features - done
+[0.277s] -- Found ament_cmake: 1.3.10 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.425s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.559s] -- Configuring done
+[0.561s] -- Generating done
+[0.562s] -- Build files have been written to: /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer
+[0.569s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer' returned '0': CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake /home/behrouz/ws24-multi-robot-task-distribution/src/turtlebot3/turtlebot3_cartographer -DCMAKE_INSTALL_PREFIX=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer
+[0.571s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer': CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer -- -j16 -l16
+[0.604s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer' returned '0': CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer -- -j16 -l16
+[0.658s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer': CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer
+[0.674s] -- Install configuration: ""
+[0.674s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/config
+[0.674s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/config/turtlebot3_lds_2d.lua
+[0.675s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/launch
+[0.675s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/launch/cartographer.launch.py
+[0.675s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/launch/occupancy_grid.launch.py
+[0.675s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/rviz
+[0.675s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/rviz/tb3_cartographer.rviz
+[0.675s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/ament_index/resource_index/package_run_dependencies/turtlebot3_cartographer
+[0.675s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/ament_index/resource_index/parent_prefix_path/turtlebot3_cartographer
+[0.675s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/environment/ament_prefix_path.sh
+[0.675s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/environment/ament_prefix_path.dsv
+[0.676s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/environment/path.sh
+[0.676s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/environment/path.dsv
+[0.676s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/local_setup.bash
+[0.676s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/local_setup.sh
+[0.676s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/local_setup.zsh
+[0.677s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/local_setup.dsv
+[0.677s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/package.dsv
+[0.677s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/ament_index/resource_index/packages/turtlebot3_cartographer
+[0.677s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/cmake/turtlebot3_cartographerConfig.cmake
+[0.677s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/cmake/turtlebot3_cartographerConfig-version.cmake
+[0.677s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_cartographer/share/turtlebot3_cartographer/package.xml
+[0.696s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer' returned '0': CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_cartographer

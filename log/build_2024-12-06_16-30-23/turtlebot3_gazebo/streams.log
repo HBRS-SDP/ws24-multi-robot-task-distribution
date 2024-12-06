@@ -1,0 +1,233 @@
+[0.030s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake /home/behrouz/ws24-multi-robot-task-distribution/src/turtlebot3_simulations/turtlebot3_gazebo -DCMAKE_INSTALL_PREFIX=/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo
+[0.307s] -- The C compiler identification is GNU 11.4.0
+[0.307s] -- The CXX compiler identification is GNU 11.4.0
+[0.307s] -- Detecting C compiler ABI info
+[0.307s] -- Detecting C compiler ABI info - done
+[0.307s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.307s] -- Detecting C compile features
+[0.308s] -- Detecting C compile features - done
+[0.308s] -- Detecting CXX compiler ABI info
+[0.308s] -- Detecting CXX compiler ABI info - done
+[0.309s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.309s] -- Detecting CXX compile features
+[0.309s] -- Detecting CXX compile features - done
+[0.312s] -- Found ament_cmake: 1.3.10 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.465s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.593s] [33mCMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+[0.593s]   The package name passed to `find_package_handle_standard_args` (PkgConfig)
+[0.593s]   does not match the name of the calling package (gazebo).  This can lead to
+[0.593s]   problems in calling code that expects `find_package` result variables
+[0.593s]   (e.g., `_FOUND`) to follow a certain pattern.
+[0.593s] Call Stack (most recent call first):
+[0.593s]   /usr/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+[0.593s]   /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
+[0.593s]   CMakeLists.txt:23 (find_package)
+[0.593s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[0.594s] [0m
+[0.594s] -- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+[0.597s] -- Checking for module 'bullet>=2.82'
+[0.610s] --   Found bullet, version 3.05
+[0.755s] -- Found fcl: /usr/include (found suitable version "0.7.0", minimum required is "0.5.0") 
+[0.855s] -- Found assimp: /usr/include (found version "5.2.0") 
+[0.899s] -- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
+[1.155s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.40.0") found components: thread system filesystem program_options regex iostreams date_time 
+[1.185s] -- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found version "3.12.4") 
+[1.193s] -- Looking for ignition-math6 -- found version 6.15.1
+[1.200s] -- Searching for dependencies of ignition-math6
+[1.201s] -- Looking for OGRE...
+[1.201s] -- OGRE_PREFIX_WATCH changed.
+[1.207s] -- Checking for module 'OGRE'
+[1.225s] --   Found OGRE, version 1.9.0
+[1.267s] -- Found Ogre Ghadamon (1.9.0)
+[1.292s] -- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
+[1.306s] -- Looking for OGRE_Paging...
+[1.325s] -- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
+[1.325s] -- Looking for OGRE_Terrain...
+[1.338s] -- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
+[1.338s] -- Looking for OGRE_Property...
+[1.351s] -- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
+[1.351s] -- Looking for OGRE_RTShaderSystem...
+[1.362s] -- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
+[1.362s] -- Looking for OGRE_Volume...
+[1.373s] -- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
+[1.374s] -- Looking for OGRE_Overlay...
+[1.386s] -- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
+[1.519s] -- Looking for ignition-math6 -- found version 6.15.1
+[1.522s] -- Looking for ignition-transport8 -- found version 8.2.1
+[1.523s] -- Searching for dependencies of ignition-transport8
+[1.542s] -- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so (found suitable version "3.12.4", minimum required is "3") 
+[1.554s] -- Config-file not installed for ZeroMQ -- checking for pkg-config
+[1.559s] -- Checking for module 'libzmq >= 4'
+[1.574s] --   Found libzmq , version 4.3.4
+[1.609s] -- Found ZeroMQ: TRUE (Required is at least version "4") 
+[1.614s] -- Checking for module 'uuid'
+[1.627s] --   Found uuid, version 2.37.2
+[1.660s] -- Found UUID: TRUE  
+[1.663s] -- Looking for ignition-msgs5 -- found version 5.8.1
+[1.664s] -- Searching for dependencies of ignition-msgs5
+[1.684s] -- Looking for ignition-math6 -- found version 6.15.1
+[1.689s] -- Checking for module 'tinyxml2'
+[1.703s] --   Found tinyxml2, version 9.0.0
+[1.736s] -- Looking for ignition-msgs5 -- found version 5.8.1
+[1.740s] -- Looking for ignition-common3 -- found version 3.14.0
+[1.740s] -- Searching for dependencies of ignition-common3
+[1.741s] -- Looking for dlfcn.h - found
+[1.742s] -- Looking for libdl - found
+[1.743s] -- Found DL: TRUE  
+[1.756s] -- Found tinyobjloader: /usr/lib/x86_64-linux-gnu/cmake/tinyobjloader/tinyobjloader-config.cmake (found version "2.0.0") 
+[1.756s] -- Searching for <ignition-common3> component [graphics]
+[1.760s] -- Looking for ignition-common3-graphics -- found version 3.14.0
+[1.760s] -- Searching for dependencies of ignition-common3-graphics
+[1.761s] -- Looking for ignition-math6 -- found version 6.15.1
+[1.765s] -- Looking for ignition-fuel_tools4 -- found version 4.4.0
+[1.765s] -- Searching for dependencies of ignition-fuel_tools4
+[1.850s] -- Found CURL: /usr/lib/x86_64-linux-gnu/libcurl.so (found version "7.81.0")  
+[1.860s] -- Checking for module 'jsoncpp'
+[1.875s] --   Found jsoncpp, version 1.9.5
+[1.911s] -- Found JSONCPP: TRUE  
+[1.922s] -- Checking for module 'libzip'
+[1.940s] --   Found libzip, version 1.7.3
+[1.994s] -- Found ZIP: TRUE  
+[1.994s] -- Looking for ignition-common3 -- found version 3.14.0
+[1.994s] -- Looking for ignition-math6 -- found version 6.15.1
+[1.994s] -- Looking for ignition-msgs5 -- found version 5.8.1
+[2.003s] -- Found gazebo_ros_pkgs: 3.7.0 (/opt/ros/humble/share/gazebo_ros_pkgs/cmake)
+[2.006s] -- Found geometry_msgs: 4.2.4 (/opt/ros/humble/share/geometry_msgs/cmake)
+[2.058s] -- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[2.065s] -- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[2.076s] -- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[2.090s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.110s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.149s] -- Found nav_msgs: 4.2.4 (/opt/ros/humble/share/nav_msgs/cmake)
+[2.165s] -- Found rclcpp: 16.0.10 (/opt/ros/humble/share/rclcpp/cmake)
+[2.216s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[2.220s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[2.336s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[2.375s] -- Found FastRTPS: /opt/ros/humble/include  
+[2.449s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[2.471s] -- Found Threads: TRUE  
+[2.541s] -- Found sensor_msgs: 4.2.4 (/opt/ros/humble/share/sensor_msgs/cmake)
+[2.569s] -- Found tf2: 0.25.7 (/opt/ros/humble/share/tf2/cmake)
+[2.680s] -- Configuring done
+[2.730s] -- Generating done
+[2.733s] -- Build files have been written to: /home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo
+[2.762s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake /home/behrouz/ws24-multi-robot-task-distribution/src/turtlebot3_simulations/turtlebot3_gazebo -DCMAKE_INSTALL_PREFIX=/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo
+[2.765s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo -- -j16 -l16
+[2.829s] [ 12%] [32mBuilding CXX object CMakeFiles/turtlebot3_drive.dir/src/turtlebot3_drive.cpp.o[0m
+[2.829s] [ 50%] [32mBuilding CXX object CMakeFiles/obstacle2.dir/models/turtlebot3_dqn_world/obstacle_plugin/obstacle2.cc.o[0m
+[2.829s] [ 50%] [32mBuilding CXX object CMakeFiles/obstacles.dir/models/turtlebot3_dqn_world/obstacle_plugin/obstacles.cc.o[0m
+[2.829s] [ 50%] [32mBuilding CXX object CMakeFiles/obstacle1.dir/models/turtlebot3_dqn_world/obstacle_plugin/obstacle1.cc.o[0m
+[18.904s] [ 62%] [32m[1mLinking CXX executable turtlebot3_drive[0m
+[19.284s] [ 75%] [32m[1mLinking CXX shared library libobstacle1.so[0m
+[19.477s] [ 87%] [32m[1mLinking CXX shared library libobstacle2.so[0m
+[19.506s] [ 87%] Built target turtlebot3_drive
+[19.558s] [ 87%] Built target obstacle1
+[19.699s] [ 87%] Built target obstacle2
+[19.856s] [100%] [32m[1mLinking CXX shared library libobstacles.so[0m
+[20.065s] [100%] Built target obstacles
+[20.078s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo -- -j16 -l16
+[20.114s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo
+[20.121s] -- Install configuration: ""
+[20.121s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/lib/turtlebot3_gazebo/turtlebot3_drive
+[20.126s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/lib/turtlebot3_gazebo/turtlebot3_drive" to ""
+[20.126s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//launch
+[20.126s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//launch/turtlebot3_world.launch.py
+[20.126s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//launch/spawn_turtlebot3.launch.py
+[20.126s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//launch/turtlebot3_dqn_stage4.launch.py
+[20.126s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//launch/turtlebot3_dqn_stage1.launch.py
+[20.126s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//launch/empty_world.launch.py
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//launch/turtlebot3_dqn_stage2.launch.py
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//launch/turtlebot3_house.launch.py
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//launch/robot_state_publisher.launch.py
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//launch/turtlebot3_dqn_stage3.launch.py
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_waffle_pi
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_waffle_pi/model.config
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_waffle_pi/model-1_4_.sdf
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_waffle_pi/model.sdf
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_waffle
+[20.127s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_waffle/model.config
+[20.128s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_waffle/model-1_4.sdf
+[20.128s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_waffle/model.sdf
+[20.128s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_house
+[20.128s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_house/model.config
+[20.128s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_house/model.sdf
+[20.128s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_burger
+[20.128s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_burger/model.config
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_burger/model-1_4.sdf
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_burger/model.sdf
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/goal_box
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/goal_box/model.config
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/goal_box/model.sdf
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/model.config
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/model.sdf
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/inner_walls
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/inner_walls/model.config
+[20.129s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/inner_walls/model.sdf
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle1
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle1/model.config
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle1/model.sdf
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle2
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle2/model.config
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle2/model.sdf
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle_plugin
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle_plugin/obstacles.cc
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle_plugin/obstacle2.cc
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle_plugin/obstacle1.cc
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacle_plugin/CMakeLists.txt
+[20.130s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacles
+[20.131s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacles/model.config
+[20.131s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_dqn_world/obstacles/model.sdf
+[20.131s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_common
+[20.131s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_common/model.config
+[20.131s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_common/meshes
+[20.131s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_common/meshes/waffle_base.dae
+[20.131s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_common/meshes/waffle_pi_base.dae
+[20.131s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_common/meshes/lds.dae
+[20.131s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_common/meshes/tire.dae
+[20.131s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_common/meshes/burger_base.dae
+[20.132s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_common/meshes/r200.dae
+[20.132s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_world
+[20.132s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_world/model.config
+[20.132s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_world/model-1_4.sdf
+[20.132s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_world/model.sdf
+[20.132s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_world/meshes
+[20.132s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_world/meshes/wall.dae
+[20.132s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//models/turtlebot3_world/meshes/hexagon.dae
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//rviz
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//rviz/tb3_gazebo.rviz
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//urdf
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//urdf/turtlebot3_waffle.urdf
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//urdf/common_properties.urdf
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//urdf/turtlebot3_burger.urdf
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//urdf/turtlebot3_waffle_pi.urdf
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//worlds
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//worlds/turtlebot3_world.world
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//worlds/turtlebot3_dqn_stage4.world
+[20.133s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//worlds/turtlebot3_dqn_stage3.world
+[20.134s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//worlds/empty_world.world
+[20.134s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//worlds/turtlebot3_house.world
+[20.134s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//worlds/turtlebot3_dqn_stage2.world
+[20.134s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo//worlds/turtlebot3_dqn_stage1.world
+[20.134s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/include/
+[20.134s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/include//turtlebot3_gazebo
+[20.134s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/include//turtlebot3_gazebo/turtlebot3_drive.hpp
+[20.134s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/ament_index/resource_index/package_run_dependencies/turtlebot3_gazebo
+[20.135s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/ament_index/resource_index/parent_prefix_path/turtlebot3_gazebo
+[20.135s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/environment/ament_prefix_path.sh
+[20.135s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/environment/ament_prefix_path.dsv
+[20.135s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/environment/path.sh
+[20.135s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/environment/path.dsv
+[20.135s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/local_setup.bash
+[20.135s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/local_setup.sh
+[20.136s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/local_setup.zsh
+[20.136s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/local_setup.dsv
+[20.136s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/package.dsv
+[20.136s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/ament_index/resource_index/packages/turtlebot3_gazebo
+[20.136s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/cmake/ament_cmake_export_include_directories-extras.cmake
+[20.136s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/cmake/ament_cmake_export_dependencies-extras.cmake
+[20.137s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/cmake/turtlebot3_gazeboConfig.cmake
+[20.137s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/cmake/turtlebot3_gazeboConfig-version.cmake
+[20.137s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_gazebo/share/turtlebot3_gazebo/package.xml
+[20.139s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/build/turtlebot3_gazebo

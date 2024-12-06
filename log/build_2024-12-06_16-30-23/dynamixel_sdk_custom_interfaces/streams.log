@@ -1,0 +1,272 @@
+[0.033s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake /home/behrouz/ws24-multi-robot-task-distribution/src/DynamixelSDK/dynamixel_sdk_custom_interfaces -DCMAKE_INSTALL_PREFIX=/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces
+[0.311s] -- The C compiler identification is GNU 11.4.0
+[0.311s] -- The CXX compiler identification is GNU 11.4.0
+[0.311s] -- Detecting C compiler ABI info
+[0.312s] -- Detecting C compiler ABI info - done
+[0.312s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.312s] -- Detecting C compile features
+[0.312s] -- Detecting C compile features - done
+[0.312s] -- Detecting CXX compiler ABI info
+[0.312s] -- Detecting CXX compiler ABI info - done
+[0.316s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.316s] -- Detecting CXX compile features
+[0.316s] -- Detecting CXX compile features - done
+[0.319s] -- Found ament_cmake: 1.3.10 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.473s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.583s] -- Found builtin_interfaces: 1.2.1 (/opt/ros/humble/share/builtin_interfaces/cmake)
+[0.626s] -- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.633s] -- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.644s] -- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.657s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.678s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.695s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[1.131s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[1.445s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.546s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.566s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[1.569s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[1.592s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[1.592s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.592s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[1.592s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[1.610s] -- Found PythonExtra: .so  
+[1.650s] -- Configuring done
+[1.676s] -- Generating done
+[1.679s] -- Build files have been written to: /home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces
+[1.686s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake /home/behrouz/ws24-multi-robot-task-distribution/src/DynamixelSDK/dynamixel_sdk_custom_interfaces -DCMAKE_INSTALL_PREFIX=/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces
+[1.688s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces -- -j16 -l16
+[1.724s] [  2%] [34m[1mGenerating C code for ROS interfaces[0m
+[1.734s] [  5%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[1.742s] [  5%] Built target ament_cmake_python_copy_dynamixel_sdk_custom_interfaces
+[1.946s] running egg_info
+[1.947s] creating dynamixel_sdk_custom_interfaces.egg-info
+[1.947s] writing dynamixel_sdk_custom_interfaces.egg-info/PKG-INFO
+[1.948s] writing dependency_links to dynamixel_sdk_custom_interfaces.egg-info/dependency_links.txt
+[1.948s] writing top-level names to dynamixel_sdk_custom_interfaces.egg-info/top_level.txt
+[1.948s] writing manifest file 'dynamixel_sdk_custom_interfaces.egg-info/SOURCES.txt'
+[1.950s] reading manifest file 'dynamixel_sdk_custom_interfaces.egg-info/SOURCES.txt'
+[1.950s] writing manifest file 'dynamixel_sdk_custom_interfaces.egg-info/SOURCES.txt'
+[1.994s] [ 10%] [32mBuilding C object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_generator_c.dir/rosidl_generator_c/dynamixel_sdk_custom_interfaces/srv/detail/get_position__functions.c.o[0m
+[1.994s] [ 10%] [32mBuilding C object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_generator_c.dir/rosidl_generator_c/dynamixel_sdk_custom_interfaces/msg/detail/set_position__functions.c.o[0m
+[1.996s] [ 10%] Built target ament_cmake_python_build_dynamixel_sdk_custom_interfaces_egg
+[2.006s] [ 10%] Built target dynamixel_sdk_custom_interfaces__cpp
+[2.017s] [ 17%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[2.017s] [ 17%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[2.017s] [ 17%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[2.055s] [ 20%] [32m[1mLinking C shared library libdynamixel_sdk_custom_interfaces__rosidl_generator_c.so[0m
+[2.092s] [ 20%] Built target dynamixel_sdk_custom_interfaces__rosidl_generator_c
+[2.103s] [ 25%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[2.103s] [ 25%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[2.106s] [ 28%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[2.266s] [ 33%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/dynamixel_sdk_custom_interfaces/srv/detail/get_position__type_support.cpp.o[0m
+[2.266s] [ 33%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/dynamixel_sdk_custom_interfaces/msg/detail/set_position__type_support.cpp.o[0m
+[2.374s] [ 38%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/dynamixel_sdk_custom_interfaces/msg/set_position__type_support.cpp.o[0m
+[2.374s] [ 38%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/dynamixel_sdk_custom_interfaces/srv/get_position__type_support.cpp.o[0m
+[2.375s] [ 41%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/dynamixel_sdk_custom_interfaces/srv/detail/get_position__type_support_c.cpp.o[0m
+[2.375s] [ 43%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/dynamixel_sdk_custom_interfaces/msg/detail/set_position__type_support_c.cpp.o[0m
+[2.381s] [ 48%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/dynamixel_sdk_custom_interfaces/srv/get_position__type_support.cpp.o[0m
+[2.381s] [ 48%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/dynamixel_sdk_custom_interfaces/msg/set_position__type_support.cpp.o[0m
+[2.422s] [ 53%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/dynamixel_sdk_custom_interfaces/msg/detail/dds_fastrtps/set_position__type_support.cpp.o[0m
+[2.422s] [ 53%] [32mBuilding CXX object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/dynamixel_sdk_custom_interfaces/srv/detail/dds_fastrtps/get_position__type_support.cpp.o[0m
+[2.428s] [ 56%] [32m[1mLinking CXX shared library libdynamixel_sdk_custom_interfaces__rosidl_typesupport_c.so[0m
+[2.475s] [ 56%] Built target dynamixel_sdk_custom_interfaces__rosidl_typesupport_c
+[2.531s] [ 58%] [32mBuilding C object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/dynamixel_sdk_custom_interfaces/msg/detail/set_position__type_support.c.o[0m
+[2.535s] [ 61%] [32mBuilding C object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/dynamixel_sdk_custom_interfaces/srv/detail/get_position__type_support.c.o[0m
+[2.586s] [ 64%] [32m[1mLinking C shared library libdynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_c.so[0m
+[2.624s] [ 64%] Built target dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_c
+[2.683s] [ 66%] [32m[1mLinking CXX shared library libdynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_cpp.so[0m
+[2.711s] [ 69%] [32m[1mLinking CXX shared library libdynamixel_sdk_custom_interfaces__rosidl_typesupport_cpp.so[0m
+[2.746s] [ 69%] Built target dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_cpp
+[2.769s] [ 69%] Built target dynamixel_sdk_custom_interfaces__rosidl_typesupport_cpp
+[2.797s] [ 71%] [32m[1mLinking CXX shared library libdynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_c.so[0m
+[2.917s] [ 74%] [32m[1mLinking CXX shared library libdynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_cpp.so[0m
+[2.957s] [ 74%] Built target dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_c
+[3.037s] [ 74%] Built target dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_cpp
+[3.059s] [ 74%] Built target dynamixel_sdk_custom_interfaces
+[3.079s] [ 76%] [34m[1mGenerating Python code for ROS interfaces[0m
+[3.757s] [ 76%] Built target dynamixel_sdk_custom_interfaces__py
+[3.824s] [ 79%] [32mBuilding C object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_generator_py.dir/rosidl_generator_py/dynamixel_sdk_custom_interfaces/msg/_set_position_s.c.o[0m
+[3.833s] [ 82%] [32mBuilding C object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_generator_py.dir/rosidl_generator_py/dynamixel_sdk_custom_interfaces/srv/_get_position_s.c.o[0m
+[4.173s] [ 84%] [32m[1mLinking C shared library rosidl_generator_py/dynamixel_sdk_custom_interfaces/libdynamixel_sdk_custom_interfaces__rosidl_generator_py.so[0m
+[4.330s] [ 84%] Built target dynamixel_sdk_custom_interfaces__rosidl_generator_py
+[4.382s] [ 87%] [32mBuilding C object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/dynamixel_sdk_custom_interfaces/_dynamixel_sdk_custom_interfaces_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[4.398s] [ 89%] [32mBuilding C object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/dynamixel_sdk_custom_interfaces/_dynamixel_sdk_custom_interfaces_s.ep.rosidl_typesupport_c.c.o[0m
+[4.404s] [ 92%] [32mBuilding C object CMakeFiles/dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/dynamixel_sdk_custom_interfaces/_dynamixel_sdk_custom_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[4.594s] [ 94%] [32m[1mLinking C shared library rosidl_generator_py/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[4.612s] [ 97%] [32m[1mLinking C shared library rosidl_generator_py/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[4.648s] [100%] [32m[1mLinking C shared library rosidl_generator_py/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[4.726s] [100%] Built target dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_c__pyext
+[4.738s] [100%] Built target dynamixel_sdk_custom_interfaces__rosidl_typesupport_c__pyext
+[4.756s] [100%] Built target dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_c__pyext
+[4.782s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces -- -j16 -l16
+[4.932s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces
+[4.949s] -- Install configuration: ""
+[4.949s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/ament_index/resource_index/rosidl_interfaces/dynamixel_sdk_custom_interfaces
+[4.949s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces
+[4.950s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg
+[4.950s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/rosidl_generator_c__visibility_control.h
+[4.950s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/set_position.h
+[4.951s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail
+[4.951s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__type_support.h
+[4.951s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__functions.h
+[4.951s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__struct.h
+[4.951s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__functions.c
+[4.951s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv
+[4.951s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/get_position.h
+[4.951s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail
+[4.952s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__functions.h
+[4.952s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__functions.c
+[4.952s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__type_support.h
+[4.953s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__struct.h
+[4.953s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/environment/library_path.sh
+[4.954s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/environment/library_path.dsv
+[4.954s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_generator_c.so
+[4.955s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_generator_c.so" to ""
+[4.955s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces
+[4.955s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg
+[4.955s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[4.956s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail
+[4.956s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__rosidl_typesupport_fastrtps_c.h
+[4.956s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv
+[4.957s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail
+[4.958s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__rosidl_typesupport_fastrtps_c.h
+[4.958s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_c.so
+[4.958s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_c.so" to ""
+[4.958s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces
+[4.958s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg
+[4.959s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/set_position.hpp
+[4.959s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail
+[4.959s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__traits.hpp
+[4.960s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__struct.hpp
+[4.960s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__builder.hpp
+[4.960s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv
+[4.960s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/get_position.hpp
+[4.961s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail
+[4.961s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__struct.hpp
+[4.961s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__traits.hpp
+[4.962s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__builder.hpp
+[4.962s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces
+[4.962s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg
+[4.963s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[4.963s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail
+[4.963s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__rosidl_typesupport_fastrtps_cpp.hpp
+[4.964s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/dds_fastrtps
+[4.964s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv
+[4.964s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail
+[4.965s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__rosidl_typesupport_fastrtps_cpp.hpp
+[4.965s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/dds_fastrtps
+[4.965s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_cpp.so
+[4.966s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_cpp.so" to ""
+[4.966s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces
+[4.966s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg
+[4.969s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[4.970s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail
+[4.970s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__type_support.c
+[4.970s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__rosidl_typesupport_introspection_c.h
+[4.970s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv
+[4.970s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail
+[4.970s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__rosidl_typesupport_introspection_c.h
+[4.970s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__type_support.c
+[4.971s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_c.so
+[4.971s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_c.so" to ""
+[4.971s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_c.so
+[4.971s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_c.so" to ""
+[4.971s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces
+[4.971s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg
+[4.971s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail
+[4.971s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__rosidl_typesupport_introspection_cpp.hpp
+[4.971s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/msg/detail/set_position__type_support.cpp
+[4.971s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv
+[4.972s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail
+[4.972s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__rosidl_typesupport_introspection_cpp.hpp
+[4.972s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/include/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces/srv/detail/get_position__type_support.cpp
+[4.972s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_cpp.so
+[4.972s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_cpp.so" to ""
+[4.972s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_cpp.so
+[4.972s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_typesupport_cpp.so" to ""
+[4.972s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/environment/pythonpath.sh
+[4.972s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/environment/pythonpath.dsv
+[4.972s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces-3.7.60-py3.10.egg-info
+[4.972s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces-3.7.60-py3.10.egg-info/SOURCES.txt
+[4.973s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces-3.7.60-py3.10.egg-info/top_level.txt
+[4.973s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces-3.7.60-py3.10.egg-info/dependency_links.txt
+[4.973s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces-3.7.60-py3.10.egg-info/PKG-INFO
+[4.973s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces
+[4.973s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[4.973s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/libdynamixel_sdk_custom_interfaces__rosidl_generator_py.so
+[4.973s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/_dynamixel_sdk_custom_interfaces_s.ep.rosidl_typesupport_c.c
+[4.975s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[4.975s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/msg
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/msg/_set_position.py
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/msg/_set_position_s.c
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/msg/__init__.py
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/_dynamixel_sdk_custom_interfaces_s.ep.rosidl_typesupport_introspection_c.c
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/srv
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/srv/_get_position_s.c
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/srv/_get_position.py
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/srv/__init__.py
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/_dynamixel_sdk_custom_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c
+[4.976s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/__init__.py
+[5.032s] Listing '/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces'...
+[5.032s] Compiling '/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/__init__.py'...
+[5.032s] Listing '/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/msg'...
+[5.032s] Compiling '/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/msg/__init__.py'...
+[5.033s] Compiling '/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/msg/_set_position.py'...
+[5.033s] Listing '/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/srv'...
+[5.033s] Compiling '/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/srv/__init__.py'...
+[5.033s] Compiling '/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/srv/_get_position.py'...
+[5.041s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[5.041s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+[5.041s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[5.042s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+[5.042s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[5.043s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages/dynamixel_sdk_custom_interfaces/dynamixel_sdk_custom_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+[5.043s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_generator_py.so
+[5.043s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/lib/libdynamixel_sdk_custom_interfaces__rosidl_generator_py.so" to ""
+[5.043s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/msg/SetPosition.idl
+[5.043s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/srv/GetPosition.idl
+[5.044s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/msg/SetPosition.msg
+[5.044s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/srv/GetPosition.srv
+[5.044s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/srv/GetPosition_Request.msg
+[5.044s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/srv/GetPosition_Response.msg
+[5.044s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/ament_index/resource_index/package_run_dependencies/dynamixel_sdk_custom_interfaces
+[5.045s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/ament_index/resource_index/parent_prefix_path/dynamixel_sdk_custom_interfaces
+[5.045s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/environment/ament_prefix_path.sh
+[5.045s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/environment/ament_prefix_path.dsv
+[5.045s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/environment/path.sh
+[5.045s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/environment/path.dsv
+[5.046s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/local_setup.bash
+[5.046s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/local_setup.sh
+[5.046s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/local_setup.zsh
+[5.046s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/local_setup.dsv
+[5.046s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/package.dsv
+[5.047s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/ament_index/resource_index/packages/dynamixel_sdk_custom_interfaces
+[5.047s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/export_dynamixel_sdk_custom_interfaces__rosidl_generator_cExport.cmake
+[5.047s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/export_dynamixel_sdk_custom_interfaces__rosidl_generator_cExport-noconfig.cmake
+[5.047s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/export_dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_cExport.cmake
+[5.047s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/export_dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[5.048s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/export_dynamixel_sdk_custom_interfaces__rosidl_generator_cppExport.cmake
+[5.048s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/export_dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_cppExport.cmake
+[5.048s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/export_dynamixel_sdk_custom_interfaces__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[5.048s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_cExport.cmake
+[5.048s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[5.049s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/dynamixel_sdk_custom_interfaces__rosidl_typesupport_cExport.cmake
+[5.049s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/dynamixel_sdk_custom_interfaces__rosidl_typesupport_cExport-noconfig.cmake
+[5.049s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_cppExport.cmake
+[5.049s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/dynamixel_sdk_custom_interfaces__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[5.049s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/dynamixel_sdk_custom_interfaces__rosidl_typesupport_cppExport.cmake
+[5.050s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/dynamixel_sdk_custom_interfaces__rosidl_typesupport_cppExport-noconfig.cmake
+[5.050s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/export_dynamixel_sdk_custom_interfaces__rosidl_generator_pyExport.cmake
+[5.050s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/export_dynamixel_sdk_custom_interfaces__rosidl_generator_pyExport-noconfig.cmake
+[5.050s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/rosidl_cmake-extras.cmake
+[5.050s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake
+[5.050s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/ament_cmake_export_include_directories-extras.cmake
+[5.051s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/ament_cmake_export_libraries-extras.cmake
+[5.051s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/ament_cmake_export_targets-extras.cmake
+[5.051s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[5.051s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[5.051s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/dynamixel_sdk_custom_interfacesConfig.cmake
+[5.051s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/cmake/dynamixel_sdk_custom_interfacesConfig-version.cmake
+[5.052s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk_custom_interfaces/share/dynamixel_sdk_custom_interfaces/package.xml
+[5.055s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces

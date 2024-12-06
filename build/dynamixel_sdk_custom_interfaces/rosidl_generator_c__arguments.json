@@ -1,0 +1,32 @@
+{
+  "package_name": "dynamixel_sdk_custom_interfaces",
+  "output_dir": "/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces/rosidl_generator_c/dynamixel_sdk_custom_interfaces",
+  "template_dir": "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource",
+  "idl_tuples": [
+    "/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces/rosidl_adapter/dynamixel_sdk_custom_interfaces:msg/SetPosition.idl",
+    "/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces/rosidl_adapter/dynamixel_sdk_custom_interfaces:srv/GetPosition.idl"
+  ],
+  "ros_interface_dependencies": [
+    "builtin_interfaces:/opt/ros/humble/share/builtin_interfaces/msg/Duration.idl",
+    "builtin_interfaces:/opt/ros/humble/share/builtin_interfaces/msg/Time.idl"
+  ],
+  "target_dependencies": [
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../../../lib/rosidl_generator_c/rosidl_generator_c",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../../../local/lib/python3.10/dist-packages/rosidl_generator_c/__init__.py",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/action__type_support.h.em",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/idl.h.em",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/idl__functions.c.em",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/idl__functions.h.em",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/idl__struct.h.em",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/idl__type_support.h.em",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/msg__functions.c.em",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/msg__functions.h.em",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/msg__struct.h.em",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/msg__type_support.h.em",
+    "/opt/ros/humble/share/rosidl_generator_c/cmake/../resource/srv__type_support.h.em",
+    "/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces/rosidl_adapter/dynamixel_sdk_custom_interfaces/msg/SetPosition.idl",
+    "/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk_custom_interfaces/rosidl_adapter/dynamixel_sdk_custom_interfaces/srv/GetPosition.idl",
+    "/opt/ros/humble/share/builtin_interfaces/msg/Duration.idl",
+    "/opt/ros/humble/share/builtin_interfaces/msg/Time.idl"
+  ]
+}

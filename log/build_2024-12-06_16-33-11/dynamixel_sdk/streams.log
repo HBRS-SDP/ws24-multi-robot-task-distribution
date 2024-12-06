@@ -1,0 +1,42 @@
+[0.044s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk -- -j16 -l16
+[0.302s] [35m[1mConsolidate compiler generated dependencies of target dynamixel_sdk[0m
+[0.303s] [100%] Built target dynamixel_sdk
+[0.522s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk -- -j16 -l16
+[0.593s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk
+[0.601s] -- Install configuration: ""
+[0.601s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include/
+[0.601s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk
+[0.601s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/protocol1_packet_handler.h
+[0.602s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/packet_handler.h
+[0.602s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/protocol2_packet_handler.h
+[0.602s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/port_handler_windows.h
+[0.602s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/port_handler.h
+[0.602s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/group_sync_write.h
+[0.602s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/group_sync_read.h
+[0.602s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/port_handler_linux.h
+[0.602s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/group_bulk_write.h
+[0.602s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/group_bulk_read.h
+[0.602s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/dynamixel_sdk.h
+[0.603s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/port_handler_arduino.h
+[0.603s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/include//dynamixel_sdk/port_handler_mac.h
+[0.603s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/lib/libdynamixel_sdk.so
+[0.603s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/environment/library_path.sh
+[0.603s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/environment/library_path.dsv
+[0.603s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/ament_index/resource_index/package_run_dependencies/dynamixel_sdk
+[0.603s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/ament_index/resource_index/parent_prefix_path/dynamixel_sdk
+[0.603s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/environment/ament_prefix_path.sh
+[0.603s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/environment/ament_prefix_path.dsv
+[0.604s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/environment/path.sh
+[0.604s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/environment/path.dsv
+[0.604s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/local_setup.bash
+[0.604s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/local_setup.sh
+[0.604s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/local_setup.zsh
+[0.604s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/local_setup.dsv
+[0.604s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/package.dsv
+[0.604s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/ament_index/resource_index/packages/dynamixel_sdk
+[0.604s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.605s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/cmake/ament_cmake_export_libraries-extras.cmake
+[0.605s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/cmake/dynamixel_sdkConfig.cmake
+[0.605s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/cmake/dynamixel_sdkConfig-version.cmake
+[0.605s] -- Up-to-date: /home/behrouz/ws24-multi-robot-task-distribution/install/dynamixel_sdk/share/dynamixel_sdk/package.xml
+[0.617s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop:/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_example:/home/behrouz/ws24-multi-robot-task-distribution/src/install/empty_simulation:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/build/dynamixel_sdk

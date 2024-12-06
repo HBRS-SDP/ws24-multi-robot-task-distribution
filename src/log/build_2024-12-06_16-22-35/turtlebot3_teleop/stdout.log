@@ -1,0 +1,40 @@
+running egg_info
+creating ../../build/turtlebot3_teleop/turtlebot3_teleop.egg-info
+writing ../../build/turtlebot3_teleop/turtlebot3_teleop.egg-info/PKG-INFO
+writing dependency_links to ../../build/turtlebot3_teleop/turtlebot3_teleop.egg-info/dependency_links.txt
+writing entry points to ../../build/turtlebot3_teleop/turtlebot3_teleop.egg-info/entry_points.txt
+writing requirements to ../../build/turtlebot3_teleop/turtlebot3_teleop.egg-info/requires.txt
+writing top-level names to ../../build/turtlebot3_teleop/turtlebot3_teleop.egg-info/top_level.txt
+writing manifest file '../../build/turtlebot3_teleop/turtlebot3_teleop.egg-info/SOURCES.txt'
+reading manifest file '../../build/turtlebot3_teleop/turtlebot3_teleop.egg-info/SOURCES.txt'
+writing manifest file '../../build/turtlebot3_teleop/turtlebot3_teleop.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/build
+creating /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/build/lib
+creating /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/build/lib/turtlebot3_teleop
+copying turtlebot3_teleop/__init__.py -> /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/build/lib/turtlebot3_teleop
+creating /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/build/lib/turtlebot3_teleop/script
+copying turtlebot3_teleop/script/__init__.py -> /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/build/lib/turtlebot3_teleop/script
+copying turtlebot3_teleop/script/teleop_keyboard.py -> /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/build/lib/turtlebot3_teleop/script
+running install
+running install_lib
+creating /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3_teleop
+creating /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3_teleop/script
+copying /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/build/lib/turtlebot3_teleop/script/__init__.py -> /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3_teleop/script
+copying /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/build/lib/turtlebot3_teleop/script/teleop_keyboard.py -> /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3_teleop/script
+copying /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/build/lib/turtlebot3_teleop/__init__.py -> /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3_teleop
+byte-compiling /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3_teleop/script/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3_teleop/script/teleop_keyboard.py to teleop_keyboard.cpython-310.pyc
+byte-compiling /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3_teleop/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/share/ament_index
+creating /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/share/ament_index/resource_index
+creating /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/share/ament_index/resource_index/packages
+copying resource/turtlebot3_teleop -> /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/share/ament_index/resource_index/packages
+copying package.xml -> /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/share/turtlebot3_teleop
+running install_egg_info
+Copying ../../build/turtlebot3_teleop/turtlebot3_teleop.egg-info to /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3_teleop-2.1.5-py3.10.egg-info
+running install_scripts
+Installing teleop_keyboard script to /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_teleop/lib/turtlebot3_teleop
+writing list of installed files to '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_teleop/install.log'

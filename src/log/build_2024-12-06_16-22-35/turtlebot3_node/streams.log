@@ -1,0 +1,86 @@
+[0.016s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node': AMENT_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble LD_LIBRARY_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/lib:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/behrouz/ws24-multi-robot-task-distribution/src/turtlebot3/turtlebot3_node -DCMAKE_INSTALL_PREFIX=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node
+[0.258s] -- The C compiler identification is GNU 11.4.0
+[0.259s] -- The CXX compiler identification is GNU 11.4.0
+[0.259s] -- Detecting C compiler ABI info
+[0.259s] -- Detecting C compiler ABI info - done
+[0.259s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.259s] -- Detecting C compile features
+[0.259s] -- Detecting C compile features - done
+[0.259s] -- Detecting CXX compiler ABI info
+[0.301s] -- Detecting CXX compiler ABI info - done
+[0.309s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.309s] -- Detecting CXX compile features
+[0.310s] -- Detecting CXX compile features - done
+[0.313s] -- Found ament_cmake: 1.3.10 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.461s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.548s] -- Found dynamixel_sdk: 3.7.60 (/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/share/dynamixel_sdk/cmake)
+[0.551s] -- Found geometry_msgs: 4.2.4 (/opt/ros/humble/share/geometry_msgs/cmake)
+[0.587s] -- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.594s] -- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.600s] -- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.610s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.626s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.669s] -- Found message_filters: 4.3.5 (/opt/ros/humble/share/message_filters/cmake)
+[0.728s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.732s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.853s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.891s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.934s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.943s] -- Looking for pthread.h
+[1.013s] -- Looking for pthread.h - found
+[1.013s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[1.088s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[1.090s] -- Found Threads: TRUE  
+[1.145s] -- Found nav_msgs: 4.2.4 (/opt/ros/humble/share/nav_msgs/cmake)
+[1.161s] -- Found sensor_msgs: 4.2.4 (/opt/ros/humble/share/sensor_msgs/cmake)
+[1.176s] -- Found std_srvs: 4.2.4 (/opt/ros/humble/share/std_srvs/cmake)
+[1.188s] -- Found tf2: 0.25.7 (/opt/ros/humble/share/tf2/cmake)
+[1.199s] -- Found tf2_ros: 0.25.7 (/opt/ros/humble/share/tf2_ros/cmake)
+[1.302s] -- Found turtlebot3_msgs: 2.2.3 (/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/share/turtlebot3_msgs/cmake)
+[1.380s] -- Configuring done
+[1.398s] -- Generating done
+[1.401s] -- Build files have been written to: /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node
+[1.420s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node' returned '0': AMENT_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble LD_LIBRARY_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/lib:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/behrouz/ws24-multi-robot-task-distribution/src/turtlebot3/turtlebot3_node -DCMAKE_INSTALL_PREFIX=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node
+[1.422s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node': AMENT_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble LD_LIBRARY_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/lib:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node -- -j16 -l16
+[1.481s] [  7%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/devices/reset.cpp.o[0m
+[1.481s] [ 14%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/dynamixel_sdk_wrapper.cpp.o[0m
+[1.481s] [ 21%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/sensors/battery_state.cpp.o[0m
+[1.481s] [ 28%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/sensors/imu.cpp.o[0m
+[1.481s] [ 35%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/turtlebot3.cpp.o[0m
+[1.481s] [ 42%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/diff_drive_controller.cpp.o[0m
+[1.481s] [ 50%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/odometry.cpp.o[0m
+[1.481s] [ 57%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/sensors/joint_state.cpp.o[0m
+[1.481s] [ 64%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/devices/sound.cpp.o[0m
+[1.482s] [ 71%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/devices/motor_power.cpp.o[0m
+[1.484s] [ 78%] [32mBuilding CXX object CMakeFiles/turtlebot3_node_lib.dir/src/sensors/sensor_state.cpp.o[0m
+[17.581s] [ 85%] [32m[1mLinking CXX static library libturtlebot3_node_lib.a[0m
+[18.088s] [ 85%] Built target turtlebot3_node_lib
+[18.107s] [ 92%] [32mBuilding CXX object CMakeFiles/turtlebot3_ros.dir/src/node_main.cpp.o[0m
+[20.782s] [100%] [32m[1mLinking CXX executable turtlebot3_ros[0m
+[21.959s] [100%] Built target turtlebot3_ros
+[21.970s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node' returned '0': AMENT_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble LD_LIBRARY_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/lib:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node -- -j16 -l16
+[22.014s] Invoking command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node': AMENT_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble LD_LIBRARY_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/lib:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node
+[22.020s] -- Install configuration: ""
+[22.020s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/param
+[22.020s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/param/burger.yaml
+[22.021s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/param/waffle_pi.yaml
+[22.021s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/param/waffle.yaml
+[22.021s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/lib/turtlebot3_node/turtlebot3_ros
+[22.036s] -- Set runtime path of "/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/lib/turtlebot3_node/turtlebot3_ros" to ""
+[22.036s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/ament_index/resource_index/package_run_dependencies/turtlebot3_node
+[22.036s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/ament_index/resource_index/parent_prefix_path/turtlebot3_node
+[22.036s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/environment/ament_prefix_path.sh
+[22.036s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/environment/ament_prefix_path.dsv
+[22.036s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/environment/path.sh
+[22.036s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/environment/path.dsv
+[22.036s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/local_setup.bash
+[22.037s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/local_setup.sh
+[22.037s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/local_setup.zsh
+[22.037s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/local_setup.dsv
+[22.037s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/package.dsv
+[22.037s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/ament_index/resource_index/packages/turtlebot3_node
+[22.037s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/cmake/ament_cmake_export_include_directories-extras.cmake
+[22.037s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/cmake/turtlebot3_nodeConfig.cmake
+[22.038s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/cmake/turtlebot3_nodeConfig-version.cmake
+[22.038s] -- Installing: /home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_node/share/turtlebot3_node/package.xml
+[22.040s] Invoked command in '/home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node' returned '0': AMENT_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk:/home/behrouz/ws24-multi-robot-task-distribution/install/empty_simulation:/opt/ros/humble LD_LIBRARY_PATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/lib:/home/behrouz/ws24-multi-robot-task-distribution/src/install/dynamixel_sdk/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/behrouz/ws24-multi-robot-task-distribution/src/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/behrouz/ws24-multi-robot-task-distribution/src/build/turtlebot3_node

@@ -1,0 +1,21 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from turtlebot3_msgs/srv/Dqn.srv
+// generated code does not contain a copyright notice
+
+
+module turtlebot3_msgs {
+  module srv {
+    struct Dqn_Request {
+      uint8 action;
+
+      boolean init;
+    };
+    struct Dqn_Response {
+      sequence<float> state;
+
+      float reward;
+
+      boolean done;
+    };
+  };
+};
