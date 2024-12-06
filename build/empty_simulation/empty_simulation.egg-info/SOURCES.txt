@@ -9,7 +9,6 @@ setup.py
 ../../build/empty_simulation/empty_simulation.egg-info/top_level.txt
 ../../build/empty_simulation/empty_simulation.egg-info/zip-safe
 empty_simulation/__init__.py
-launch/empty_world.launch.py
 resource/empty_simulation
 test/test_copyright.py
 test/test_flake8.py
