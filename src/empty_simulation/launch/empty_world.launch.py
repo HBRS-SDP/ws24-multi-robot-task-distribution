@@ -2,8 +2,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition
-from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitution
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
@@ -13,23 +12,13 @@ def generate_launch_description():
     turtlebot3_description_dir = get_package_share_directory('turtlebot3_description')
     gazebo_ros_dir = get_package_share_directory('gazebo_ros')
 
-    # Launch arguments
-    declare_model_arg = DeclareLaunchArgument(
-        'model', default_value=os.getenv('TURTLEBOT3_MODEL', 'burger'),
-        description='Model type [burger, waffle, waffle_pi]')
-    declare_x_pos_arg = DeclareLaunchArgument(
-        'x_pos', default_value='0.0', description='Initial x position of the robot')
-    declare_y_pos_arg = DeclareLaunchArgument(
-        'y_pos', default_value='0.0', description='Initial y position of the robot')
-    declare_z_pos_arg = DeclareLaunchArgument(
-        'z_pos', default_value='0.0', description='Initial z position of the robot')
 
     # Include Gazebo empty world launch
     gazebo_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(gazebo_ros_dir, 'launch', 'empty_world.launch.py')),
+            PathJoinSubstitution([gazebo_ros_dir, 'launch', 'gazebo.launch.py'])),
         launch_arguments={
-            'world_name': os.path.join(mrtd_pkg_dir, 'worlds', 'warehouse.world'),
+            'world_name': PathJoinSubstitution([mrtd_pkg_dir, 'worlds', 'warehouse.world']),
             'paused': 'false',
             'use_sim_time': 'true',
             'gui': 'true',
@@ -41,8 +30,10 @@ def generate_launch_description():
     # Define robot description
     robot_description_param = {
         'robot_description': Command([
-            'xacro ', 
-            os.path.join(turtlebot3_description_dir, 'urdf', 'turtlebot3_', LaunchConfiguration('model'), '.urdf.xacro'),
+            'xacro ',
+            PathJoinSubstitution([
+                turtlebot3_description_dir, 'urdf', 'turtlebot3_burger.urdf.xacro'
+            ]),
             ' --inorder'
         ])
     }
@@ -53,10 +44,10 @@ def generate_launch_description():
         executable='spawn_entity.py',
         name='spawn_urdf',
         arguments=[
-            '-entity', 'turtlebot3_' + LaunchConfiguration('model'),
-            '-x', LaunchConfiguration('x_pos'),
-            '-y', LaunchConfiguration('y_pos'),
-            '-z', LaunchConfiguration('z_pos'),
+            '-entity', 'turtlebot3_burger',
+            '-x', '0.0',
+            '-y', '0.0',
+            '-z', '0.0',
             '-topic', 'robot_description'
         ],
         output='screen'
@@ -64,10 +55,6 @@ def generate_launch_description():
 
     # Launch description
     return LaunchDescription([
-        declare_model_arg,
-        declare_x_pos_arg,
-        declare_y_pos_arg,
-        declare_z_pos_arg,
         gazebo_launch,
         Node(
             package='robot_state_publisher',
@@ -77,4 +64,3 @@ def generate_launch_description():
         ),
         spawn_robot_node
     ])
-
