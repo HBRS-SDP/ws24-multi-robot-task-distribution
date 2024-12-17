@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'task_manager_node = task_management.task_manager_node:main',
+            'goal_publisher = task_management.goal_publisher:main'
         ],
     },
 )

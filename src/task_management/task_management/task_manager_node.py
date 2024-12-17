@@ -13,14 +13,14 @@ class TaskManager(Node):
 
     def load_orders(self):
         data = [
-            {"client": "client1", "Shelf_1": "D", "Quantity_1": 19, "Shelf_2": "A", "Quantity_2": 4, "Shelf_3": "B", "Quantity_3": 23, "Shelf_4": "C", "Quantity_4": 11},
+        {"client": "client1", "Shelf_1": "D", "Quantity_1": 19, "Shelf_2": "A", "Quantity_2": 4, "Shelf_3": "B", "Quantity_3": 23, "Shelf_4": "C", "Quantity_4": 11},
 	    {"client": "client2", "Shelf_1": "B", "Quantity_1": 16, "Shelf_2": "C", "Quantity_2": 8, "Shelf_3": "A", "Quantity_3": 1, "Shelf_4": "D", "Quantity_4": 20},
 	    {"client": "client3", "Shelf_1": "A", "Quantity_1": 17, "Shelf_2": "B", "Quantity_2": 7, "Shelf_3": "C", "Quantity_3": 5, "Shelf_4": "D", "Quantity_4": 14},
 	    {"client": "client4", "Shelf_1": "A", "Quantity_1": 20, "Shelf_2": "B", "Quantity_2": 8, "Shelf_3": "C", "Quantity_3": 19, "Shelf_4": "D", "Quantity_4": 11},
 	    {"client": "client5", "Shelf_1": "A", "Quantity_1": 23, "Shelf_2": "B", "Quantity_2": 9, "Shelf_3": "C", "Quantity_3": 11, "Shelf_4": "D", "Quantity_4": 12},
 	    {"client": "client6", "Shelf_1": "A", "Quantity_1": 8, "Shelf_2": "B", "Quantity_2": 11, "Shelf_3": "C", "Quantity_3": 3, "Shelf_4": "D", "Quantity_4": 13},
 	    {"client": "client7", "Shelf_1": "A", "Quantity_1": 24, "Shelf_2": "B", "Quantity_2": 23, "Shelf_3": "C", "Quantity_3": 20, "Shelf_4": "D", "Quantity_4": 9},
-       	    {"client": "client8", "Shelf_1": "A", "Quantity_1": 21, "Shelf_2": "B", "Quantity_2": 14, "Shelf_3": "C", "Quantity_3": 4, "Shelf_4": "D", "Quantity_4": 7},
+       	{"client": "client8", "Shelf_1": "A", "Quantity_1": 21, "Shelf_2": "B", "Quantity_2": 14, "Shelf_3": "C", "Quantity_3": 4, "Shelf_4": "D", "Quantity_4": 7},
 	    {"client": "client9", "Shelf_1": "A", "Quantity_1": 21, "Shelf_2": "B", "Quantity_2": 2, "Shelf_3": "C", "Quantity_3": 15, "Shelf_4": "D", "Quantity_4": 18},
 	    {"client": "client10", "Shelf_1": "A", "Quantity_1": 2, "Shelf_2": "B", "Quantity_2": 21, "Shelf_3": "C", "Quantity_3": 6, "Shelf_4": "D", "Quantity_4": 15},
 	    {"client": "client11", "Shelf_1": "A", "Quantity_1": 22, "Shelf_2": "B", "Quantity_2": 25, "Shelf_3": "C", "Quantity_3": 9, "Shelf_4": "D", "Quantity_4": 9},

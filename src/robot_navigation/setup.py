@@ -1,15 +1,26 @@
 from setuptools import find_packages, setup
+import os
 
 package_name = 'robot_navigation'
+def package_files(directory):
+    """Recursively collect all files under a directory."""
+    paths = []
+    for (path, directories, filenames) in os.walk(directory):
+        for filename in filenames:
+            paths.append(os.path.join(path, filename))
+    return paths
+
+launch_files = package_files('launch')
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version='0.1.0',
     packages=find_packages(exclude=['test']),
+
     data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
+        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/launch', launch_files)
     ],
     install_requires=['setuptools'],
     zip_safe=True,

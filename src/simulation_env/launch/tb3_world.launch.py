@@ -88,9 +88,32 @@ def generate_launch_description():
         ],
     )
 
+    lifecycle_manager = Node(
+        package="nav2_lifecycle_manager",
+        executable="lifecycle_manager",
+        name="lifecycle_manager_mapper",
+        output="screen",
+        emulate_tty=True,
+        parameters=[
+            {"use_sim_time": use_sim_time},
+            {"autostart": True},
+            {"node_names": ["map_server"]},
+        ],
+    )
+
+    tf2_ros_map_to_odom = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="static_transform_publisher",
+        arguments=["0.0", "0.0", "0", "0", "0", "0", "map", "odom"],
+    )
+
+
     # Create and return the launch description
     ld = LaunchDescription()
     ld.add_action(map_server)
+    ld.add_action(lifecycle_manager)
+    ld.add_action(tf2_ros_map_to_odom)
     # Add the commands to the launch description
     ld.add_action(gzserver_cmd)
     ld.add_action(gzclient_cmd)
