@@ -26,13 +26,12 @@ The project aims to migrate a multi-robot task distribution system, originally d
 # Installation and Project setup.
 You need ROS Humble version to use these packages.
 
-- Please install ros humble using this link and instructions [https://wiki.ros.org/noetic/Installation](https://docs.ros.org/en/humble/Installation.html)
+- Please install ros humble using this link and instructions [Installation Guide](https://docs.ros.org/en/humble/Installation.html)
 
-# Running Simulation
 ## Prerequisites
 
 Make sure you have the following installed on your system:
-- ROS (Robot Operating System) - Installation Guide
+- ROS (Robot Operating System) 
 - Git
 
 ## 1. Create a ROS Workspace
@@ -45,17 +44,24 @@ colcon build
 
 source install/setup.bash
 ```
-Clone the Package Navigate to the src directory of your workspace and clone the repository:
+### Clone the Package 
+Navigate to the src directory of your workspace and clone the repository:
 
 ```
 cd ~/ros_ws/src
 git clone git@github.com:HBRS-SDP/ss24-multi-robot-task-distribution.git
 ```
 
-Build the Package After cloning the repository, go back to the root of your workspace and build it using
+Install the required dependencies.
+```
+cd ~/ros_ws 
+rosdep install --from-paths src --ignore-src -r -y
+```
+
+Build the Package.
 
 ```
-colcon build
+colcon build --symlink-install
 ```
 
 ## Run the Nodes
@@ -64,10 +70,15 @@ You can now run the nodes provided by your package. Open a new terminal, source 
 ```
 # Source the workspace
 source ~/ros_ws/install/setup.bash
-
-# Launch the launchfiles
 ```
 
+# Simulation
+For the testing purpose, we made a simulation environment that somewhat resembles the warehouse with 8 shelves.
+It starts the gazebo environment, map server, and rviz window and can be launched using
+```
+ros2 launch simulation_env demo_world.launch.py
+```
+![Simulation Environment](docs/simulation_environment.png?raw=true)
 
 # SM_Module
 Shared Memory Module logs he robot activities and manages the Inventory. It integrates with ROS to handle real-time updates and communicate with robots.
