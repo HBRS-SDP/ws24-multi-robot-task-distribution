@@ -10,6 +10,9 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/msg', ['msg/RobotStatus.msg']),
+        ('share/' + package_name + '/srv', ['srv/Database.srv']),
+        ('share/' + package_name + '/srv', ['srv/InventoryUpdate.srv']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -23,6 +26,7 @@ setup(
             'task_manager_node = task_management.task_manager_node:main',
             'goal_publisher = task_management.goal_publisher:main',
             'goal_publisher_1 = task_management.goal_publisher_1:main',
+            'data_base = task_management.data_base:main',
         ],
     },
 )
