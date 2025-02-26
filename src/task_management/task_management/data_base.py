@@ -1,27 +1,19 @@
 import rclpy
 from rclpy.node import Node
-from example_interfaces.srv import AddTwoInts
 from task_management.srv import Database, InventoryUpdate
 from task_management.msg import RobotStatus
 import json
+
+from srv import Database, InventoryUpdate
+from msg import RobotStatus
+
 
 class DatabaseModule(Node):
     def __init__(self):
         super().__init__('database_module')
 
         # Initialize the database with sample data
-        self.database = {
-            "shelves": {
-                1: {"location": "A1", "capacity": 10, "inventory": 5},
-                2: {"location": "B2", "capacity": 15, "inventory": 10},
-                3: {"location": "C3", "capacity": 20, "inventory": 15},
-            },
-            "robots": {
-                "robot_1": {"location": "Station", "battery_level": 100.0, "is_available": True},
-                "robot_2": {"location": "Station", "battery_level": 95.0, "is_available": True},
-            },
-            "order_history": [],
-        }
+        self.database = self.load_database_from_json('task_management/database.json')
 
         # Create services
         self.database_query_service = self.create_service(
@@ -35,12 +27,20 @@ class DatabaseModule(Node):
 
         self.get_logger().info("Database Module is ready.")
 
+    def load_database_from_json(self, database_json):
+        with open(database_json, 'r') as file:
+            data = json.load(file)
+
+        self.database = data
+        self.log_database()
+
+
     def database_query_callback(self, request, response):
         """
         Callback for the /database_query service.
         Returns shelf details based on the provided shelf_id.
         """
-        shelf_id = request.shelf_id
+        shelf_id = str(request.shelf_id)
         if shelf_id in self.database["shelves"]:
             shelf = self.database["shelves"][shelf_id]
             response.shelf_location = shelf["location"]
@@ -59,7 +59,7 @@ class DatabaseModule(Node):
         Callback for the /update_inventory service.
         Updates the inventory of a shelf.
         """
-        shelf_id = request.shelf_id
+        shelf_id = str(request.shelf_id)
         new_inventory = request.new_inventory
 
         if shelf_id in self.database["shelves"]:
