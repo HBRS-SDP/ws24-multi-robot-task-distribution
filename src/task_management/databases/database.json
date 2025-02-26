@@ -1,0 +1,32 @@
+{
+  "shelves": {
+    "1": {
+      "location": "A1",
+      "capacity": 10,
+      "inventory": 5
+    },
+    "2": {
+      "location": "B2",
+      "capacity": 15,
+      "inventory": 10
+    },
+    "3": {
+      "location": "C3",
+      "capacity": 20,
+      "inventory": 15
+    }
+  },
+  "robots": {
+    "robot_1": {
+      "location": "Station",
+      "battery_level": 100.0,
+      "is_available": true
+    },
+    "robot_2": {
+      "location": "Station",
+      "battery_level": 95.0,
+      "is_available": true
+    }
+  },
+  "order_history": []
+}
