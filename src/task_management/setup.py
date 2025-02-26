@@ -1,6 +1,16 @@
 from setuptools import find_packages, setup
+import os
 
 package_name = 'task_management'
+def package_files(directory):
+    """Recursively collect all files under a directory."""
+    paths = []
+    for (path, directories, filenames) in os.walk(directory):
+        for filename in filenames:
+            paths.append(os.path.join(path, filename))
+    return paths
+
+database_files = package_files('databases')
 
 setup(
     name=package_name,
@@ -10,9 +20,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/msg', ['msg/RobotStatus.msg']),
-        ('share/' + package_name + '/srv', ['srv/Database.srv']),
-        ('share/' + package_name + '/srv', ['srv/InventoryUpdate.srv']),
+        ('share/' + package_name + '/databases', database_files),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
