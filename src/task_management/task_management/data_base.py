@@ -1,19 +1,24 @@
 import rclpy
 from rclpy.node import Node
-from task_management.srv import Database, InventoryUpdate
-from task_management.msg import RobotStatus
+from robot_interfaces.srv import Database, InventoryUpdate
+from robot_interfaces.msg import RobotStatus
 import json
+import os
+from ament_index_python.packages import get_package_share_directory
 
-from srv import Database, InventoryUpdate
-from msg import RobotStatus
+
 
 
 class DatabaseModule(Node):
     def __init__(self):
         super().__init__('database_module')
 
+        database_dir = get_package_share_directory("task_management")
+        database_name = "database"
+        database_file = os.path.join(database_dir, "databases" , database_name + ".json")
+
         # Initialize the database with sample data
-        self.database = self.load_database_from_json('task_management/database.json')
+        self.database = self.load_database_from_json(database_file)
 
         # Create services
         self.database_query_service = self.create_service(
