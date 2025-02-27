@@ -16,8 +16,11 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/RobotStatus.msg"
+  "msg/Order.msg"
+  "msg/Task.msg"
   "srv/Database.srv"
   "srv/InventoryUpdate.srv"
+  DEPENDENCIES geometry_msgs
 )
 
 if(BUILD_TESTING)
