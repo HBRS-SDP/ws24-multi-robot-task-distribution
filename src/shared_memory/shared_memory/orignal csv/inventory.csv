@@ -1,5 +1,10 @@
-Product,Shelf 1,Shelf 2,Shelf 3,Shelf 4,Shelf 5,Shelf 6,Shelf 7,Shelf 8
-A,5,20,10,25,15,5,10,10
-B,10,10,10,10,20,10,20,10
-C,40,5,5,10,10,10,10,10
-D,50,5,5,5,5,20,5,5
+Shelf Id,Shelf 1,Shelf 2,Shelf 3,Shelf 4,Shelf 5,Shelf 6,Shelf 7,Shelf 8
+Product,A,B,C,D,E,F,G,H
+Qty,100,80,100,100,90,85,100,100
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,Q,,,,,,
