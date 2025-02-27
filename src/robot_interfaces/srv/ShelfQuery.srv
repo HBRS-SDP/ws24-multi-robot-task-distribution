@@ -1,4 +1,4 @@
-# srv/Database.srv
+# srv/ShelfStatus.srv
 int32 shelf_id
 ---
 string shelf_location

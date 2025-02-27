@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from robot_interfaces.srv import Database, InventoryUpdate
+from robot_interfaces.srv import ShelfQuery, InventoryUpdate
 from robot_interfaces.msg import RobotStatus
 import json
 import os
@@ -20,7 +20,7 @@ class DatabaseModule(Node):
 
         # Create services
         self.database_query_service = self.create_service(
-            Database, '/database_query', self.database_query_callback)
+            ShelfQuery, '/database_query', self.shelf_query_callback)
         self.inventory_update_service = self.create_service(
             InventoryUpdate, '/update_inventory', self.inventory_update_callback)
 
@@ -37,7 +37,7 @@ class DatabaseModule(Node):
         self.database = data
         self.log_database()
 
-    def database_query_callback(self, request, response):
+    def shelf_query_callback(self, request, response):
         """
         Callback for the /database_query service.
         Returns shelf details based on the provided shelf_id.
