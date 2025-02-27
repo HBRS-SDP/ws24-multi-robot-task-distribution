@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 import os
-from warehouse_manager.inventory_node import InventoryManager
+from shared_memory.inventory_node import InventoryManager
 import rclpy
 
 class TestInventoryManager(unittest.TestCase):

@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'warehouse_manager'
+package_name = 'shared_memory'
 
 setup(
     name=package_name,
@@ -14,13 +14,13 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='ayushi',
-    maintainer_email='ayushi@todo.todo',
+    maintainer_email='ayushiarora206@gmail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
-	    'console_scripts': [
-		'inventory_manager = warehouse_manager.inventory_node:main',
-	    ],
-	},
+        'console_scripts': [
+		'inventory_manager = shared_memory.inventory_node:main',
+	 ],
+    },
 )

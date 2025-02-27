@@ -1,0 +1,13 @@
+#TO RUN INVENTORY NODE
+
+cd ~/warehouse_ws
+colcon build --symlink-install
+source install/setup.bash
+ros2 run shared_memory inventory_manager
+
+#TO RUN THE WEBAPP
+
+cd ~/warehouse_ws/src/warehouse_manager/webapp
+python3 app.py
+
+http://localhost:5000/ (OPEN THIS IN BROWSER)

@@ -1,0 +1,22 @@
+Timestamp,Order ID,Product,Shelf,Quantity Picked,Status
+2025-02-27 17:10:47,1,A,Shelf 1,10,Fulfilled
+2025-02-27 17:10:47,1,B,N/A,0,Picked 0
+2025-02-27 17:10:47,1,C,N/A,0,Picked 0
+2025-02-27 17:10:47,1,D,N/A,0,Product Not Found
+2025-02-27 17:10:50,3,A,N/A,0,Picked 0
+2025-02-27 17:10:50,3,B,Shelf 6,5,Fulfilled
+2025-02-27 17:10:50,3,C,N/A,0,Picked 0
+2025-02-27 17:10:50,3,D,N/A,0,Product Not Found
+2025-02-27 17:10:51,4,A,Shelf 1,13,Fulfilled
+2025-02-27 17:10:51,4,A,Shelf 2,1,Fulfilled
+2025-02-27 17:10:51,4,A,Shelf 3,1,Fulfilled
+2025-02-27 17:10:51,4,A,Shelf 4,1,Fulfilled
+2025-02-27 17:10:51,4,A,Shelf 5,1,Fulfilled
+2025-02-27 17:10:51,4,A,Shelf 6,1,Fulfilled
+2025-02-27 17:10:51,4,A,Shelf 7,1,Fulfilled
+2025-02-27 17:10:51,4,A,Shelf 8,1,Fulfilled
+2025-02-27 17:10:51,4,A,N/A,20,Partial Fulfillment
+2025-02-27 17:10:51,4,B,Shelf 6,1,Fulfilled
+2025-02-27 17:10:51,4,B,Shelf 7,6,Fulfilled
+2025-02-27 17:10:52,4,C,N/A,0,Picked 0
+2025-02-27 17:10:52,4,D,N/A,0,Product Not Found

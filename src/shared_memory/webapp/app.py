@@ -6,9 +6,9 @@ import datetime
 app = Flask(__name__)
 
 # File paths
-INVENTORY_FILE = os.path.join(os.path.dirname(__file__), '../warehouse_manager/inventory.csv')
-ORDERS_FILE = os.path.join(os.path.dirname(__file__), '../warehouse_manager/orders.csv')
-LOG_FILE = os.path.join(os.path.dirname(__file__), '../warehouse_manager/logs.csv')
+INVENTORY_FILE = os.path.join(os.path.dirname(__file__), '../shared_memory/inventory.csv')
+ORDERS_FILE = os.path.join(os.path.dirname(__file__), '../shared_memory/orders.csv')
+LOG_FILE = os.path.join(os.path.dirname(__file__), '../shared_memory/logs.csv')
 
 # Load CSV files
 def load_csv(file_path):

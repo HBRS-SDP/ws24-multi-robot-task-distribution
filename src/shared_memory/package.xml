@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>warehouse_manager</name>
+  <name>shared_memory</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="ayushi@todo.todo">ayushi</maintainer>
+  <maintainer email="ayushiarora206@gmail.com">ayushi</maintainer>
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
