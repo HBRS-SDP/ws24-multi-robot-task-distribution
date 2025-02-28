@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from robot_interfaces.srv import ShelfQuery, InventoryUpdate
 from robot_interfaces.msg import RobotStatus
+from geometry_msgs.msg import Point
 import json
 import os
 from ament_index_python.packages import get_package_share_directory
@@ -47,7 +48,8 @@ class DatabaseModule(Node):
 
         for shelf in self.database.get("shelves"):
             if shelf_id == shelf.get("id"):
-                response.shelf_location = shelf["location"]
+                location = Point(shelf.get("location"))
+                response.shelf_location = location
                 response.shelf_capacity = shelf["capacity"]
                 response.current_inventory = shelf["inventory"]
                 shelf_found = True
@@ -55,7 +57,7 @@ class DatabaseModule(Node):
                 break
 
         if not shelf_found:
-            response.shelf_location = ""
+            response.shelf_location = Point(0,0,0)
             response.shelf_capacity = 0
             response.current_inventory = 0
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")

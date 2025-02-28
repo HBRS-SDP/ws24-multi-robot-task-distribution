@@ -2,19 +2,19 @@
   "shelves": [
     {
       "id": 1,
-      "location": "A1",
+      "location": [5,0,6],
       "capacity": 10,
       "inventory": 5
     },
     {
       "id": 2,
-      "location": "B2",
+      "location": [5,0,7],
       "capacity": 15,
       "inventory": 10
     },
     {
       "id": 3,
-      "location": "C3",
+      "location": [5,0,8],
       "capacity": 20,
       "inventory": 15
     }
