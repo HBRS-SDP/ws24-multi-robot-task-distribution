@@ -1,0 +1,30 @@
+WITH DATA LOADED FROM CSV
+
+#TERMINAL 1 (Running the Node)
+
+cd ~/sm_ws
+colcon build --symlink-install
+source install/setup.bash
+
+ros2 run shared_memory_node shared_memory_node
+
+
+#TERMINAL 2 (Testing)
+
+1) To check initial inventory status:
+
+	ros2 service call /get_inventory_status shared_memory_msgs/srv/GetInventoryStatus "{shelf: 'Shelf 1'}"
+
+2) To assign task to the robot:
+
+	ros2 topic pub /goal_start shared_memory_msgs/msg/GoalStartMsg "{robot_id: 0, shelf: 'Shelf 1', items: 10, client_id: 1001}"
+
+3) To confirm that robot reaches shelf and gives updated inventory:
+
+	ros2 topic pub /goal_reach shared_memory_msgs/msg/GoalReachMsg "{robot_id: 0, shelf: 'Shelf 1'}"
+	
+4) To check updated inventory:
+
+	ros2 service call /get_inventory_status shared_memory_msgs/srv/GetInventoryStatus "{shelf: 'Shelf 1'}"
+
+
