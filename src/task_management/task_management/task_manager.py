@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
-from robot_interfaces.msg import Order, Task, RobotStatus
-from robot_interfaces.srv import ShelfQuery
+from robot_interfaces.msg import Order, Task
+from robot_interfaces.srv import ShelfQuery, RobotStatus
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Point
 from rclpy.executors import MultiThreadedExecutor

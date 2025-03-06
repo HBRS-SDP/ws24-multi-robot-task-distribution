@@ -15,9 +15,13 @@ find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/RobotStatus.msg"
   "msg/Order.msg"
   "msg/Task.msg"
+  "msg/GoalStartMsg.msg"
+  "msg/GoalReachMsg.msg"
+  "msg/RobotStatus.msg"
+  "srv/GetRobotFleetStatus.srv"
+  "srv/GetRobotStatus.srv"
   "srv/ShelfQuery.srv"
   "srv/InventoryUpdate.srv"
   DEPENDENCIES geometry_msgs
