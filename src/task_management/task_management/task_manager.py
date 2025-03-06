@@ -17,7 +17,9 @@ class TaskManager(Node):
         # Subscribers
         self.order_subscriber = self.create_subscription(
             Order, '/order_requests', self.order_callback, 10)
-
+        
+        self.robot_status_subscriber = self.create_subscription(
+            RobotStatus, '/robot_status', self.robot_status_callback, 10)
 
         # Publishers
         self.task_publisher = self.create_publisher(Task, '/task_assignments', 10)
@@ -122,7 +124,20 @@ class TaskManager(Node):
         else:
             self.get_logger().warn("No available robots to assign task.")
 
-
+    def robot_status_callback(self, msg: RobotStatus):
+        """
+        Callback for the /robot_status topic.
+        Updates the status of robots in the fleet.
+        """
+        for index, robot in enumerate(self.robots):
+            if robot.get("id") == msg.id:
+                new_status =   {
+                            "id": msg.id,
+                            "location": msg.location,
+                            "battery_level": msg.battery_level,
+                            "is_available": msg.is_available
+                            }
+                self.robots[index] = new_status
 
     def calculate_distance(self, location1: Point, location2: Point):
         """
