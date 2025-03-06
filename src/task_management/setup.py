@@ -31,7 +31,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'task_manager_node = task_management.task_manager_node:main',
+            'task_manager_node = task_management.task_manager:main',
             'goal_publisher = task_management.goal_publisher:main',
             'goal_publisher_1 = task_management.goal_publisher_1:main',
             'data_base = task_management.data_base:main',
