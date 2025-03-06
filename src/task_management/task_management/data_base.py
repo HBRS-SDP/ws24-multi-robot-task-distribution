@@ -36,12 +36,15 @@ class DatabaseModule(Node):
                 "status": "idle"
             }]
 
+
+
+
+
+        self.load_database(database_file)
         self.shelves = self.database.get("shelves")
         self.robots = self.database.get("robots")
-
         self.tasks = []
 
-        self.load_inventory_data(database_file)
 
         # Older database using json
         # self.load_database_from_json(database_file)
@@ -60,7 +63,7 @@ class DatabaseModule(Node):
 
         self.get_logger().info("Database Module is ready.")
 
-    def load_inventory_data(self, database_file):
+    def load_database(self, database_file):
         """Reads inventory data from the CSV file and stores it in a dictionary."""
 
         try:
@@ -97,16 +100,19 @@ class DatabaseModule(Node):
         self.tasks.append(task)
         print(self.tasks)
         self.update_robot_status(msg.robot_id, msg.task_type, False)
+        self.log_database()
 
     def task_end_callback(self, msg):
         """Updates robot status and inventories when it reaches a shelf."""
 
         task = next((task for task in self.tasks if task.get("task_id") == msg.data), None)
-        robot_id = task.get('robot_id')
-        self.get_logger().info(f"Robot {robot_id} has finished the task {msg.data}")
 
+        robot_id = task.get('robot_id')
         self.update_inventory_status(task)
         self.update_robot_status(robot_id = robot_id, new_status = 'idle', availability = True)
+
+        self.get_logger().info(f"Robot {robot_id} has finished the task {msg.data}")
+        self.log_database()
 
 
     def update_robot_status(self, robot_id: int, new_status: str, availability: bool):
@@ -121,7 +127,11 @@ class DatabaseModule(Node):
                 break
 
     def update_inventory_status(self, task):
-        for idx, shelf in self.shelves:
+        if not self.shelves:
+            print("NO SHELF DATA")
+            return
+
+        for idx, shelf in enumerate(self.shelves):
             if shelf.get('id') == task.get('shelf_id'):
                 shelf['inventory'] -= task.get('amount')
                 self.shelves[idx] = shelf
