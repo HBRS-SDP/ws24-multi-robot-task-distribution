@@ -4,7 +4,7 @@
   <name>task_management</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="ayushiarora206@gmail.com">ritz</maintainer>
+  <maintainer email="behroozghamkhar@gmail.com">behrouz</maintainer>
   <license>TODO: License declaration</license>
 
   <test_depend>ament_copyright</test_depend>
