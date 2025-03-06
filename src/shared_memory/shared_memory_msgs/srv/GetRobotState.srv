@@ -1,7 +1,0 @@
-int32 robot_id
----
-int32 robot_id
-string shelf
-int32 items
-string client_id
-bool saving

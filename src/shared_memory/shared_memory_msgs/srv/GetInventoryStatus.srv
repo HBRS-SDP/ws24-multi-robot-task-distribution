@@ -1,5 +1,0 @@
-string shelf
----
-int32 init_quantity
-int32 remaining_quantity
-
