@@ -1,0 +1,5 @@
+# srv/InventoryUpdate.srv
+int32 shelf_id
+int32 new_inventory
+---
+bool success
