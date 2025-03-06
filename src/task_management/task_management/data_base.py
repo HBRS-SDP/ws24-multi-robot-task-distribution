@@ -18,26 +18,37 @@ class DatabaseModule(Node):
 
         # Initialize the database with sample data
         self.database = {"shelves": []}
+        self.database["robots"] = [
+            {
+            "id": 1,
+            "location": [2.0, 3.0, 0.0],
+            "battery_level": 100.0,
+            "is_available": True
+            },
+            {
+            "id": 2,
+            "location": [4.0, 3.0, 0.0],
+            "battery_level": 95.0,
+            "is_available": True
+            }]
+
         self.load_inventory_data(database_file)
 
         # Older database using json
         # self.load_database_from_json(database_file)
 
-        # Create services
+        # Services
         self.database_query_service = self.create_service(
             ShelfQuery, '/database_query', self.shelf_query_callback)
         self.inventory_update_service = self.create_service(
             InventoryUpdate, '/update_inventory', self.inventory_update_callback)
-
-        # Create a publisher for robot status
-        self.robot_status_publisher = self.create_publisher(
-            RobotStatus, '/robot_status', 10)
+        self.robot_state_service = self.create_service(
+            RobotStatus, '/get_robot_state', self.robot_state_callback)
 
         self.get_logger().info("Database Module is ready.")
 
     def load_inventory_data(self, database_file):
         """Reads inventory data from the CSV file and stores it in a dictionary."""
-        shelves_data = {"shelves": []}
 
         try:
             with open(database_file, mode='r') as file:
@@ -45,7 +56,7 @@ class DatabaseModule(Node):
                 self.database["shelves"] = [
                     {
                         "id": int(row["id"]),
-                        "location": [int(row["location_x"]), int(row["location_y"]), int(row["location_z"])],
+                        "location": [float(row["location_x"]), float(row["location_y"]), float(row["location_z"])],
                         "product": row["product"],
                         "capacity": int(row["capacity"]),
                         "inventory": int(row["inventory"])
@@ -75,8 +86,12 @@ class DatabaseModule(Node):
 
         for shelf in self.database.get("shelves"):
             if shelf_id == shelf.get("id"):
-                location = Point(shelf.get("location"))
-                response.shelf_location = location
+                location_point = Point()
+                location = shelf.get("location")
+                location_point.x = location[0]
+                location_point.y = location[1]
+                location_point.z = location[2]
+                response.shelf_location = location_point
                 response.shelf_capacity = shelf["capacity"]
                 response.current_inventory = shelf["inventory"]
                 shelf_found = True
@@ -89,6 +104,35 @@ class DatabaseModule(Node):
             response.current_inventory = 0
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
         return response
+
+    
+    def robot_state_callback(self, request, response):
+        """Returns the current state of a requested robot."""
+        robot_found = False
+        robot_id = request.robot_id
+
+        for robot in self.database.get("robots"):
+            if robot_id == robot.get("id"):
+                location_point = Point()
+                location = robot.get("location")
+                location_point.x = location[0]
+                location_point.y = location[1]
+                location_point.z = location[2]
+                response.current_location = location_point
+                response.battery_level = robot["battery_level"]
+                response.is_available = robot["is_available"]
+                robot_found = True
+                self.get_logger().info(f"Query successful for shelf_id: {robot_id}")
+                break
+
+        if not robot_found:
+            response.current_location = Point(0, 0, 0)
+            response.battery_level = 0
+            response.is_available = False
+            self.get_logger().warn(f"Robot_id {robot_id} not found in database.")
+        return response
+
+
 
     def inventory_update_callback(self, request, response):
         """
@@ -109,6 +153,7 @@ class DatabaseModule(Node):
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
 
         return response
+
 
     def log_database(self):
         """
