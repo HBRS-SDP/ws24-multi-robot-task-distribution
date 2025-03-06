@@ -20,7 +20,7 @@ class DatabaseModule(Node):
 
         # Initialize the database with sample data
         self.database = {"shelves": []}
-        self.database["robots"] = [
+        self.robots = [
             {
                 "id": 1,
                 "location": [2.0, 3.0, 0.0],
@@ -38,11 +38,9 @@ class DatabaseModule(Node):
 
 
 
-
-
-        self.load_database(database_file)
-        self.shelves = self.database.get("shelves")
-        self.robots = self.database.get("robots")
+        self.load_inventory(database_file)
+        self.database["shelves"] = self.shelves
+        self.database["robots"] = self.robots
         self.tasks = []
 
 
@@ -63,13 +61,13 @@ class DatabaseModule(Node):
 
         self.get_logger().info("Database Module is ready.")
 
-    def load_database(self, database_file):
+    def load_inventory(self, database_file):
         """Reads inventory data from the CSV file and stores it in a dictionary."""
-
+    
         try:
             with open(database_file, mode='r') as file:
                 reader = csv.DictReader(file)
-                self.database["shelves"] = [
+                self.shelves = [
                     {
                         "id": int(row["id"]),
                         "location": [float(row["location_x"]), float(row["location_y"]), float(row["location_z"])],
@@ -107,9 +105,14 @@ class DatabaseModule(Node):
 
         task = next((task for task in self.tasks if task.get("task_id") == msg.data), None)
 
+        if not task:
+            self.get_logger().info(f"The task with id {msg.data} was not found.")
+            return
+
         robot_id = task.get('robot_id')
         self.update_inventory_status(task)
         self.update_robot_status(robot_id = robot_id, new_status = 'idle', availability = True)
+        self.tasks.remove(task)
 
         self.get_logger().info(f"Robot {robot_id} has finished the task {msg.data}")
         self.log_database()
@@ -148,7 +151,7 @@ class DatabaseModule(Node):
         shelf_found = False
         shelf_id = request.shelf_id
 
-        for shelf in self.database.get("shelves"):
+        for shelf in self.shelves:
             if shelf_id == shelf.get("id"):
                 location_point = Point()
                 location = shelf.get("location")
@@ -174,7 +177,7 @@ class DatabaseModule(Node):
         robot_found = False
         robot_id = request.robot_id
 
-        for robot in self.database.get("robots"):
+        for robot in self.robots:
             if robot_id == robot.get("id"):
                 location_point = Point()
                 location = robot.get("location")
@@ -204,9 +207,9 @@ class DatabaseModule(Node):
         new_inventory = request.new_inventory
         response.success = False
 
-        for index, shelf in enumerate(self.database.get("shelves")):
+        for index, shelf in enumerate(self.shelves):
             if shelf_id == shelf.get("id"):
-                self.database["shelves"][index]["inventory"] = new_inventory
+                self.shelves[index]["inventory"] = new_inventory
                 response.success = True
                 self.get_logger().info(f"Inventory updated for shelf_id: {shelf_id}")
                 break
@@ -219,6 +222,8 @@ class DatabaseModule(Node):
         """
         Logs the current state of the database
         """
+        self.database.update({"shelves": self.shelves})
+        self.database.update({"robots": self.robots})
         self.get_logger().info("Current Database State:")
         self.get_logger().info(json.dumps(self.database, indent=2))
 
