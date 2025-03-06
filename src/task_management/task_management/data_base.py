@@ -91,16 +91,17 @@ class DatabaseModule(Node):
 
     def task_start_callback(self, msg):
         """Updates robot status and task history when a task starts."""
-        self.get_logger().info(f"Robot {msg.robot_id} started task at shelf {msg.shelf_id} for task id {msg.task_id}")
+        self.get_logger().info(f"Robot {msg.robot_id} started task {msg.task_type} at shelf {msg.shelf_id} for task id {msg.task_id}")
         task = {'task_id': msg.task_id, 'robot_id': msg.robot_id, 'shelf_id': msg.shelf_id, 'item': msg.item, 'amount': msg.item_amount,
                 'type': msg.task_type}
         self.tasks.append(task)
+        print(self.tasks)
         self.update_robot_status(msg.robot_id, msg.task_type, False)
 
     def task_end_callback(self, msg):
         """Updates robot status and inventories when it reaches a shelf."""
 
-        task = next((task for task in self.tasks if task.get("id") == msg.data), None)
+        task = next((task for task in self.tasks if task.get("task_id") == msg.data), None)
         robot_id = task.get('robot_id')
         self.get_logger().info(f"Robot {robot_id} has finished the task {msg.data}")
 
@@ -174,7 +175,7 @@ class DatabaseModule(Node):
                 response.battery_level = robot["battery_level"]
                 response.is_available = robot["is_available"]
                 robot_found = True
-                self.get_logger().info(f"Query successful for shelf_id: {robot_id}")
+                self.get_logger().info(f"Query successful for robot_id: {robot_id}")
                 break
 
         if not robot_found:
