@@ -1,10 +1,10 @@
 import rclpy
 from rclpy.node import Node
-from robot_interfaces.srv import ShelfQuery, InventoryUpdate
-from robot_interfaces.msg import RobotStatus
+from robot_interfaces.srv import ShelfQuery, InventoryUpdate, RobotStatus
 from geometry_msgs.msg import Point
 import json
 import os
+import csv
 from ament_index_python.packages import get_package_share_directory
 
 
@@ -13,11 +13,15 @@ class DatabaseModule(Node):
         super().__init__('database_module')
 
         database_dir = get_package_share_directory("task_management")
-        database_name = "database"
-        database_file = os.path.join(database_dir, "databases", database_name + ".json")
+        database_name = "shelves_database"
+        database_file = os.path.join(database_dir, "databases", database_name + ".csv")
 
         # Initialize the database with sample data
-        self.load_database_from_json(database_file)
+        self.database = {"shelves": []}
+        self.load_inventory_data(database_file)
+
+        # Older database using json
+        # self.load_database_from_json(database_file)
 
         # Create services
         self.database_query_service = self.create_service(
@@ -30,6 +34,29 @@ class DatabaseModule(Node):
             RobotStatus, '/robot_status', 10)
 
         self.get_logger().info("Database Module is ready.")
+
+    def load_inventory_data(self, database_file):
+        """Reads inventory data from the CSV file and stores it in a dictionary."""
+        shelves_data = {"shelves": []}
+
+        try:
+            with open(database_file, mode='r') as file:
+                reader = csv.DictReader(file)
+                self.database["shelves"] = [
+                    {
+                        "id": int(row["id"]),
+                        "location": [int(row["location_x"]), int(row["location_y"]), int(row["location_z"])],
+                        "product": row["product"],
+                        "capacity": int(row["capacity"]),
+                        "inventory": int(row["inventory"])
+                    }
+                    for row in reader
+                ]
+
+            self.get_logger().info("Inventory successfully loaded from CSV.")
+            self.log_database()
+        except Exception as e:
+            self.get_logger().error(f"Error loading inventory from CSV: {e}")
 
     def load_database_from_json(self, database_json):
         with open(database_json, 'r') as file:
@@ -57,7 +84,7 @@ class DatabaseModule(Node):
                 break
 
         if not shelf_found:
-            response.shelf_location = Point(0,0,0)
+            response.shelf_location = Point(0, 0, 0)
             response.shelf_capacity = 0
             response.current_inventory = 0
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
@@ -80,7 +107,7 @@ class DatabaseModule(Node):
                 break
         if not response.success:
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
-            
+
         return response
 
     def log_database(self):

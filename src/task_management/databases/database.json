@@ -2,21 +2,59 @@
   "shelves": [
     {
       "id": 1,
-      "location": [5,0,6],
-      "capacity": 10,
-      "inventory": 5
+      "location": [5,6,0],
+      "product": "A",
+      "capacity": 100,
+      "inventory": 55
     },
     {
       "id": 2,
-      "location": [5,0,7],
-      "capacity": 15,
-      "inventory": 10
+      "location": [5,7,0],
+      "product": "B",
+      "capacity": 100,
+      "inventory": 100
     },
     {
       "id": 3,
-      "location": [5,0,8],
-      "capacity": 20,
-      "inventory": 15
+      "location": [5,8,0],
+      "product": "C",
+      "capacity": 100,
+      "inventory": 60
+    },
+    {
+      "id": 4,
+      "location": [5,9,0],
+      "product": "D",
+      "capacity": 100,
+      "inventory": 50
+    },
+    {
+      "id": 5,
+      "location": [7,6,0],
+      "product": "E",
+      "capacity": 100,
+      "inventory": 100
+    },
+    {
+      "id": 6,
+      "location": [7,7,0],
+      "product": "F",
+      "capacity": 100,
+      "inventory": 80
+    },
+    {
+      "id": 7,
+      "location": [7,8,0],
+      "product": "G",
+      "capacity": 100,
+      "inventory": 70
+    },
+    {
+      "id": 8,
+      "location": [7,9,0],
+      "product": "H",
+      "capacity": 100,
+      "inventory": 100
     }
   ],
   "robots": [
