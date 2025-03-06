@@ -29,7 +29,7 @@ class SharedMemoryNode(Node):
         inventory = {}
 
         # Define CSV file path
-        csv_file_path = "/home/ayushi/sm_ws/src/shared_memory_node/inventory_data/inventory.csv"
+        csv_file_path = "/home/behrouz/ws24-multi-robot-task-distribution/src/shared_memory/shared_memory_node/inventory_data/inventory.csv"
 
         try:
             with open(csv_file_path, 'r') as file:

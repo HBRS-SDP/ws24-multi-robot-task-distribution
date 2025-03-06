@@ -15,8 +15,6 @@ find_package(builtin_interfaces REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/GoalStartMsg.msg"
-  "msg/GoalReachMsg.msg"
   "srv/GetRobotState.srv"
   "srv/GetInventoryStatus.srv"
   DEPENDENCIES std_msgs builtin_interfaces
