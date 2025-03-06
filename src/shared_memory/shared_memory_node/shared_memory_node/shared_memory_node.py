@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
-from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus
-from robot_interfaces.msg import Task
+from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus
+from robot_interfaces.msg import Task, RobotStatus
 from geometry_msgs.msg import Point
 from std_msgs.msg import Int32
 import json
@@ -58,6 +58,8 @@ class SharedMemoryNode(Node):
             InventoryUpdate, '/update_inventory', self.inventory_update_callback)
         self.robot_state_service = self.create_service(
             GetRobotStatus, '/get_robot_state', self.robot_state_callback)
+        self.robot_fleet_service = self.create_service(GetRobotFleetStatus, '/get_robot_fleet_status', self.get_fleet_status_callback)
+
 
         self.get_logger().info("Database Module is ready.")
 
@@ -187,6 +189,7 @@ class SharedMemoryNode(Node):
                 response.current_location = location_point
                 response.battery_level = robot["battery_level"]
                 response.is_available = robot["is_available"]
+                response.status = robot["status"]
                 robot_found = True
                 self.get_logger().info(f"Query successful for robot_id: {robot_id}")
                 break
@@ -216,6 +219,31 @@ class SharedMemoryNode(Node):
         if not response.success:
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
 
+        return response
+    
+
+    def get_fleet_status_callback(self, request, response):
+        
+        robot_fleet = []
+        for robot in self.robots:
+            robot_status = RobotStatus()
+
+            # Create a list of RobotStatus messages
+            robot_status.robot_id = robot.get("id")
+            location_point = Point()
+            location = robot.get("location")
+            location_point.x = location[0]
+            location_point.y = location[1]
+            location_point.z = location[2]
+            robot_status.current_location = location_point
+            robot_status.battery_level = robot.get("battery_level")
+            robot_status.is_available = robot.get("is_available")
+            robot_status.status = robot.get("status")
+            robot_fleet.append(robot_status)
+
+        response.robot_status_list = robot_fleet
+
+        self.get_logger().info('Returning RobotFleetStatus')
         return response
 
     def log_database(self):
