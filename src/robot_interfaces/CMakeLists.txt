@@ -19,7 +19,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Task.msg"
   "msg/GoalStartMsg.msg"
   "msg/GoalReachMsg.msg"
-  "srv/RobotStatus.srv"
+  "srv/GetRobotStatus.srv"
   "srv/ShelfQuery.srv"
   "srv/InventoryUpdate.srv"
   DEPENDENCIES geometry_msgs

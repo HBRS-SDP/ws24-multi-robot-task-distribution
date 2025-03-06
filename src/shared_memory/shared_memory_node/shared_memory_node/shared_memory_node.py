@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from robot_interfaces.srv import ShelfQuery, InventoryUpdate, RobotStatus
+from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus
 from robot_interfaces.msg import Task
 from geometry_msgs.msg import Point
 from std_msgs.msg import Int32
@@ -57,7 +57,7 @@ class SharedMemoryNode(Node):
         self.inventory_update_service = self.create_service(
             InventoryUpdate, '/update_inventory', self.inventory_update_callback)
         self.robot_state_service = self.create_service(
-            RobotStatus, '/get_robot_state', self.robot_state_callback)
+            GetRobotStatus, '/get_robot_state', self.robot_state_callback)
 
         self.get_logger().info("Database Module is ready.")
 
