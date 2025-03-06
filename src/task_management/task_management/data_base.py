@@ -10,7 +10,7 @@ import csv
 from ament_index_python.packages import get_package_share_directory
 
 
-class DatabaseModule(Node):
+class SharedMemoryNode(Node):
     def __init__(self):
         super().__init__('database_module')
 
@@ -230,9 +230,9 @@ class DatabaseModule(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    database_module = DatabaseModule()
-    rclpy.spin(database_module)
-    database_module.destroy_node()
+    shared_memory_module = SharedMemoryNode()
+    rclpy.spin(shared_memory_module)
+    shared_memory_module.destroy_node()
     rclpy.shutdown()
 
 
