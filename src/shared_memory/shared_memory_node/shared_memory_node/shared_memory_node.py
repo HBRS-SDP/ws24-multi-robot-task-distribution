@@ -53,7 +53,7 @@ class SharedMemoryNode(Node):
 
         # Services
         self.database_query_service = self.create_service(
-            ShelfQuery, '/database_query', self.shelf_query_callback)
+            ShelfQuery, '/shelf_query', self.shelf_query_callback)
         self.inventory_update_service = self.create_service(
             InventoryUpdate, '/update_inventory', self.inventory_update_callback)
         self.robot_state_service = self.create_service(
