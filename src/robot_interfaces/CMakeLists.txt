@@ -15,10 +15,16 @@ find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Order.msg"
+  "msg/Task.msg"
+  "msg/GoalStartMsg.msg"
+  "msg/GoalReachMsg.msg"
   "msg/RobotStatus.msg"
-  "srv/Database.srv"
+  "srv/GetRobotFleetStatus.srv"
+  "srv/GetRobotStatus.srv"
+  "srv/ShelfQuery.srv"
   "srv/InventoryUpdate.srv"
-  "action/Task.action"
+  DEPENDENCIES geometry_msgs
 )
 
 if(BUILD_TESTING)
