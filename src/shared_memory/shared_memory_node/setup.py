@@ -1,7 +1,8 @@
 from setuptools import find_packages, setup
 import os
 
-package_name = 'task_management'
+package_name = 'shared_memory_node'
+
 def package_files(directory):
     """Recursively collect all files under a directory."""
     paths = []
@@ -11,6 +12,7 @@ def package_files(directory):
     return paths
 
 database_files = package_files('databases')
+
 
 setup(
     name=package_name,
@@ -26,16 +28,12 @@ setup(
     zip_safe=True,
     maintainer='ayushi',
     maintainer_email='ayushiarora206@gmail.com',
-    description='Task Management package for warehouse robot.',
-    license='Apache-2.0',
+    description='TODO: Package description',
+    license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'task_manager_node = task_management.task_manager:main',
-            'goal_publisher = task_management.goal_publisher:main',
-            'goal_publisher_1 = task_management.goal_publisher_1:main',
-            'data_base = task_management.data_base:main',
+            'shared_memory_node = shared_memory_node.shared_memory_node:main',
         ],
     },
 )
-
