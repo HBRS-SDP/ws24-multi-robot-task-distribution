@@ -1,0 +1,11 @@
+# TaskList.action
+
+# Goal (Request)
+Task[] tasks  # List of tasks
+---
+# Result (Response)
+bool success  # Whether the task list was processed successfully
+string message  # Additional information
+---
+# Feedback
+int32 current_task_index  # Index of the task being processed

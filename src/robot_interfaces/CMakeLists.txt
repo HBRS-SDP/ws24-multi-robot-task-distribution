@@ -24,6 +24,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/GetRobotStatus.srv"
   "srv/ShelfQuery.srv"
   "srv/InventoryUpdate.srv"
+  "srv/TaskList.srv"
+  "action/TaskList.action"
   DEPENDENCIES geometry_msgs
 )
 

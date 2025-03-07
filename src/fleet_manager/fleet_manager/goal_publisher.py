@@ -21,7 +21,7 @@ class WaypointFollower(Node):
 
     def feedback_callback(self, feedback_msg):
         feedback = feedback_msg.feedback
-        # self.get_logger().info(f'Received feedback: {feedback}')
+        self.get_logger().info(f'Received feedback: {feedback}')
 
     def goal_response_callback(self, future):
         goal_handle = future.result()

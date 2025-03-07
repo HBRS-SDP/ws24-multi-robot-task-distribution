@@ -1,0 +1,4 @@
+Task[] task_list  # List of tasks
+---
+# Result (Response)
+bool success  # Whether the task list was processed successfully
