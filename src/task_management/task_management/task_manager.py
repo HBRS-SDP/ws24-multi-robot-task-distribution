@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from robot_interfaces.msg import Order, Task
-from robot_interfaces.srv import ShelfQuery, RobotStatus, GetRobotFleetStatus
+from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Point
 from rclpy.executors import MultiThreadedExecutor
@@ -31,36 +31,34 @@ class TaskManager(Node):
         self.robot_fleet_client = self.create_client(
             GetRobotFleetStatus, '/get_robot_fleet_status', callback_group=self.callback_group)
         
-        self.robot_status_client = self.create_client(
-            RobotStatus, '/robot_status', self.robot_status_callback, 10)
+
 
         # Robot status dictionary
         self.robots = {}  # Format: {robot_id: RobotStatus}
         
-        # test
-        self.robots = [
-            {
-            "id": 1,
-            "location": Point(2,0,3),
-            "battery_level": 100.0,
-            "is_available": True
-            },
-            {
-            "id": 2,
-            "location": Point(4,0,3),
-            "battery_level": 95.0,
-            "is_available": True
-            }]
-
 
         self.get_logger().info("Task Manager is ready.")
 
-    async def order_callback(self, msg):
+    def order_callback(self, msg):
         """
-        Callback for the /order_requests topic.
-        This function is asynchronous to allow concurrent service calls.
+        Callback triggered when a new order is received.
+        This function schedules the asynchronous task in a new event loop.
         """
-        self.get_logger().info(f"Received order request: {msg}")
+        self.get_logger().info(f'Received order request: {msg}')
+
+        # Create a new event loop for the asynchronous task
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+        # Run the asynchronous task in the new event loop
+        loop.run_until_complete(self.process_order(msg))
+        loop.close()
+
+    async def process_order(self, msg):
+        """
+        Asynchronously process the order by calling the two services concurrently.
+        """
+        self.get_logger().info('Calling services concurrently...')
 
         try:
             # Call the two services concurrently using asyncio.gather
@@ -91,21 +89,24 @@ class TaskManager(Node):
         """
         Call the /shelf_query service asynchronously.
         """
-        while not self.database_query_client.wait_for_service(timeout_sec=1.0):
+        while not self.shelf_query_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warn('Waiting for /shelf_query service...')
 
         request = ShelfQuery.Request()
-        future = self.database_query_client.call_async(request)
+        request.shelf_id = 1
+        future = self.shelf_query_client.call_async(request)
         await future
         return future.result()
 
-    def allocate_task(self, order_msg, shelf_details):
+    def allocate_task(self, robot_fleet_response, database_query_response):
         """
         Allocates a task to the best robot based on proximity, battery level, and availability.
         """
         best_robot_id = None
         best_score = -1
 
+        print(robot_fleet_response)
+        return
 
         #for robot_id, robot_status in self.robots.items():
             #if robot_status.is_available:
@@ -139,20 +140,7 @@ class TaskManager(Node):
         else:
             self.get_logger().warn("No available robots to assign task.")
 
-    def robot_status_callback(self, msg: RobotStatus):
-        """
-        Callback for the /robot_status topic.
-        Updates the status of robots in the fleet.
-        """
-        for index, robot in enumerate(self.robots):
-            if robot.get("id") == msg.id:
-                new_status =   {
-                            "id": msg.id,
-                            "location": msg.location,
-                            "battery_level": msg.battery_level,
-                            "is_available": msg.is_available
-                            }
-                self.robots[index] = new_status
+
 
     def calculate_distance(self, location1: Point, location2: Point):
         """
@@ -166,6 +154,7 @@ def main(args=None):
 
     # Use a MultiThreadedExecutor to handle service callbacks concurrently
     executor = MultiThreadedExecutor()
+    
     rclpy.spin(task_manager, executor=executor)
 
     task_manager.destroy_node()
