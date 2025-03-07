@@ -35,7 +35,7 @@ class TaskManager(Node):
 
         # Robot status dictionary
         self.robots = {}  # Format: {robot_id: RobotStatus}
-        
+        self.task_id_counter = 1
 
         self.get_logger().info("Task Manager is ready.")
 
@@ -105,37 +105,42 @@ class TaskManager(Node):
         best_robot_id = None
         best_score = -1
 
-        print(robot_fleet_response)
-        return
+        # A list of RobotStaus    
+        robot_fleet_list = robot_fleet_response.robot_status_list
+        shelf_details = database_query_response
 
-        #for robot_id, robot_status in self.robots.items():
-            #if robot_status.is_available:
-        for robot in self.robots:
-            if robot.get("is_available"):
+
+        for robot in robot_fleet_list:
+            if robot.is_available:
 
                 # Calculate proximity score (distance to shelf)
-                robot_location = robot.get("location")
+                robot_location = robot.current_location
                 shelf_location = shelf_details.shelf_location
                 distance = self.calculate_distance(robot_location, shelf_location)
 
                 # Calculate battery score (higher battery is better)
-                battery_score = robot.get("battery_level")
+                battery_score = robot.battery_level
 
                 # Combined score (lower distance and higher battery are better)
                 score = (1 / (distance + 1)) * battery_score
 
                 if score > best_score:
                     best_score = score
-                    best_robot_id = robot.get("id")
+                    best_robot_id = robot.robot_id
 
         if best_robot_id:
             # Assign task to the best robot
+            # TODO: hard coded for testing
             task_msg = Task()
+            task_msg.task_id = self.task_id_counter
             task_msg.robot_id = best_robot_id
-            task_msg.shelf_id = order_msg.shelf_id
+            task_msg.shelf_id = 1  
             task_msg.shelf_location = shelf_details.shelf_location
-            task_msg.task_type = "pickup"  # Example task type
+            task_msg.item = "A"
+            task_msg.item_amount = 3
+            task_msg.task_type = "pickup"
             self.task_publisher.publish(task_msg)
+            self.task_id_counter += 1
             self.get_logger().info(f"Assigned task to robot {best_robot_id}: {task_msg}")
         else:
             self.get_logger().warn("No available robots to assign task.")
