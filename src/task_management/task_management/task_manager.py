@@ -1,10 +1,11 @@
 import rclpy
 from rclpy.node import Node
 from robot_interfaces.msg import Order, Task
-from robot_interfaces.srv import ShelfQuery, RobotStatus
+from robot_interfaces.srv import ShelfQuery, RobotStatus, GetRobotFleetStatus
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Point
 from rclpy.executors import MultiThreadedExecutor
+import asyncio
 import math
 
 class TaskManager(Node):
@@ -18,20 +19,23 @@ class TaskManager(Node):
         self.order_subscriber = self.create_subscription(
             Order, '/order_requests', self.order_callback, 10)
         
-        self.robot_status_subscriber = self.create_subscription(
-            RobotStatus, '/robot_status', self.robot_status_callback, 10)
+
 
         # Publishers
         self.task_publisher = self.create_publisher(Task, '/task_assignments', 10)
 
         # Service clients
-        self.database_client = self.create_client(
-            ShelfQuery, '/database_query', callback_group=self.callback_group)
+        self.shelf_query_client = self.create_client(
+            ShelfQuery, '/shelf_query', callback_group=self.callback_group)
+        
+        self.robot_fleet_client = self.create_client(
+            GetRobotFleetStatus, '/get_robot_fleet_status', callback_group=self.callback_group)
+        
+        self.robot_status_client = self.create_client(
+            RobotStatus, '/robot_status', self.robot_status_callback, 10)
 
         # Robot status dictionary
         self.robots = {}  # Format: {robot_id: RobotStatus}
-
-        
         
         # test
         self.robots = [
@@ -48,41 +52,52 @@ class TaskManager(Node):
             "is_available": True
             }]
 
-        # Wait for the database service to be available
-        while not self.database_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('Database service not available, waiting...')
 
         self.get_logger().info("Task Manager is ready.")
 
-    def order_callback(self, msg):
+    async def order_callback(self, msg):
         """
         Callback for the /order_requests topic.
-        Processes order requests and allocates tasks to robots.
+        This function is asynchronous to allow concurrent service calls.
         """
         self.get_logger().info(f"Received order request: {msg}")
 
-        # Query the database for shelf details
-        shelf_id = msg.shelf_id
-        database_request = ShelfQuery()
-        database_request.shelf_id = shelf_id
-        future = self.database_client.call_async(database_request)
-        future.add_done_callback(lambda future: self.database_query_callback(future, msg))
-
-    def database_query_callback(self, future, order_msg):
-        """
-        Callback for the database query response.
-        Allocates tasks to robots based on shelf details.
-        """
         try:
-            response = future.result()
-            if response.shelf_location:
-                self.get_logger().info(f"Shelf details: {response}")
-                # Allocate task to the best robot
-                self.allocate_task(order_msg, response)
-            else:
-                self.get_logger().warn(f"Shelf ID {order_msg.shelf_id} not found in database.")
+            # Call the two services concurrently using asyncio.gather
+            robot_fleet_response, database_query_response = await asyncio.gather(
+                self.call_robot_fleet_service(),
+                self.call_database_query_service()
+            )
+
+            # Use the responses to allocate tasks to a robot
+            self.allocate_task(robot_fleet_response, database_query_response)
+
         except Exception as e:
-            self.get_logger().error(f"Database query failed: {e}")
+            self.get_logger().error(f'Error calling services: {e}')
+
+    async def call_robot_fleet_service(self):
+        """
+        Call the /get_robot_fleet_status service asynchronously.
+        """
+        while not self.robot_fleet_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warn('Waiting for /get_robot_fleet_status service...')
+
+        request = GetRobotFleetStatus.Request()
+        future = self.robot_fleet_client.call_async(request)
+        await future
+        return future.result()
+
+    async def call_database_query_service(self):
+        """
+        Call the /shelf_query service asynchronously.
+        """
+        while not self.database_query_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warn('Waiting for /shelf_query service...')
+
+        request = ShelfQuery.Request()
+        future = self.database_query_client.call_async(request)
+        await future
+        return future.result()
 
     def allocate_task(self, order_msg, shelf_details):
         """
