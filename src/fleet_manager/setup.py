@@ -22,8 +22,9 @@ setup(
         'console_scripts': [
             'fleet_manager = fleet_manager.fleet_manager:main',
             'goal_publisher = fleet_manager.goal_publisher:main',
-            'fleet_status_client = fleet_manager.fleet_status_client:main',
             'service_test = fleet_manager.service_test:main',
+            'goal_service_publisher = fleet_manager.goal_service_publisher:main',
+            'service_caller = fleet_manager.service_call_example:main',
         ],
     },
 )
