@@ -53,7 +53,7 @@ class SharedMemoryNode(Node):
 
         # Services
         self.database_query_service = self.create_service(
-            ShelfQuery, '/database_query', self.shelf_query_callback)
+            ShelfQuery, '/shelf_query', self.shelf_query_callback)
         self.inventory_update_service = self.create_service(
             InventoryUpdate, '/update_inventory', self.inventory_update_callback)
         self.robot_state_service = self.create_service(
@@ -168,7 +168,11 @@ class SharedMemoryNode(Node):
                 break
 
         if not shelf_found:
-            response.shelf_location = Point(0, 0, 0)
+            location_point = Point()
+            location_point.x = 0.0
+            location_point.y = 0.0
+            location_point.z = 0.0
+            response.shelf_location = location_point
             response.shelf_capacity = 0
             response.current_inventory = 0
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
