@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus, GetShelfList
-from robot_interfaces.msg import Task, RobotStatus, ShelfStatus
+from robot_interfaces.msg import Task, RobotStatus, ShelfStatus, FleetStatus
 from geometry_msgs.msg import Point
 from std_msgs.msg import Int32
 import json
@@ -50,6 +50,7 @@ class SharedMemoryNode(Node):
         # Subscribers
         self.task_start_sub = self.create_subscription(Task, '/start_task', self.task_start_callback, 10)
         self.task_end_sub = self.create_subscription(Int32, '/end_task', self.task_end_callback, 10)
+        self.fleet_status_sub = self.create_subscription(FleetStatus, '/get_robot_fleet_status', self.fleet_status_callback, 10)
 
         # Services
         self.database_query_service = self.create_service(
@@ -119,6 +120,8 @@ class SharedMemoryNode(Node):
         self.get_logger().info(f"Robot {robot_id} has finished the task {msg.data}")
         self.log_database()
 
+    def fleet_status_callback(self, msg):
+        self.robots = msg.robot_status_list
 
     def update_robot_status(self, robot_id: int, new_status: str, availability: bool):
         if not self.robots:
