@@ -230,6 +230,10 @@ class SharedMemoryNode(Node):
     
 
     def get_fleet_status_callback(self, request, response):
+
+        if not self.robots:
+            print("NO Robot Data")
+            return
         
         robot_fleet = []
         for robot in self.robots:
@@ -256,6 +260,10 @@ class SharedMemoryNode(Node):
 
     def get_shelf_list_callback(self, request, response):
         
+        if not self.shelves:
+            print("NO Shelf Data")
+            return
+
         shelf_list = []
         for shelf in self.shelves:
             shelf_status = ShelfStatus()
