@@ -20,22 +20,7 @@ class SharedMemoryNode(Node):
 
         # Initialize the database with sample data
         self.database = {"shelves": []}
-        self.robots = [
-            {
-                "id": 1,
-                "location": [2.0, 3.0, 0.0],
-                "battery_level": 100.0,
-                "is_available": True,
-                "status": "idle"
-            },
-            {
-                "id": 2,
-                "location": [4.0, 3.0, 0.0],
-                "battery_level": 95.0,
-                "is_available": True,
-                "status": "idle"
-            }]
-
+        self.robots = []
 
 
         self.load_inventory(database_file)
@@ -64,6 +49,7 @@ class SharedMemoryNode(Node):
 
         self.get_logger().info("Database Module is ready.")
 
+
     def load_inventory(self, database_file):
         """Reads inventory data from the CSV file and stores it in a dictionary."""
     
@@ -86,12 +72,14 @@ class SharedMemoryNode(Node):
         except Exception as e:
             self.get_logger().error(f"Error loading inventory from CSV: {e}")
 
+
     def load_database_from_json(self, database_json):
         with open(database_json, 'r') as file:
             data = json.load(file)
 
         self.database = data
         self.log_database()
+
 
     def task_start_callback(self, msg):
         """Updates robot status and task history when a task starts."""
@@ -102,6 +90,7 @@ class SharedMemoryNode(Node):
         print(self.tasks)
         self.update_robot_status(msg.robot_id, msg.task_type, False)
         self.log_database()
+
 
     def task_end_callback(self, msg):
         """Updates robot status and inventories when it reaches a shelf."""
@@ -120,19 +109,22 @@ class SharedMemoryNode(Node):
         self.get_logger().info(f"Robot {robot_id} has finished the task {msg.data}")
         self.log_database()
 
+
     def fleet_status_callback(self, msg):
         self.robots = msg.robot_status_list
+
 
     def update_robot_status(self, robot_id: int, new_status: str, availability: bool):
         if not self.robots:
             return
 
         for idx, robot in enumerate(self.robots):
-            if robot.get("id") == robot_id:
-                robot["status"] = new_status
-                robot["is_available"] = availability
+            if robot.robot_id == robot_id:
+                robot.status = new_status
+                robot.is_available = availability
                 self.robots[idx] = robot
                 break
+
 
     def update_inventory_status(self, task):
         if not self.shelves:
@@ -145,7 +137,6 @@ class SharedMemoryNode(Node):
                 self.shelves[idx] = shelf
                 self.get_logger().info(
                     f"📉 Inventory updated: {shelf.get('inventory')} items of type {shelf.get('product')} left on shelf {shelf.get('id')}")
-
 
 
     def shelf_query_callback(self, request, response):
@@ -170,6 +161,7 @@ class SharedMemoryNode(Node):
                 self.get_logger().info(f"Query successful for shelf_id: {shelf_id}")
                 break
 
+
         if not shelf_found:
             location_point = Point()
             location_point.x = 0.0
@@ -181,32 +173,30 @@ class SharedMemoryNode(Node):
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
         return response
 
+
     def robot_state_callback(self, request, response):
         """Returns the current state of a requested robot."""
         robot_found = False
         robot_id = request.robot_id
 
         for robot in self.robots:
-            if robot_id == robot.get("id"):
-                location_point = Point()
-                location = robot.get("location")
-                location_point.x = location[0]
-                location_point.y = location[1]
-                location_point.z = location[2]
-                response.current_location = location_point
-                response.battery_level = robot["battery_level"]
-                response.is_available = robot["is_available"]
-                response.status = robot["status"]
+            if robot_id == robot.robot_id:
+                response = robot
                 robot_found = True
                 self.get_logger().info(f"Query successful for robot_id: {robot_id}")
                 break
 
         if not robot_found:
-            response.current_location = Point(0, 0, 0)
+            location_point = Point()
+            location_point.x = 0.0
+            location_point.y = 0.0
+            location_point.z = 0.0
+            response.current_location = location_point
             response.battery_level = 0
             response.is_available = False
             self.get_logger().warn(f"Robot_id {robot_id} not found in database.")
         return response
+
 
     def inventory_update_callback(self, request, response):
         """
@@ -235,24 +225,7 @@ class SharedMemoryNode(Node):
             print("NO Robot Data")
             return
         
-        robot_fleet = []
-        for robot in self.robots:
-            robot_status = RobotStatus()
-
-            # Create a list of RobotStatus messages
-            robot_status.robot_id = robot.get("id")
-            location_point = Point()
-            location = robot.get("location")
-            location_point.x = location[0]
-            location_point.y = location[1]
-            location_point.z = location[2]
-            robot_status.current_location = location_point
-            robot_status.battery_level = robot.get("battery_level")
-            robot_status.is_available = robot.get("is_available")
-            robot_status.status = robot.get("status")
-            robot_fleet.append(robot_status)
-
-        response.robot_status_list = robot_fleet
+        response.robot_status_list = self.robots
 
         self.get_logger().info('Returning RobotFleetStatus.')
         return response
@@ -285,6 +258,7 @@ class SharedMemoryNode(Node):
 
         self.get_logger().info('Returning ShelfList.')
         return response
+
 
     def log_database(self):
         """
