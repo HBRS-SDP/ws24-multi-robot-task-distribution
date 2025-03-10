@@ -21,6 +21,7 @@ class SharedMemoryNode(Node):
         # Initialize the database with sample data
         self.database = {"shelves": []}
         self.robots = []
+        self.shelves = []
 
 
         self.load_inventory(database_file)
@@ -35,7 +36,7 @@ class SharedMemoryNode(Node):
         # Subscribers
         self.task_start_sub = self.create_subscription(Task, '/start_task', self.task_start_callback, 10)
         self.task_end_sub = self.create_subscription(Int32, '/end_task', self.task_end_callback, 10)
-        self.fleet_status_sub = self.create_subscription(FleetStatus, '/get_robot_fleet_status', self.fleet_status_callback, 10)
+        self.fleet_status_sub = self.create_subscription(FleetStatus, '/fleet_status', self.fleet_status_callback, 10)
 
         # Services
         self.database_query_service = self.create_service(
@@ -120,6 +121,7 @@ class SharedMemoryNode(Node):
 
     def fleet_status_callback(self, msg):
         self.robots = msg.robot_status_list
+        self.database["robots"] =  self.robots
 
 
     def update_robot_status(self, robot_id: int, new_status: str, availability: bool):
@@ -260,7 +262,8 @@ class SharedMemoryNode(Node):
         self.database.update({"shelves": self.shelves})
         self.database.update({"robots": self.robots})
         self.get_logger().info("Current Database State:")
-        self.get_logger().info(json.dumps(self.database, indent=2))
+        #self.get_logger().info(self.database)
+        print(self.database)
 
 
 def main(args=None):
