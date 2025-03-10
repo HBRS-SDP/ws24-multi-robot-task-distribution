@@ -54,7 +54,7 @@ class WaypointFollower(Node):
         goal_handle = future.result()
         if not goal_handle.accepted:
             self.get_logger().info('Goal rejected')
-            rclpy.shutdown()
+            # rclpy.shutdown()
             return
 
         self.get_logger().info('Goal accepted')
@@ -64,7 +64,7 @@ class WaypointFollower(Node):
     def get_result_callback(self, future):
         result = future.result().result
         self.get_logger().info(f'Result: {result}')
-        rclpy.shutdown()
+        # rclpy.shutdown()
 
 def main():
     rclpy.init()
