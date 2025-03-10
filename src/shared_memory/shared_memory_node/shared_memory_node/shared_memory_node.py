@@ -45,6 +45,7 @@ class SharedMemoryNode(Node):
             InventoryUpdate, '/update_inventory', self.inventory_update_callback)
         self.robot_state_service = self.create_service(
             GetRobotStatus, '/get_robot_state', self.robot_state_callback)
+        
         self.robot_fleet_service = self.create_service(GetRobotFleetStatus, '/get_robot_fleet_status', self.get_fleet_status_callback)
         self.shelf_list_service = self.create_service(GetShelfList, '/get_shelf_list', self.get_shelf_list_callback)
 
@@ -159,7 +160,9 @@ class SharedMemoryNode(Node):
 
         for shelf in self.shelves:
             if shelf_id == shelf.shelf_id:
-                response = shelf
+                response.shelf_location = shelf.shelf_location
+                response.shelf_capacity = shelf.shelf_capacity
+                response.current_inventory = shelf.current_inventory
                 shelf_found = True
                 self.get_logger().info(f"Query successful for shelf_id: {shelf_id}")
                 break
