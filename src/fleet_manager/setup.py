@@ -25,6 +25,7 @@ setup(
             'service_test = fleet_manager.service_test:main',
             'goal_service_publisher = fleet_manager.goal_service_publisher:main',
             'service_caller = fleet_manager.service_call_example:main',
+            'merged_fleet_manager = fleet_manager.merged_fleet_manager:main',
         ],
     },
 )
