@@ -20,6 +20,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/GoalStartMsg.msg"
   "msg/GoalReachMsg.msg"
   "msg/RobotStatus.msg"
+  "msg/FleetStatus.msg"
   "srv/GetRobotFleetStatus.srv"
   "srv/GetRobotStatus.srv"
   "srv/ShelfQuery.srv"
