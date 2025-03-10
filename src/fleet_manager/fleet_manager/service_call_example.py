@@ -14,16 +14,21 @@ class ServiceCaller(Node):
         self.request = TaskList.Request()
 
     def send_request(self):
-        task = Task()
-        task.task_id = 101
-        task.robot_id = 1
-        task.shelf_id = 5
-        task.item = 'item_name'
-        task.item_amount = 10
-        task.shelf_location = Point(x=-1.5, y=4.6, z=0.0)
-        task.task_type = 'pickup'
+        tasks = []
+
+        # Create multiple tasks
+        for i in range(5):
+            task = Task()
+            task.task_id = 100 + i
+            task.robot_id = 1
+            task.shelf_id = 5 + i
+            task.item = f'item_name_{i}'
+            task.item_amount = 10 + i
+            task.shelf_location = Point(x=1.2 , y=0.6 + i, z=0.0)
+            task.task_type = 'pickup' if i % 2 == 0 else 'dropoff'
+            tasks.append(task)
         
-        self.request.task_list = [task]
+        self.request.task_list = tasks
         self.future = self.client.call_async(self.request)
         rclpy.spin_until_future_complete(self, self.future)
         return self.future.result()
