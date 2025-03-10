@@ -3,7 +3,7 @@ from rclpy.node import Node
 from robot_interfaces.msg import Order, Task
 from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus
 from rclpy.callback_groups import ReentrantCallbackGroup
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Pose
 from rclpy.executors import MultiThreadedExecutor
 import asyncio
 import math
@@ -147,11 +147,11 @@ class TaskManager(Node):
 
 
 
-    def calculate_distance(self, location1: Point, location2: Point):
+    def calculate_distance(self, location1: Pose, location2: Pose):
         """
         Calculates the distance between two locations.
         """
-        return math.sqrt((location2.x - location1.x) ** 2 + (location2.z - location1.z) ** 2)
+        return math.sqrt((location2.position.x - location1.position.x) ** 2 + (location2.position.y - location1.position.y) ** 2)
 
 def main(args=None):
     rclpy.init(args=args)
