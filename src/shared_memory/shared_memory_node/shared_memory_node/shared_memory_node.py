@@ -140,11 +140,11 @@ class SharedMemoryNode(Node):
             return
 
         for idx, shelf in enumerate(self.shelves):
-            if shelf.get('id') == task.get('shelf_id'):
-                shelf['inventory'] -= task.get('amount')
+            if shelf.shelf_id == task.get('shelf_id'):
+                shelf.current_inventory -= task.get('amount')
                 self.shelves[idx] = shelf
                 self.get_logger().info(
-                    f"📉 Inventory updated: {shelf.get('inventory')} items of type {shelf.get('product')} left on shelf {shelf.get('id')}")
+                    f"📉 Inventory updated: {shelf.current_inventory} items of type {shelf.product} left on shelf {shelf.shelf_id}")
 
 
     def shelf_query_callback(self, request, response):
@@ -156,26 +156,23 @@ class SharedMemoryNode(Node):
         shelf_id = request.shelf_id
 
         for shelf in self.shelves:
-            if shelf_id == shelf.get("id"):
-                location_point = Pose()
-                location = shelf.get("location")
-                location_point.x = location[0]
-                location_point.y = location[1]
-                location_point.z = location[2]
-                response.shelf_location = location_point
-                response.shelf_capacity = shelf["shelf_capacity"]
-                response.current_inventory = shelf["inventory"]
+            if shelf_id == shelf.shelf_id:
+                response = shelf
                 shelf_found = True
                 self.get_logger().info(f"Query successful for shelf_id: {shelf_id}")
                 break
 
 
         if not shelf_found:
-            location_point = Pose()
-            location_point.x = 0.0
-            location_point.y = 0.0
-            location_point.z = 0.0
-            response.shelf_location = location_point
+            default_pose = Pose()
+            default_pose.position.x = 0.0
+            default_pose.position.y = 0.0
+            default_pose.position.z = 0.0
+            default_pose.orientation.x = 0.0
+            default_pose.orientation.y = 0.0
+            default_pose.orientation.z = 0.0
+            default_pose.orientation.w = 0.0
+            response.shelf_location = default_pose
             response.shelf_capacity = 0
             response.current_inventory = 0
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
@@ -195,11 +192,16 @@ class SharedMemoryNode(Node):
                 break
 
         if not robot_found:
-            location_point = Pose()
-            location_point.x = 0.0
-            location_point.y = 0.0
-            location_point.z = 0.0
-            response.current_location = location_point
+            default_pose = Pose()
+            default_pose.position.x = 0.0
+            default_pose.position.y = 0.0
+            default_pose.position.z = 0.0
+            default_pose.orientation.x = 0.0
+            default_pose.orientation.y = 0.0
+            default_pose.orientation.z = 0.0
+            default_pose.orientation.w = 0.0
+
+            response.current_location = default_pose
             response.battery_level = 0
             response.is_available = False
             self.get_logger().warn(f"Robot_id {robot_id} not found in database.")
@@ -216,8 +218,8 @@ class SharedMemoryNode(Node):
         response.success = False
 
         for index, shelf in enumerate(self.shelves):
-            if shelf_id == shelf.get("id"):
-                self.shelves[index]["inventory"] = new_inventory
+            if shelf_id == shelf.shelf_id:
+                self.shelves[index].current_inventory = new_inventory
                 response.success = True
                 self.get_logger().info(f"Inventory updated for shelf_id: {shelf_id}")
                 break
@@ -245,28 +247,7 @@ class SharedMemoryNode(Node):
             print("NO Shelf Data")
             return
 
-        shelf_list = []
-        for shelf in self.shelves:
-            shelf_status = ShelfStatus()
-
-            # Create a list of RobotStatus messages
-            shelf_status.shelf_id = shelf.get("id")
-            location_pose = Pose()
-            location = shelf.get("location")
-            location_pose.position.x = location[0]
-            location_pose.position.y = location[1]
-            location_pose.position.z = location[2]
-            location_pose.orientation.x = 0.0
-            location_pose.orientation.y = 0.0
-            location_pose.orientation.z = 0.0
-            location_pose.orientation.w = 1.0
-            shelf_status.shelf_location = location_pose
-            shelf_status.product = shelf.get("product")
-            shelf_status.shelf_capacity = shelf.get("shelf_capacity")
-            shelf_status.current_inventory = shelf.get("inventory")
-            shelf_list.append(shelf_status)
-
-        response.shelf_status_list = shelf_list
+        response.shelf_status_list = self.shelves
 
         self.get_logger().info('Returning ShelfList.')
         return response
