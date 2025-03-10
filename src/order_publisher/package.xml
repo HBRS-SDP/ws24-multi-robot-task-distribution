@@ -1,15 +1,16 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>gui_interface</name>
+  <name>order_publisher</name>
   <version>0.0.0</version>
-  <description>A simple GUI for warehouse robot management</description>
+  <description>TODO: Package description</description>
   <maintainer email="ayushiarora206@gmail.com">ayushi</maintainer>
   <license>TODO: License declaration</license>
-
-  <depend>rclpy</depend>
-  <depend>PyQt5</depend>
-  <depend>robot_interfaces</depend>
+  
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>robot_interfaces</exec_depend>
+  <exec_depend>flask</exec_depend>
+  <exec_depend>rosbridge-websocket</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
