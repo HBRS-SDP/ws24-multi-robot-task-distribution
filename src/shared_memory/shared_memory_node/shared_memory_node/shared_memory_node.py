@@ -264,10 +264,10 @@ class SharedMemoryNode(Node):
             location_point.x = location[0]
             location_point.y = location[1]
             location_point.z = location[2]
-            shelf_status.current_location = location_point
-            shelf_status.battery_level = shelf.get("product")
-            shelf_status.is_available = shelf.get("shelf_capacity")
-            shelf_status.status = shelf.get("current_inventory")
+            shelf_status.shelf_location = location_point
+            shelf_status.product = shelf.get("product")
+            shelf_status.shelf_capacity = shelf.get("shelf_capacity")
+            shelf_status.current_inventory = shelf.get("inventory")
             shelf_list.append(shelf_status)
 
         response.shelf_status_list = shelf_list
