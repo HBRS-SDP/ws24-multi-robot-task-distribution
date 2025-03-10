@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
-from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus
-from robot_interfaces.msg import Task, RobotStatus
+from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus, GetShelfList
+from robot_interfaces.msg import Task, RobotStatus, ShelfStatus
 from geometry_msgs.msg import Point
 from std_msgs.msg import Int32
 import json
@@ -59,7 +59,7 @@ class SharedMemoryNode(Node):
         self.robot_state_service = self.create_service(
             GetRobotStatus, '/get_robot_state', self.robot_state_callback)
         self.robot_fleet_service = self.create_service(GetRobotFleetStatus, '/get_robot_fleet_status', self.get_fleet_status_callback)
-
+        self.shelf_list_service = self.create_service(GetShelfList, '/get_shelf_list', self.get_shelf_list_callback)
 
         self.get_logger().info("Database Module is ready.")
 
@@ -74,7 +74,7 @@ class SharedMemoryNode(Node):
                         "id": int(row["id"]),
                         "location": [float(row["location_x"]), float(row["location_y"]), float(row["location_z"])],
                         "product": row["product"],
-                        "capacity": int(row["capacity"]),
+                        "shelf_capacity": int(row["capacity"]),
                         "inventory": int(row["inventory"])
                     }
                     for row in reader
@@ -161,7 +161,7 @@ class SharedMemoryNode(Node):
                 location_point.y = location[1]
                 location_point.z = location[2]
                 response.shelf_location = location_point
-                response.shelf_capacity = shelf["capacity"]
+                response.shelf_capacity = shelf["shelf_capacity"]
                 response.current_inventory = shelf["inventory"]
                 shelf_found = True
                 self.get_logger().info(f"Query successful for shelf_id: {shelf_id}")
@@ -247,7 +247,32 @@ class SharedMemoryNode(Node):
 
         response.robot_status_list = robot_fleet
 
-        self.get_logger().info('Returning RobotFleetStatus')
+        self.get_logger().info('Returning RobotFleetStatus.')
+        return response
+    
+
+    def get_shelf_list_callback(self, request, response):
+        
+        shelf_list = []
+        for shelf in self.shelves:
+            shelf_status = ShelfStatus()
+
+            # Create a list of RobotStatus messages
+            shelf_status.shelf_id = shelf.get("id")
+            location_point = Point()
+            location = shelf.get("location")
+            location_point.x = location[0]
+            location_point.y = location[1]
+            location_point.z = location[2]
+            shelf_status.current_location = location_point
+            shelf_status.battery_level = shelf.get("product")
+            shelf_status.is_available = shelf.get("shelf_capacity")
+            shelf_status.status = shelf.get("current_inventory")
+            shelf_list.append(shelf_status)
+
+        response.shelf_status_list = shelf_list
+
+        self.get_logger().info('Returning ShelfList.')
         return response
 
     def log_database(self):
