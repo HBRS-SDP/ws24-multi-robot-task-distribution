@@ -1,13 +1,14 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
 from robot_interfaces.msg import Order, Task
-from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskAssignment
+from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskList
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Pose
-from rclpy.executors import MultiThreadedExecutor
 import asyncio
 import math
 from collections import deque
+import threading
 
 class TaskManager(Node):
     def __init__(self):
@@ -31,7 +32,7 @@ class TaskManager(Node):
             GetRobotFleetStatus, '/get_robot_fleet_status', callback_group=self.callback_group)
         
         self.task_assignment_client = self.create_client(
-            TaskAssignment, '/task_assignments', callback_group=self.callback_group)
+            TaskList, '/task_assignments', callback_group=self.callback_group)
 
         # Robot status dictionary
         self.robots = {}  # Format: {robot_id: RobotStatus}
@@ -40,10 +41,20 @@ class TaskManager(Node):
         self.order_queue = deque()
         self.task_id_counter = 1
 
-        # Start the order processing loop
-        self.order_processing_task = asyncio.create_task(self.process_orders())
-
+        # Start the order processing loop in a separate thread
         self.get_logger().info("Task Manager is ready.")
+        self.loop = asyncio.new_event_loop()
+        self.thread = threading.Thread(target=self.run_asyncio_loop, daemon=True)
+        self.thread.start()
+
+    def run_asyncio_loop(self):
+        """Run the asyncio event loop in a separate thread."""
+        asyncio.set_event_loop(self.loop)
+        self.loop.run_forever()
+
+    def create_task(self, coroutine):
+        """Schedule an asyncio task in the event loop."""
+        asyncio.run_coroutine_threadsafe(coroutine, self.loop)
 
     def order_callback(self, msg):
         """
@@ -52,17 +63,20 @@ class TaskManager(Node):
         """
         self.get_logger().info(f'Received order request: {msg}')
         self.order_queue.append(msg)
+        self.create_task(self.process_orders())  # Trigger order processing
 
     async def process_orders(self):
         """
         Continuously processes orders from the queue.
         """
+        self.get_logger().info("process_orders coroutine started.")  # Debug log
         while rclpy.ok():
             if self.order_queue:
                 order = self.order_queue.popleft()
                 self.get_logger().info(f'Processing order: {order}')
                 await self.process_order(order)
             else:
+                self.get_logger().info(f'No orders.')
                 await asyncio.sleep(1)  # Sleep if the queue is empty
 
     async def process_order(self, msg):
@@ -131,6 +145,8 @@ class TaskManager(Node):
         best_robot_id = None
         best_score = -1
 
+        print(database_query_response)
+
         # A list of RobotStatus    
         robot_fleet_list = robot_fleet_response.robot_status_list
         shelf_details = database_query_response
@@ -154,8 +170,6 @@ class TaskManager(Node):
 
         if best_robot_id:
             # Create a Task message
-            # TODO: hard coded for testing
-
             task_msg = Task()
             task_msg.task_id = self.task_id_counter
             task_msg.robot_id = best_robot_id
@@ -179,8 +193,8 @@ class TaskManager(Node):
         while not self.task_assignment_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warn('Waiting for /task_assignments service...')
 
-        request = TaskAssignment.Request()
-        request.task = task
+        request = TaskList.Request()
+        request.task_list = [task]
         future = self.task_assignment_client.call_async(request)
         await future
         return future.result().success
@@ -193,15 +207,22 @@ class TaskManager(Node):
 
 def main(args=None):
     rclpy.init(args=args)
+
+    # Create the node
     task_manager = TaskManager()
 
-    # Use a MultiThreadedExecutor to handle service callbacks concurrently
+    # Use MultiThreadedExecutor
     executor = MultiThreadedExecutor()
-    
-    rclpy.spin(task_manager, executor=executor)
 
-    task_manager.destroy_node()
-    rclpy.shutdown()
+    try:
+        # Spin the node
+        rclpy.spin(task_manager, executor=executor)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        # Clean up
+        task_manager.destroy_node()
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
