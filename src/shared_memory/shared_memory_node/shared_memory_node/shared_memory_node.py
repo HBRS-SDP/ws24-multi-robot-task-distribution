@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus, GetShelfList
 from robot_interfaces.msg import Task, RobotStatus, ShelfStatus, FleetStatus
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Pose
 from std_msgs.msg import Int32
 import json
 import os
@@ -56,16 +56,24 @@ class SharedMemoryNode(Node):
         try:
             with open(database_file, mode='r') as file:
                 reader = csv.DictReader(file)
-                self.shelves = [
-                    {
-                        "id": int(row["id"]),
-                        "location": [float(row["location_x"]), float(row["location_y"]), float(row["location_z"])],
-                        "product": row["product"],
-                        "shelf_capacity": int(row["capacity"]),
-                        "inventory": int(row["inventory"])
-                    }
-                    for row in reader
-                ]
+                for row in reader:
+                    shelf = ShelfStatus()
+                    shelf_pose = Pose()
+                    shelf_pose.position.x = float(row["X"])
+                    shelf_pose.position.y = float(row["Y"])
+                    shelf_pose.position.z = float(row["Z"])
+                    shelf_pose.orientation.x = float(row["Q_X"])
+                    shelf_pose.orientation.y = float(row["Q_Y"])
+                    shelf_pose.orientation.z = float(row["Q_Z"])
+                    shelf_pose.orientation.w = float(row["Q_W"])
+
+                    shelf.shelf_id = int(row["id"])
+                    shelf.shelf_location = shelf_pose
+                    shelf.product = row["product"]
+                    shelf.shelf_capacity = int(row["capacity"])
+                    shelf.current_inventory = int(row["inventory"])
+                    self.shelves.append(shelf)
+
 
             self.get_logger().info("Inventory successfully loaded from CSV.")
             self.log_database()
@@ -149,7 +157,7 @@ class SharedMemoryNode(Node):
 
         for shelf in self.shelves:
             if shelf_id == shelf.get("id"):
-                location_point = Point()
+                location_point = Pose()
                 location = shelf.get("location")
                 location_point.x = location[0]
                 location_point.y = location[1]
@@ -163,7 +171,7 @@ class SharedMemoryNode(Node):
 
 
         if not shelf_found:
-            location_point = Point()
+            location_point = Pose()
             location_point.x = 0.0
             location_point.y = 0.0
             location_point.z = 0.0
@@ -187,7 +195,7 @@ class SharedMemoryNode(Node):
                 break
 
         if not robot_found:
-            location_point = Point()
+            location_point = Pose()
             location_point.x = 0.0
             location_point.y = 0.0
             location_point.z = 0.0
@@ -243,12 +251,16 @@ class SharedMemoryNode(Node):
 
             # Create a list of RobotStatus messages
             shelf_status.shelf_id = shelf.get("id")
-            location_point = Point()
+            location_pose = Pose()
             location = shelf.get("location")
-            location_point.x = location[0]
-            location_point.y = location[1]
-            location_point.z = location[2]
-            shelf_status.shelf_location = location_point
+            location_pose.position.x = location[0]
+            location_pose.position.y = location[1]
+            location_pose.position.z = location[2]
+            location_pose.orientation.x = 0.0
+            location_pose.orientation.y = 0.0
+            location_pose.orientation.z = 0.0
+            location_pose.orientation.w = 1.0
+            shelf_status.shelf_location = location_pose
             shelf_status.product = shelf.get("product")
             shelf_status.shelf_capacity = shelf.get("shelf_capacity")
             shelf_status.current_inventory = shelf.get("inventory")
