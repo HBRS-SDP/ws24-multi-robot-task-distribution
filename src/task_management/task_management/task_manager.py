@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from robot_interfaces.msg import Order, Task
-from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskList
+from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskList, GetShelfList
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Pose
 import asyncio
@@ -30,6 +30,9 @@ class TaskManager(Node):
         
         self.robot_fleet_client = self.create_client(
             GetRobotFleetStatus, '/get_robot_fleet_status', callback_group=self.callback_group)
+        
+        self.shelf_list_client = self.create_client(
+            GetShelfList, '/get_shelf_list', callback_group=self.callback_group)
         
         self.task_assignment_client = self.create_client(
             TaskList, '/task_list', callback_group=self.callback_group)
@@ -87,13 +90,13 @@ class TaskManager(Node):
 
         try:
             # Call the two services concurrently using asyncio.gather
-            robot_fleet_response, database_query_response = await asyncio.gather(
+            robot_fleet_response, shelf_query_response = await asyncio.gather(
                 self.call_robot_fleet_service(),
-                self.call_database_query_service()
+                self.call_shelf_list_service()
             )
 
             # Use the responses to allocate tasks to a robot
-            task_assigned = self.allocate_task(robot_fleet_response, database_query_response)
+            task_assigned = self.allocate_task(robot_fleet_response, shelf_query_response)
 
             if task_assigned:
                 # Call the /task_assignments service to assign the task to the robot
@@ -124,20 +127,21 @@ class TaskManager(Node):
         await future
         return future.result()
 
-    async def call_database_query_service(self):
+    async def call_shelf_list_service(self):
         """
         Call the /shelf_query service asynchronously.
         """
         while not self.shelf_query_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warn('Waiting for /shelf_query service...')
 
+        # returns a list of shelf details
         request = ShelfQuery.Request()
         request.shelf_id = 1
         future = self.shelf_query_client.call_async(request)
         await future
         return future.result()
 
-    def allocate_task(self, robot_fleet_response, database_query_response):
+    def allocate_task(self, robot_fleet_response, shelf_query_response):
         """
         Allocates a task to the best robot based on proximity, battery level, and availability.
         Returns the Task message if a robot was assigned, otherwise None.
@@ -145,11 +149,11 @@ class TaskManager(Node):
         best_robot_id = None
         best_score = -1
 
-        print(database_query_response)
+        print(shelf_query_response)
 
         # A list of RobotStatus    
         robot_fleet_list = robot_fleet_response.robot_status_list
-        shelf_details = database_query_response
+        shelf_details = shelf_query_response
 
         for robot in robot_fleet_list:
             if robot.is_available:
