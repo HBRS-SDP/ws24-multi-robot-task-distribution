@@ -11,51 +11,40 @@
     <div class="container mt-4">
         <h2>Warehouse Management</h2>
 
-        <!-- Tabs Navigation -->
         <ul class="nav nav-tabs" id="warehouseTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory" type="button" role="tab">Inventory</button>
+            <li class="nav-item">
+                <button class="nav-link" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory" type="button">Inventory</button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab">Orders</button>
+            <li class="nav-item">
+                <button class="nav-link active" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button">Orders</button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab">Logs</button>
+            <li class="nav-item">
+                <button class="nav-link" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button">Logs</button>
             </li>
         </ul>
 
-        <!-- Tab Content -->
-        <div class="tab-content mt-3" id="warehouseTabsContent">
-
-            <!-- Orders Tab -->
-            <div class="tab-pane fade show active" id="orders" role="tabpanel">
+        <div class="tab-content mt-3">
+            <div class="tab-pane fade show active" id="orders">
                 <h3>Orders</h3>
 
-                <!-- Add Order Form -->
-                <form action="/submit_order" method="post">
+                <form action="/submit_order" method="post" onsubmit="return validateOrderForm();">
                     <h4>New Order</h4>
                     <div id="order-items">
                         <div class="order-item">
                             <label><strong>Select Product</strong></label>
                             <select name="shelf_id[]" class="form-control mb-2" required>
-                                <option value="1">A</option>
-                                <option value="2">B</option>
-                                <option value="3">C</option>
-                                <option value="4">D</option>
-                                <option value="5">E</option>
-                                <option value="6">F</option>
-                                <option value="7">G</option>
-                                <option value="8">H</option>
+                                <option value="" disabled selected>-- Select a Product --</option>
+                                {% for shelf in available_shelves %}
+                                    <option value="{{ shelf.shelf_id }}">{{ shelf_to_product[shelf.shelf_id] }}</option>
+                                {% endfor %}
                             </select>
 
                             <label><strong>Quantity</strong></label>
-                            <input type="number" name="quantity[]" class="form-control mb-2" required>
+                            <input type="number" name="quantity[]" class="form-control mb-2" required min="1">
                         </div>
                     </div>
 
-                    <!-- Button to Add More Shelves -->
                     <button type="button" class="btn btn-primary mb-2" onclick="addShelf()">Add Another Product</button>
-
                     <button type="submit" class="btn btn-success">Submit Order</button>
                 </form>
 
@@ -82,8 +71,7 @@
                                 {% endfor %}
                             </td>
                             <td>
-                                <!-- Only the delete button remains -->
-                                <form action="/delete_order/{{ order['order_id'] }}" method="POST" class="d-inline">
+                                <form action="/delete_order/{{ order['order_id'] }}" method="POST">
                                     <button class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                             </td>
@@ -92,88 +80,19 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- Logs Tab -->
-            <div class="tab-pane fade" id="logs" role="tabpanel">
-                <h3>Logs</h3>
-                <table class="table table-bordered" id="logs-table">
-                    <thead>
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>Level</th>
-                            <th>Robot ID</th>
-                            <th>Robot Pose</th>
-                            <th>Log Source</th>
-                            <th>Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Logs will be dynamically inserted here -->
-                    </tbody>
-                </table>
-            </div>
-
         </div>
     </div>
 
-    <footer class="text-center mt-4">
-        <p>Created by <strong>Ayushi Arora</strong> (SDP Project)</p>
-    </footer>
-
     <script>
-        // Function to fetch and update logs every 5 seconds
-        function updateLogs() {
-            fetch('/get_logs')  // Fetch the logs from the Flask route
-                .then(response => response.json())  // Parse the JSON response
-                .then(logs => {
-                    // Get the table body
-                    const tbody = document.querySelector('#logs-table tbody');
-                    tbody.innerHTML = '';  // Clear current table content
-                    
-                    // Loop through the logs and append rows to the table
-                    logs.forEach(log => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${log['Timestamp']}</td>
-                            <td>${log['Level']}</td>
-                            <td>${log['Robot ID']}</td>
-                            <td>${log['Robot Pose']}</td>
-                            <td>${log['Log Source']}</td>
-                            <td>${log['Message']}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                })
-                .catch(error => console.error('Error fetching logs:', error));
-        }
-
-        // Call updateLogs every 5 seconds
-        setInterval(updateLogs, 5000);
-
-        // Call updateLogs once on page load to populate the logs immediately
-        updateLogs();
-
-        // Function to dynamically add more shelves and quantities
-        function addShelf() {
-            let newItem = document.createElement('div');
-            newItem.classList.add('order-item');
-            newItem.innerHTML = `
-                <label><strong>Select Shelf</strong></label>
-                <select name="shelf_id[]" class="form-control mb-2" required>
-                   <option value="1">A</option>
-                   <option value="2">B</option>
-                   <option value="3">C</option>
-                   <option value="4">D</option>
-                   <option value="5">E</option>
-                   <option value="6">F</option>
-                   <option value="7">G</option>
-                   <option value="8">H</option>
-                </select>
-
-                <label><strong>Quantity</strong></label>
-                <input type="number" name="quantity[]" class="form-control mb-2" required>
-            `;
-            document.getElementById('order-items').appendChild(newItem);
+        function validateOrderForm() {
+            let shelfSelects = document.getElementsByName('shelf_id[]');
+            for (let select of shelfSelects) {
+                if (select.value === "") {
+                    alert("🚨 Please select a valid product before submitting!");
+                    return false;
+                }
+            }
+            return true;
         }
     </script>
 </body>
