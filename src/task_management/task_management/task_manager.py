@@ -79,7 +79,7 @@ class TaskManager(Node):
                 self.get_logger().info(f'Processing order: {order}')
                 await self.process_order(order)
             else:
-                self.get_logger().info(f'No orders.')
+                # self.get_logger().info(f'No orders.')
                 await asyncio.sleep(1)  # Sleep if the queue is empty
 
     async def process_order(self, msg):
@@ -131,12 +131,12 @@ class TaskManager(Node):
         """
         Call the /shelf_query service asynchronously.
         """
-        while not self.shelf_query_client.wait_for_service(timeout_sec=1.0):
+        while not self.shelf_list_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warn('Waiting for /shelf_query service...')
 
         # returns a list of shelf details
-        request = ShelfQuery.Request()
-        future = self.shelf_query_client.call_async(request)
+        request = GetShelfList.Request()
+        future = self.shelf_list_client.call_async(request)
         await future
         return future.result()
 
@@ -148,7 +148,6 @@ class TaskManager(Node):
         best_robot_id = None
         best_score = -1
 
-        print(shelf_query_response)
 
         # A list of RobotStatus    
         robot_fleet_list = robot_fleet_response.robot_status_list
