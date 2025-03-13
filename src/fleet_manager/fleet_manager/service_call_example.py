@@ -20,7 +20,7 @@ class ServiceCaller(Node):
         for i in range(5):
             task = Task()
             task.task_id = 100 + i
-            task.robot_id = 1
+            task.robot_id = 2
             task.shelf_id = 5 + i
             task.item = f'item_name_{i}'
             task.item_amount = 10 + i

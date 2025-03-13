@@ -1,5 +1,6 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSHistoryPolicy, QoSReliabilityPolicy
 from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus, GetShelfList
 from robot_interfaces.msg import Task, RobotStatus, ShelfStatus, FleetStatus
 from geometry_msgs.msg import Pose
@@ -28,15 +29,19 @@ class SharedMemoryNode(Node):
         self.database["shelves"] = self.shelves
         self.database["robots"] = self.robots
         self.tasks = []
-
-
-        # Older database using json
-        # self.load_database_from_json(database_file)
+                
+        # Create a QoS profile for fleet status
+        qos_profile = QoSProfile(
+            history=QoSHistoryPolicy.KEEP_LAST,
+            depth=10,
+            reliability=QoSReliabilityPolicy.RELIABLE,
+            durability=QoSDurabilityPolicy.TRANSIENT_LOCAL
+        )
 
         # Subscribers
         self.task_start_sub = self.create_subscription(Task, '/start_task', self.task_start_callback, 10)
         self.task_end_sub = self.create_subscription(Int32, '/end_task', self.task_end_callback, 10)
-        self.fleet_status_sub = self.create_subscription(FleetStatus, '/fleet_status', self.fleet_status_callback, 10)
+        self.fleet_status_sub = self.create_subscription(FleetStatus, '/fleet_status', self.fleet_status_callback,qos_profile=qos_profile)
 
         # Services
         self.database_query_service = self.create_service(

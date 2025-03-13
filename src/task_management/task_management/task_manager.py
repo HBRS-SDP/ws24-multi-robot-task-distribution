@@ -32,7 +32,7 @@ class TaskManager(Node):
             GetRobotFleetStatus, '/get_robot_fleet_status', callback_group=self.callback_group)
         
         self.task_assignment_client = self.create_client(
-            TaskList, '/task_assignments', callback_group=self.callback_group)
+            TaskList, '/task_list', callback_group=self.callback_group)
 
         # Robot status dictionary
         self.robots = {}  # Format: {robot_id: RobotStatus}
