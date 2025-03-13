@@ -29,7 +29,7 @@ class SharedMemoryNode(Node):
         self.database["shelves"] = self.shelves
         self.database["robots"] = self.robots
         self.tasks = []
-                
+
         # Create a QoS profile for fleet status
         qos_profile = QoSProfile(
             history=QoSHistoryPolicy.KEEP_LAST,
@@ -50,7 +50,7 @@ class SharedMemoryNode(Node):
             InventoryUpdate, '/update_inventory', self.inventory_update_callback)
         self.robot_state_service = self.create_service(
             GetRobotStatus, '/get_robot_state', self.robot_state_callback)
-        
+
         self.robot_fleet_service = self.create_service(GetRobotFleetStatus, '/get_robot_fleet_status', self.get_fleet_status_callback)
         self.shelf_list_service = self.create_service(GetShelfList, '/get_shelf_list', self.get_shelf_list_callback)
 
@@ -127,7 +127,6 @@ class SharedMemoryNode(Node):
 
     def fleet_status_callback(self, msg):
         self.robots = msg.robot_status_list
-        self.database["robots"] =  self.robots
 
 
     def update_robot_status(self, robot_id: int, new_status: str, availability: bool):
@@ -165,9 +164,7 @@ class SharedMemoryNode(Node):
 
         for shelf in self.shelves:
             if shelf_id == shelf.shelf_id:
-                response.shelf_location = shelf.shelf_location
-                response.shelf_capacity = shelf.shelf_capacity
-                response.current_inventory = shelf.current_inventory
+                response = shelf
                 shelf_found = True
                 self.get_logger().info(f"Query successful for shelf_id: {shelf_id}")
                 break

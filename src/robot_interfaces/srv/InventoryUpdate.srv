@@ -1,5 +1,5 @@
-# srv/InventoryUpdate.srv
-int32 shelf_id
-int32 new_inventory
+# InventoryUpdate.srv
+
 ---
-bool success
+ShelfStatus[] shelves  # The response is an array of ShelfStatus messages
+
