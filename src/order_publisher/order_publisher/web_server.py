@@ -1,43 +1,89 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, redirect, url_for
 import rclpy
 from robot_interfaces.msg import Order
 from rclpy.node import Node
-from rosbridge_websocket import RosBridgeClient
+import threading
+from datetime import datetime
+
+# Initialize ROS node
+rclpy.init()
+node = Node('order_publisher')
+
+# Create a ROS publisher
+publisher = node.create_publisher(Order, '/order_requests', 10)
 
 # Initialize Flask app
 app = Flask(__name__)
 
-# Initialize ROS 2 node
-rclpy.init()
-rosbridge = RosBridgeClient("ws://localhost:9090")  # Change if using a different host/port
-rosbridge.connect()
-
-# Create ROS 2 publisher
-publisher = rosbridge.create_publisher("/order_requests", Order)
+# Store orders in memory (this would be better in a database for persistence)
+orders = []
 
 @app.route('/')
 def index():
-    """Render the HTML form to input shelf_id and quantity."""
-    return render_template('index.html')
+    return render_template('index.html', orders=orders)
 
 @app.route('/submit_order', methods=['POST'])
 def submit_order():
-    """Handle order submission and publish the order to ROS 2."""
-    shelf_id = int(request.form['shelf_id'])
-    quantity = int(request.form['quantity'])
+    # Get shelf_ids and quantities from the form
+    shelf_ids = request.form.getlist('shelf_id[]')
+    quantities = request.form.getlist('quantity[]')
 
-    # Create the Order message
+    # Create a list of shelves for the order
+    shelves = []
+    for shelf_id, quantity in zip(shelf_ids, quantities):
+        shelves.append({'shelf_id': int(shelf_id), 'quantity': int(quantity)})
+
+    # Generate timestamp (No order_id is used)
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Create an order dictionary (without order_id)
+    order = {
+        'shelves': shelves,
+        'timestamp': timestamp
+    }
+
+    # Append order to the orders list
+    orders.append(order)
+
+    # Publish the order to the ROS topic
     order_msg = Order()
-    order_msg.shelf_id = shelf_id
-    order_msg.quantity = quantity
+    for shelf in shelves:
+        order_msg.shelf_id = shelf['shelf_id']
+        order_msg.quantity = shelf['quantity']
+        publisher.publish(order_msg)
 
-    # Publish the order message to ROS 2
-    publisher.publish(order_msg)
+    # Log the published order
+    node.get_logger().info(f"Published Order: {order}")
 
-    return jsonify({'status': 'success', 'message': f'Order for shelf {shelf_id} with quantity {quantity} sent successfully.'})
+    # Redirect back to the index page
+    return redirect(url_for('index'))
+
+@app.route('/delete_order/<int:order_id>', methods=['POST'])
+def delete_order(order_id):
+    global orders
+    orders = [order for order in orders if order['order_id'] != order_id]
+    return redirect(url_for('index'))
+
+# Function to run Flask in a thread
+def run_flask():
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
+
+# Function to run ROS node
+def run_ros():
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
-    # Run Flask app in a separate thread and start ROS 2 spin
-    app.run(debug=True, use_reloader=False)
-    rclpy.spin(rosbridge)  # Keep ROS 2 spin loop running
+    # Start the Flask and ROS nodes in separate threads
+    flask_thread = threading.Thread(target=run_flask)
+    ros_thread = threading.Thread(target=run_ros)
+
+    # Start both threads
+    flask_thread.start()
+    ros_thread.start()
+
+    # Wait for both threads to finish
+    flask_thread.join()
+    ros_thread.join()
 

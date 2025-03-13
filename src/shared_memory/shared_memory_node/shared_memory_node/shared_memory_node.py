@@ -21,7 +21,7 @@ class SharedMemoryNode(Node):
         # Initialize the database with sample data
         self.database = {"shelves": []}
         self.robots = []
-
+        self.shelves = []
 
         self.load_inventory(database_file)
         self.database["shelves"] = self.shelves
@@ -260,7 +260,7 @@ class SharedMemoryNode(Node):
         self.database.update({"shelves": self.shelves})
         self.database.update({"robots": self.robots})
         self.get_logger().info("Current Database State:")
-        self.get_logger().info(json.dumps(self.database, indent=2))
+        #self.get_logger().info(json.dumps(self.database, indent=2))
 
 
 def main(args=None):

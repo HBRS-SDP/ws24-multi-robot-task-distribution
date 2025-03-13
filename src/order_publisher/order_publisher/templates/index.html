@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Warehouse Management</h2>
+
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs" id="warehouseTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory" type="button" role="tab">Inventory</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab">Orders</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab">Logs</button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content mt-3" id="warehouseTabsContent">
+
+            <!-- Orders Tab -->
+            <div class="tab-pane fade show active" id="orders" role="tabpanel">
+                <h3>Orders</h3>
+
+                <!-- Add Order Form -->
+                <form action="/submit_order" method="post">
+                    <h4>New Order</h4>
+                    <div id="order-items">
+                        <div class="order-item">
+                            <label><strong>Select Product</strong></label>
+                            <select name="shelf_id[]" class="form-control mb-2" required>
+                                <option value="1">A</option>
+                                <option value="2">B</option>
+                                <option value="3">C</option>
+                                <option value="4">D</option>
+                                <option value="5">E</option>
+                                <option value="6">F</option>
+                                <option value="7">G</option>
+                                <option value="8">H</option>
+                            </select>
+
+                            <label><strong>Quantity</strong></label>
+                            <input type="number" name="quantity[]" class="form-control mb-2" required>
+                        </div>
+                    </div>
+
+                    <!-- Button to Add More Shelves -->
+                    <button type="button" class="btn btn-primary mb-2" onclick="addShelf()">Add Another Product</button>
+
+                    <button type="submit" class="btn btn-success">Submit Order</button>
+                </form>
+
+                <h3>Order List</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Order ID</th>
+                            <th>Product Details</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order['timestamp'].split(' ')[0] }}</td>
+                            <td>{{ order['timestamp'].split(' ')[1] }}</td>
+                            <td>{{ order['order_id'] }}</td>
+                            <td>
+                                {% for shelf in order['shelves'] %}
+                                    <div>Product {{ shelf['shelf_id'] }}: {{ shelf['quantity'] }}</div>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                <!-- Only the delete button remains -->
+                                <form action="/delete_order/{{ order['order_id'] }}" method="POST" class="d-inline">
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="text-center mt-4">
+        <p>Created by <strong>Ayushi Arora</strong> (SDP Project)</p>
+    </footer>
+
+    <script>
+        // Function to dynamically add more shelves and quantities
+        function addShelf() {
+            let newItem = document.createElement('div');
+            newItem.classList.add('order-item');
+            newItem.innerHTML = `
+                <label><strong>Select Shelf</strong></label>
+                <select name="shelf_id[]" class="form-control mb-2" required>
+                   <option value="1">A</option>
+                   <option value="2">B</option>
+                   <option value="3">C</option>
+                   <option value="4">D</option>
+                   <option value="5">E</option>
+                   <option value="6">F</option>
+                   <option value="7">G</option>
+                   <option value="8">H</option>
+                </select>
+
+                <label><strong>Quantity</strong></label>
+                <input type="number" name="quantity[]" class="form-control mb-2" required>
+            `;
+            document.getElementById('order-items').appendChild(newItem);
+        }
+    </script>
+</body>
+</html>
+
