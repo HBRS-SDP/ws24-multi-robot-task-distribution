@@ -1,12 +1,14 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
 from robot_interfaces.msg import Order, Task
-from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus
+from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskList
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Pose
-from rclpy.executors import MultiThreadedExecutor
 import asyncio
 import math
+from collections import deque
+import threading
 
 class TaskManager(Node):
     def __init__(self):
@@ -18,8 +20,6 @@ class TaskManager(Node):
         # Subscribers
         self.order_subscriber = self.create_subscription(
             Order, '/order_requests', self.order_callback, 10)
-        
-
 
         # Publishers
         self.task_publisher = self.create_publisher(Task, '/task_assignments', 10)
@@ -31,28 +31,53 @@ class TaskManager(Node):
         self.robot_fleet_client = self.create_client(
             GetRobotFleetStatus, '/get_robot_fleet_status', callback_group=self.callback_group)
         
-
+        self.task_assignment_client = self.create_client(
+            TaskList, '/task_list', callback_group=self.callback_group)
 
         # Robot status dictionary
         self.robots = {}  # Format: {robot_id: RobotStatus}
+
+        # Order queue
+        self.order_queue = deque()
         self.task_id_counter = 1
 
+        # Start the order processing loop in a separate thread
         self.get_logger().info("Task Manager is ready.")
+        self.loop = asyncio.new_event_loop()
+        self.thread = threading.Thread(target=self.run_asyncio_loop, daemon=True)
+        self.thread.start()
+
+    def run_asyncio_loop(self):
+        """Run the asyncio event loop in a separate thread."""
+        asyncio.set_event_loop(self.loop)
+        self.loop.run_forever()
+
+    def create_task(self, coroutine):
+        """Schedule an asyncio task in the event loop."""
+        asyncio.run_coroutine_threadsafe(coroutine, self.loop)
 
     def order_callback(self, msg):
         """
         Callback triggered when a new order is received.
-        This function schedules the asynchronous task in a new event loop.
+        Adds the order to the queue.
         """
         self.get_logger().info(f'Received order request: {msg}')
+        self.order_queue.append(msg)
+        self.create_task(self.process_orders())  # Trigger order processing
 
-        # Create a new event loop for the asynchronous task
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-
-        # Run the asynchronous task in the new event loop
-        loop.run_until_complete(self.process_order(msg))
-        loop.close()
+    async def process_orders(self):
+        """
+        Continuously processes orders from the queue.
+        """
+        self.get_logger().info("process_orders coroutine started.")  # Debug log
+        while rclpy.ok():
+            if self.order_queue:
+                order = self.order_queue.popleft()
+                self.get_logger().info(f'Processing order: {order}')
+                await self.process_order(order)
+            else:
+                self.get_logger().info(f'No orders.')
+                await asyncio.sleep(1)  # Sleep if the queue is empty
 
     async def process_order(self, msg):
         """
@@ -68,10 +93,24 @@ class TaskManager(Node):
             )
 
             # Use the responses to allocate tasks to a robot
-            self.allocate_task(robot_fleet_response, database_query_response)
+            task_assigned = self.allocate_task(robot_fleet_response, database_query_response)
+
+            if task_assigned:
+                # Call the /task_assignments service to assign the task to the robot
+                success = await self.call_task_assignment_service(task_assigned)
+                if not success:
+                    # If task assignment failed, push the order back to the queue
+                    self.get_logger().warn("Task assignment failed. Re-queueing order.")
+                    self.order_queue.append(msg)
+            else:
+                # If no robot was available, push the order back to the queue
+                self.get_logger().warn("No available robots to assign task. Re-queueing order.")
+                self.order_queue.append(msg)
 
         except Exception as e:
             self.get_logger().error(f'Error calling services: {e}')
+            # Re-queue the order if an error occurs
+            self.order_queue.append(msg)
 
     async def call_robot_fleet_service(self):
         """
@@ -101,18 +140,19 @@ class TaskManager(Node):
     def allocate_task(self, robot_fleet_response, database_query_response):
         """
         Allocates a task to the best robot based on proximity, battery level, and availability.
+        Returns the Task message if a robot was assigned, otherwise None.
         """
         best_robot_id = None
         best_score = -1
 
-        # A list of RobotStaus    
+        print(database_query_response)
+
+        # A list of RobotStatus    
         robot_fleet_list = robot_fleet_response.robot_status_list
         shelf_details = database_query_response
 
-
         for robot in robot_fleet_list:
             if robot.is_available:
-
                 # Calculate proximity score (distance to shelf)
                 robot_location = robot.current_location
                 shelf_location = shelf_details.shelf_location
@@ -129,8 +169,7 @@ class TaskManager(Node):
                     best_robot_id = robot.robot_id
 
         if best_robot_id:
-            # Assign task to the best robot
-            # TODO: hard coded for testing
+            # Create a Task message
             task_msg = Task()
             task_msg.task_id = self.task_id_counter
             task_msg.robot_id = best_robot_id
@@ -139,13 +178,26 @@ class TaskManager(Node):
             task_msg.item = "A"
             task_msg.item_amount = 3
             task_msg.task_type = "pickup"
-            self.task_publisher.publish(task_msg)
             self.task_id_counter += 1
             self.get_logger().info(f"Assigned task to robot {best_robot_id}: {task_msg}")
+            return task_msg
         else:
             self.get_logger().warn("No available robots to assign task.")
+            return None
 
+    async def call_task_assignment_service(self, task):
+        """
+        Call the /task_assignments service to assign the task to the robot.
+        Returns True if the task was successfully assigned, False otherwise.
+        """
+        while not self.task_assignment_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warn('Waiting for /task_assignments service...')
 
+        request = TaskList.Request()
+        request.task_list = [task]
+        future = self.task_assignment_client.call_async(request)
+        await future
+        return future.result().success
 
     def calculate_distance(self, location1: Pose, location2: Pose):
         """
@@ -155,15 +207,22 @@ class TaskManager(Node):
 
 def main(args=None):
     rclpy.init(args=args)
+
+    # Create the node
     task_manager = TaskManager()
 
-    # Use a MultiThreadedExecutor to handle service callbacks concurrently
+    # Use MultiThreadedExecutor
     executor = MultiThreadedExecutor()
-    
-    rclpy.spin(task_manager, executor=executor)
 
-    task_manager.destroy_node()
-    rclpy.shutdown()
+    try:
+        # Spin the node
+        rclpy.spin(task_manager, executor=executor)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        # Clean up
+        task_manager.destroy_node()
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

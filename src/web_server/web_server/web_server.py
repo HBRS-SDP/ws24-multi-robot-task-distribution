@@ -63,7 +63,8 @@ def submit_order():
     for shelf_id, quantity in zip(shelf_ids, quantities):
         shelves.append({'shelf_id': int(shelf_id), 'quantity': int(quantity)})
 
-    # Generate timestamp
+
+        # Generate timestamp
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # Generate order ID (using the length of the orders list to ensure unique ID)
@@ -82,9 +83,11 @@ def submit_order():
     # Publish the order to the ROS topic
     order_msg = Order()
     for shelf in shelves:
-        order_msg.shelf_id = shelf['shelf_id']
-        order_msg.quantity = shelf['quantity']
-        publisher.publish(order_msg)
+        order_msg.shelf_id_list.append(shelf['shelf_id'])
+        order_msg.quantity_list.append(shelf['quantity'])
+    publisher.publish(order_msg)
+
+    print(order_msg)
 
     # Log the published order
     node.get_logger().info(f"Published Order: {order}")
