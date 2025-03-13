@@ -78,7 +78,7 @@
                             <td>{{ order['order_id'] }}</td>
                             <td>
                                 {% for shelf in order['shelves'] %}
-                                    <div>Product {{ shelf['shelf_id'] }}: {{ shelf['quantity'] }}</div>
+                                    <div>Product {{ shelf_to_product[shelf['shelf_id']] }}: {{ shelf['quantity'] }}</div>
                                 {% endfor %}
                             </td>
                             <td>

@@ -19,6 +19,18 @@ app = Flask(__name__)
 # Store orders in memory (this would be better in a database for persistence)
 orders = []
 
+# Mapping shelf_id to product name
+shelf_to_product = {
+    1: 'A',
+    2: 'B',
+    3: 'C',
+    4: 'D',
+    5: 'E',
+    6: 'F',
+    7: 'G',
+    8: 'H'
+}
+
 def read_logs():
     logs = []
     try:
@@ -33,9 +45,8 @@ def read_logs():
 @app.route('/')
 def index():
     logs = read_logs()  # Fetch logs from CSV
-    #print(f"Logs being passed to template: {logs}")
-    return render_template('index.html', orders=orders, logs=logs)
-    
+    return render_template('index.html', orders=orders, logs=logs, shelf_to_product=shelf_to_product)
+
 @app.route('/get_logs')
 def get_logs():
     logs = read_logs()  # Fetch logs from CSV
@@ -52,11 +63,15 @@ def submit_order():
     for shelf_id, quantity in zip(shelf_ids, quantities):
         shelves.append({'shelf_id': int(shelf_id), 'quantity': int(quantity)})
 
-    # Generate timestamp (No order_id is used)
+    # Generate timestamp
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Create an order dictionary (without order_id)
+    # Generate order ID (using the length of the orders list to ensure unique ID)
+    order_id = len(orders) + 1  # or use `uuid.uuid4()` for more uniqueness
+
+    # Create an order dictionary with order_id
     order = {
+        'order_id': order_id,
         'shelves': shelves,
         'timestamp': timestamp
     }
@@ -74,8 +89,35 @@ def submit_order():
     # Log the published order
     node.get_logger().info(f"Published Order: {order}")
 
+    # Save the order to a CSV file
+    save_order_to_csv(order)
+
     # Redirect back to the index page
     return redirect(url_for('index'))
+
+def save_order_to_csv(order):
+    # File name
+    file_name = 'published_orders.csv'
+
+    # Check if the file exists; if not, create it and write headers
+    file_exists = False
+    try:
+        with open(file_name, mode='r'):
+            file_exists = True
+    except FileNotFoundError:
+        file_exists = False
+
+    # Write headers if the file doesn't exist
+    if not file_exists:
+        with open(file_name, mode='w', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=['order_id', 'timestamp', 'shelf_id', 'quantity'])
+            writer.writeheader()
+
+    # Write the new order to the CSV file
+    with open(file_name, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        for shelf in order['shelves']:
+            writer.writerow([order['order_id'], order['timestamp'], shelf['shelf_id'], shelf['quantity']])
 
 @app.route('/delete_order/<int:order_id>', methods=['POST'])
 def delete_order(order_id):
