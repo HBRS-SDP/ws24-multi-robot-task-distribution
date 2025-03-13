@@ -33,7 +33,7 @@ def read_logs():
 @app.route('/')
 def index():
     logs = read_logs()  # Fetch logs from CSV
-    print(f"Logs being passed to template: {logs}")
+    #print(f"Logs being passed to template: {logs}")
     return render_template('index.html', orders=orders, logs=logs)
     
 @app.route('/get_logs')

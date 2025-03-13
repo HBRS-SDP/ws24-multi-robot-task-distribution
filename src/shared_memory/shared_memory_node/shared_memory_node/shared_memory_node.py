@@ -60,6 +60,32 @@ class SharedMemoryNode(Node):
         # Subscribers and services setup here...
 
         self.get_logger().info("Database Module is ready.")
+        
+        # New service for getting the inventory
+        self.get_inventory_service = self.create_service(InventoryUpdate, 'get_inventory', self.get_inventory)
+        
+        
+    def get_inventory(self, request, response):
+        """
+        ROS2 service handler to send inventory data.
+        """
+        inventory_data = []
+        for shelf in self.shelves:
+        # Create a ShelfStatus message for each shelf
+            shelf_status = ShelfStatus()
+            shelf_status.shelf_id = shelf.shelf_id
+            shelf_status.shelf_location = shelf.shelf_location  # Assuming Pose is already in correct format
+            shelf_status.product = shelf.product
+            shelf_status.shelf_capacity = shelf.shelf_capacity
+            shelf_status.current_inventory = shelf.current_inventory
+        
+            # Append the ShelfStatus message to the inventory data list
+            inventory_data.append(shelf_status)
+
+        # Set the response shelves field with the populated list
+        response.shelves = inventory_data
+        return response
+
 
     def load_inventory(self, database_file):
         """Reads inventory data from the CSV file and stores it in a dictionary."""
