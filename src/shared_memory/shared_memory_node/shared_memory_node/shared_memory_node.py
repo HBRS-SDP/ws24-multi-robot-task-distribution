@@ -2,14 +2,12 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSHistoryPolicy, QoSReliabilityPolicy
 from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus, GetShelfList
-from robot_interfaces.msg import Task, RobotStatus, ShelfStatus, FleetStatus
+from robot_interfaces.msg import Task, ShelfStatus, FleetStatus
 from geometry_msgs.msg import Pose
-from std_msgs.msg import Int32
+from ament_index_python.packages import get_package_share_directory
 import json
 import os
 import csv
-from ament_index_python.packages import get_package_share_directory
-
 
 class SharedMemoryNode(Node):
     def __init__(self):
@@ -23,7 +21,6 @@ class SharedMemoryNode(Node):
         self.database = {"shelves": []}
         self.robots = []
         self.shelves = []
-
 
         self.load_inventory(database_file)
         self.database["shelves"] = self.shelves
@@ -40,8 +37,9 @@ class SharedMemoryNode(Node):
 
         # Subscribers
         self.task_start_sub = self.create_subscription(Task, '/start_task', self.task_start_callback, 10)
-        self.task_end_sub = self.create_subscription(Int32, '/end_task', self.task_end_callback, 10)
-        self.fleet_status_sub = self.create_subscription(FleetStatus, '/fleet_status', self.fleet_status_callback,qos_profile=qos_profile)
+        self.task_end_sub = self.create_subscription(Task, '/end_task', self.task_end_callback, 10)
+        self.fleet_status_sub = self.create_subscription(FleetStatus, '/fleet_status', self.fleet_status_callback,
+                                                         qos_profile=qos_profile)
 
         # Services
         self.database_query_service = self.create_service(
@@ -50,16 +48,16 @@ class SharedMemoryNode(Node):
             InventoryUpdate, '/update_inventory', self.inventory_update_callback)
         self.robot_state_service = self.create_service(
             GetRobotStatus, '/get_robot_state', self.robot_state_callback)
-
-        self.robot_fleet_service = self.create_service(GetRobotFleetStatus, '/get_robot_fleet_status', self.get_fleet_status_callback)
-        self.shelf_list_service = self.create_service(GetShelfList, '/get_shelf_list', self.get_shelf_list_callback)
+        self.robot_fleet_service = self.create_service(
+            GetRobotFleetStatus, '/get_robot_fleet_status', self.get_fleet_status_callback)
+        self.shelf_list_service = self.create_service(
+            GetShelfList, '/get_shelf_list', self.get_shelf_list_callback)
 
         self.get_logger().info("Database Module is ready.")
 
-
     def load_inventory(self, database_file):
         """Reads inventory data from the CSV file and stores it in a dictionary."""
-    
+
         try:
             with open(database_file, mode='r') as file:
                 reader = csv.DictReader(file)
@@ -81,7 +79,6 @@ class SharedMemoryNode(Node):
                     shelf.current_inventory = int(row["inventory"])
                     self.shelves.append(shelf)
 
-
             self.get_logger().info("Inventory successfully loaded from CSV.")
             self.log_database()
         except Exception as e:
@@ -98,8 +95,10 @@ class SharedMemoryNode(Node):
 
     def task_start_callback(self, msg):
         """Updates robot status and task history when a task starts."""
-        self.get_logger().info(f"Robot {msg.robot_id} started task {msg.task_type} at shelf {msg.shelf_id} for task id {msg.task_id}")
-        task = {'task_id': msg.task_id, 'robot_id': msg.robot_id, 'shelf_id': msg.shelf_id, 'item': msg.item, 'amount': msg.item_amount,
+        self.get_logger().info(
+            f"Robot {msg.robot_id} started task {msg.task_type} at shelf {msg.shelf_id} for task id {msg.task_id}")
+        task = {'task_id': msg.task_id, 'robot_id': msg.robot_id, 'shelf_id': msg.shelf_id, 'item': msg.item,
+                'amount': msg.item_amount,
                 'type': msg.task_type}
         self.tasks.append(task)
         print(self.tasks)
@@ -110,7 +109,7 @@ class SharedMemoryNode(Node):
     def task_end_callback(self, msg):
         """Updates robot status and inventories when it reaches a shelf."""
 
-        task = next((task for task in self.tasks if task.get("task_id") == msg.data), None)
+        task = next((task for task in self.tasks if task.get("task_id") == msg.task_id), None)
 
         if not task:
             self.get_logger().info(f"The task with id {msg.data} was not found.")
@@ -118,7 +117,7 @@ class SharedMemoryNode(Node):
 
         robot_id = task.get('robot_id')
         self.update_inventory_status(task)
-        self.update_robot_status(robot_id = robot_id, new_status = 'idle', availability = True)
+        self.update_robot_status(robot_id=robot_id, new_status='idle', availability=True)
         self.tasks.remove(task)
 
         self.get_logger().info(f"Robot {robot_id} has finished the task {msg.data}")
@@ -143,7 +142,8 @@ class SharedMemoryNode(Node):
 
     def update_inventory_status(self, task):
         if not self.shelves:
-            print("NO SHELF DATA")
+            self.get_logger().info("No shelves available to update inventory.")
+
             return
 
         for idx, shelf in enumerate(self.shelves):
@@ -169,7 +169,6 @@ class SharedMemoryNode(Node):
                 self.get_logger().info(f"Query successful for shelf_id: {shelf_id}")
                 break
 
-
         if not shelf_found:
             default_pose = Pose()
             default_pose.position.x = 0.0
@@ -183,6 +182,7 @@ class SharedMemoryNode(Node):
             response.shelf_capacity = 0
             response.current_inventory = 0
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
+
         return response
 
 
@@ -234,22 +234,22 @@ class SharedMemoryNode(Node):
             self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
 
         return response
-    
+
 
     def get_fleet_status_callback(self, request, response):
 
         if not self.robots:
             print("NO Robot Data")
             return
-        
+
         response.robot_status_list = self.robots
 
         self.get_logger().info('Returning RobotFleetStatus.')
         return response
-    
+
 
     def get_shelf_list_callback(self, request, response):
-        
+
         if not self.shelves:
             print("NO Shelf Data")
             return
@@ -267,7 +267,6 @@ class SharedMemoryNode(Node):
         self.database.update({"shelves": self.shelves})
         self.database.update({"robots": self.robots})
         self.get_logger().info("Current Database State:")
-        #self.get_logger().info(self.database)
         print(self.database)
 
 
