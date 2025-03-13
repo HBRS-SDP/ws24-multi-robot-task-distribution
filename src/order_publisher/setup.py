@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'fleet_manager'
+package_name = 'order_publisher'
 
 setup(
     name=package_name,
@@ -11,17 +11,17 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'rclpy', 'flask', 'robot_interfaces', 'rosbridge-websocket'],
     zip_safe=True,
-    maintainer='ujjwal',
-    maintainer_email='ujjwalpatil20@gmail.com',
-    description='TODO: Package description',
-    license='Apache-2.0',
+    maintainer='ayushi',
+    maintainer_email='ayushiarora206@gmail.com',
+    description='Order Publisher Node',
+    license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'fleet_manager = fleet_manager.fleet_manager:main',
-            'fm_tester = fleet_manager.fm_tester:main',
+            'order_publisher = order_publisher.order_publisher:main',
+            'web_server = order_publisher.web_server:main',
         ],
     },
 )

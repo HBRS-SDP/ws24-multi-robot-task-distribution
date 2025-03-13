@@ -25,8 +25,6 @@ class FleetManager(Node):
                 "is_available": True,
                 "status": "idle"
             }
-
-            self.robots["robot_1"]["battery_level"] = 50.0
             self.create_subscription(Odometry, odom_topic, lambda msg, name=robot_name: self.odom_callback(msg, name), 10)
 
         # Create a QoS profile for fleet status
@@ -92,11 +90,13 @@ class FleetManager(Node):
     def create_waypoints(self, task_list):
         waypoints = []
         for task in task_list:
-            pose_stamped = PoseStamped()
-            pose_stamped.header.frame_id = 'map'
-            pose_stamped.pose = task.shelf_location
-   
-            waypoints.append(pose_stamped)
+            pose = PoseStamped()
+            pose.header.frame_id = 'map'
+            pose.pose.position.x = task.shelf_location.x
+            pose.pose.position.y = task.shelf_location.y
+            pose.pose.position.z = task.shelf_location.z
+            pose.pose.orientation.w = 1.0  # Assuming no rotation
+            waypoints.append(pose)
         return waypoints
 
     def send_goal(self, robot_namespace, waypoints):
