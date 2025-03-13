@@ -96,7 +96,7 @@ class TaskManager(Node):
             )
 
             # Use the responses to allocate tasks to a robot
-            task_assigned = self.allocate_task(robot_fleet_response, shelf_query_response)
+            task_assigned = self.allocate_task(robot_fleet_response, shelf_query_response, msg)
 
             if task_assigned:
                 # Call the /task_assignments service to assign the task to the robot
@@ -136,12 +136,11 @@ class TaskManager(Node):
 
         # returns a list of shelf details
         request = ShelfQuery.Request()
-        request.shelf_id = 1
         future = self.shelf_query_client.call_async(request)
         await future
         return future.result()
 
-    def allocate_task(self, robot_fleet_response, shelf_query_response):
+    def allocate_task(self, robot_fleet_response, shelf_query_response, order):
         """
         Allocates a task to the best robot based on proximity, battery level, and availability.
         Returns the Task message if a robot was assigned, otherwise None.
@@ -153,13 +152,24 @@ class TaskManager(Node):
 
         # A list of RobotStatus    
         robot_fleet_list = robot_fleet_response.robot_status_list
-        shelf_details = shelf_query_response
+        shelf_details = shelf_query_response.shelf_status_list
 
         for robot in robot_fleet_list:
             if robot.is_available:
                 # Calculate proximity score (distance to shelf)
                 robot_location = robot.current_location
-                shelf_location = shelf_details.shelf_location
+
+                first_shelf = None
+                for shelf in shelf_details:
+                    if shelf.shelf_id == order.shelf_id_list[0]:
+                        first_shelf = shelf
+                        break
+                
+                if not first_shelf:
+                    self.get_logger().warn(f"Shelf {order.shelf_id_list[0]} not found.")
+                    return None
+                
+                shelf_location = first_shelf.shelf_location
                 distance = self.calculate_distance(robot_location, shelf_location)
 
                 # Calculate battery score (higher battery is better)
@@ -173,23 +183,27 @@ class TaskManager(Node):
                     best_robot_id = robot.robot_id
 
         if best_robot_id:
-            # Create a Task message
-            task_msg = Task()
-            task_msg.task_id = self.task_id_counter
-            task_msg.robot_id = best_robot_id
-            task_msg.shelf_id = 1  
-            task_msg.shelf_location = shelf_details.shelf_location
-            task_msg.item = "A"
-            task_msg.item_amount = 3
-            task_msg.task_type = "pickup"
-            self.task_id_counter += 1
-            self.get_logger().info(f"Assigned task to robot {best_robot_id}: {task_msg}")
-            return task_msg
+            # Create a Task message for each product in the order
+            task_list = []
+            for idx, shelf_id in enumerate(order.shelf_id_list):
+                shelf = next((s for s in shelf_details if s.shelf_id == shelf_id), None)
+                task_msg = Task()
+                task_msg.task_id = self.task_id_counter
+                task_msg.robot_id = best_robot_id
+                task_msg.shelf_id = shelf_id
+                task_msg.shelf_location = shelf.shelf_location
+                task_msg.item = shelf.product
+                task_msg.item_amount = order.quantity_list[idx]
+                task_msg.task_type = f"Move to Shelf {shelf_id}"
+                self.task_id_counter += 1
+                self.get_logger().info(f"Assigned task to robot {best_robot_id}: {task_msg}")
+                task_list.append(task_msg)
+            return task_list
         else:
             self.get_logger().warn("No available robots to assign task.")
             return None
 
-    async def call_task_assignment_service(self, task):
+    async def call_task_assignment_service(self, task_list):
         """
         Call the /task_assignments service to assign the task to the robot.
         Returns True if the task was successfully assigned, False otherwise.
@@ -198,7 +212,7 @@ class TaskManager(Node):
             self.get_logger().warn('Waiting for /task_assignments service...')
 
         request = TaskList.Request()
-        request.task_list = [task]
+        request.task_list = task_list
         future = self.task_assignment_client.call_async(request)
         await future
         return future.result().success
