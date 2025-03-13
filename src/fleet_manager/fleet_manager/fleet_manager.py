@@ -5,7 +5,7 @@ from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSHistoryPolicy, QoSReli
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Pose, PoseStamped
 from nav2_msgs.action import FollowWaypoints
-from robot_interfaces.msg import RobotStatus, FleetStatus
+from robot_interfaces.msg import RobotStatus, Task, FleetStatus
 from robot_interfaces.srv import TaskList
 import logging
 import csv
@@ -142,7 +142,7 @@ class FleetManager(Node):
                 self.robots[robot_namespace]["status"] = "busy"
                 self.send_goal(robot_namespace, waypoints)
                 response.success = True
-                task_details = ';'.join([f'Task: shelf_location=({task.shelf_location.x}, {task.shelf_location.y}, {task.shelf_location.z})' for task in request.task_list])
+                task_details = '\n'.join([f'Task: shelf_location=({task.shelf_location.position.x}, {task.shelf_location.position.y}) Shelf ID= {task.shelf_id}' for task in request.task_list])
                 self.log_to_csv('INFO', f'TaskList service called for {robot_namespace}. Tasks: {task_details}', robot_namespace, "handle_task_list")
             else:
                 self.log_to_csv('INFO', 'No tasks available', log_source="handle_task_list")
@@ -157,10 +157,7 @@ class FleetManager(Node):
         for task in task_list:
             pose = PoseStamped()
             pose.header.frame_id = 'map'
-            pose.pose.position.x = task.shelf_location.x
-            pose.pose.position.y = task.shelf_location.y
-            pose.pose.position.z = task.shelf_location.z
-            pose.pose.orientation.w = 1.0  # Assuming no rotation
+            pose.pose = task.shelf_location
             waypoints.append(pose)
         return waypoints
 
