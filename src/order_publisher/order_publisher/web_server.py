@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import rclpy
 from robot_interfaces.msg import Order
 from rclpy.node import Node
 import threading
 from datetime import datetime
+import csv
 
 # Initialize ROS node
 rclpy.init()
@@ -18,9 +19,27 @@ app = Flask(__name__)
 # Store orders in memory (this would be better in a database for persistence)
 orders = []
 
+def read_logs():
+    logs = []
+    try:
+        with open('fleet_manager_log.csv', mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                logs.append(row)
+    except FileNotFoundError:
+        print("Log file not found.")
+    return logs
+
 @app.route('/')
 def index():
-    return render_template('index.html', orders=orders)
+    logs = read_logs()  # Fetch logs from CSV
+    print(f"Logs being passed to template: {logs}")
+    return render_template('index.html', orders=orders, logs=logs)
+    
+@app.route('/get_logs')
+def get_logs():
+    logs = read_logs()  # Fetch logs from CSV
+    return jsonify(logs)  # Return logs in JSON format
 
 @app.route('/submit_order', methods=['POST'])
 def submit_order():
