@@ -94,12 +94,11 @@ class TaskManager(Node):
 
         try:
             # Call the two services concurrently using asyncio.gather
-            robot_fleet_response, shelf_query_response = await asyncio.gather(
+            robot_fleet_response, shelf_query_response, drop_off_pose = await asyncio.gather(
                 self.call_robot_fleet_service(),
-                self.call_shelf_list_service()
+                self.call_shelf_list_service(),
+                self.get_drop_off_pose()
             )
-
-            drop_off_pose = self.get_drop_off_pose()
 
             # Use the responses to allocate tasks to a robot
             task_assigned = self.allocate_task(robot_fleet_response, shelf_query_response, drop_off_pose, msg)
@@ -146,22 +145,18 @@ class TaskManager(Node):
         await future
         return future.result()
 
-    def get_drop_off_pose(self):
+    async def get_drop_off_pose(self):
         """
         Get the drop_off_pose from the shared_memory_node.
         """
         while not self.get_drop_off_pose_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('Waiting for get_drop_off_pose service...')
+            self.get_logger().warn('Waiting for get_drop_off_pose service...')
         
         request = GetPose.Request()
         future = self.get_drop_off_pose_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
         
-        if future.result() is not None:
-            return future.result().pose
-        else:
-            self.get_logger().error('Failed to call get_drop_off_pose service')
-            return None
+        await future
+        return future.result()
 
 
     def allocate_task(self, robot_fleet_response, shelf_query_response, drop_off_pose, order):
@@ -222,12 +217,13 @@ class TaskManager(Node):
                 self.task_id_counter += 1
                 task_list.append(task_msg)
 
+            print(f"Drop off pose: {drop_off_pose}")
             # Add a final task to move to the drop-off location
             drop_off_task = Task()
             drop_off_task.task_id = self.task_id_counter
             drop_off_task.robot_id = best_robot_id
             drop_off_task.shelf_id = 0
-            drop_off_task.shelf_location = drop_off_pose
+            drop_off_task.shelf_location = drop_off_pose.pose
             drop_off_task.item = ""
             drop_off_task.item_amount = 0
             drop_off_task.task_type = "Move to Drop-off"
