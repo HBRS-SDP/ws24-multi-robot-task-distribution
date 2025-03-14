@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
-from robot_interfaces.msg import Order, Task
+from robot_interfaces.msg import Order, Task, Product
 from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskList, GetShelfList, GetPose
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Pose
@@ -177,6 +177,7 @@ class TaskManager(Node):
         robot_fleet_list = robot_fleet_response.robot_status_list
         shelf_details = shelf_query_response.shelf_status_list
 
+     
         for robot in robot_fleet_list:
             if robot.is_available:
                 # Calculate proximity score (distance to shelf)
@@ -184,12 +185,12 @@ class TaskManager(Node):
 
                 first_shelf = None
                 for shelf in shelf_details:
-                    if shelf.shelf_id == order.shelf_id_list[0]:
+                    if shelf.shelf_id == order.product_list[0].shelf_id:
                         first_shelf = shelf
                         break
                 
                 if not first_shelf:
-                    self.get_logger().warn(f"Shelf {order.shelf_id_list[0]} not found.")
+                    self.get_logger().warn(f"Shelf {order.product_list[0].shelf_id} not found.")
                     return None
                 
                 shelf_location = first_shelf.shelf_location
@@ -208,30 +209,31 @@ class TaskManager(Node):
         if best_robot_id:
             # Create a Task message for each product in the order
             task_list = []
-            for idx, shelf_id in enumerate(order.shelf_id_list):
-                shelf = next((s for s in shelf_details if s.shelf_id == shelf_id), None)
+            for product in order.product_list:
+                shelf = next((s for s in shelf_details if s.shelf_id == product.shelf_id), None)
                 task_msg = Task()
                 task_msg.task_id = self.task_id_counter
                 task_msg.robot_id = best_robot_id
-                task_msg.shelf_id = shelf_id
+                task_msg.shelf_id = product.shelf_id
                 task_msg.shelf_location = shelf.shelf_location
                 task_msg.item = shelf.product
-                task_msg.item_amount = order.quantity_list[idx]
-                task_msg.task_type = f"Move to Shelf {shelf_id}"
+                task_msg.item_amount = product.quantity
+                task_msg.task_type = f"Move to Shelf {product.shelf_id}"
                 self.task_id_counter += 1
-                self.get_logger().info(f"Assigned task to robot {best_robot_id}: {task_msg}")
                 task_list.append(task_msg)
 
             # Add a final task to move to the drop-off location
             drop_off_task = Task()
             drop_off_task.task_id = self.task_id_counter
             drop_off_task.robot_id = best_robot_id
-            drop_off_task.shelf_id = None
+            drop_off_task.shelf_id = 0
             drop_off_task.shelf_location = drop_off_pose
-            drop_off_task.item = None
+            drop_off_task.item = ""
             drop_off_task.item_amount = 0
             drop_off_task.task_type = "Move to Drop-off"
             self.task_id_counter += 1       
+            task_list.append(drop_off_task)
+            self.get_logger().info(f"Assigned Order to robot {best_robot_id}: {task_list}")
             return task_list
         else:
             self.get_logger().warn("No available robots to assign task.")
