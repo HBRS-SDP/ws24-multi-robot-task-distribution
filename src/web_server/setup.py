@@ -15,12 +15,12 @@ setup(
     zip_safe=True,
     maintainer='ayushi',
     maintainer_email='ayushiarora206@gmail.com',
-    description='TODO: Package description',
+    description='Flask-based web server',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'web_server = order_publisher.web_server:main',
+            'web_server = web_server.web_server:main',
         ],
     },
 )
