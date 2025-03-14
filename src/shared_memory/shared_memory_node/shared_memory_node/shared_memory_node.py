@@ -251,12 +251,13 @@ class SharedMemoryNode(Node):
     def get_shelf_list_callback(self, request, response):
 
         if not self.shelves:
-            print("NO Shelf Data")
-            return
+            self.get_logger().warn("NO Shelf Data to return.")
+            response.shelf_status_list = []
+            return response
 
         response.shelf_status_list = self.shelves
 
-        self.get_logger().info('Returning ShelfList.')
+        self.get_logger().info("Returning ShelfList with {} shelves.".format(len(self.shelves)))
         return response
 
 
