@@ -52,7 +52,7 @@ class FleetManager(Node):
         self.fleet_status_publisher = self.create_publisher(FleetStatus, 'fleet_status', qos_profile)
 
         # Create a timer to periodically publish fleet status
-        self.timer = self.create_timer(1.0, self.publish_fleet_status)
+        self.timer = self.create_timer(0.5, self.publish_fleet_status)
 
         # Create a service for task list
         self.srv = self.create_service(TaskList, 'task_list', self.handle_task_list)

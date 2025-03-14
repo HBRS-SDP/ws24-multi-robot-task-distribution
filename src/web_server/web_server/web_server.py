@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import rclpy
-from robot_interfaces.msg import Order
+from robot_interfaces.msg import Order, FleetStatus
 from robot_interfaces.srv import GetShelfList, InventoryUpdate
 from rclpy.node import Node
 import threading
@@ -23,6 +23,7 @@ orders = []
 
 available_shelves = []
 shelf_to_product = {}
+robot_status_data = {}
 
 def read_logs():
     logs = []
@@ -34,6 +35,19 @@ def read_logs():
     except FileNotFoundError:
         print("Log file not found.")
     return logs
+    
+def fleet_status_callback(msg):
+    global robot_status_data
+    robot_status_data = {}
+    for robot in msg.robot_status_list:
+        robot_status_data[robot.robot_id] = {
+            "battery_level": robot.battery_level,
+            "status": "idle" if robot.is_available else "occupied"
+        }
+    #print("Updated robot status:", robot_status_data)  # Debugging output
+
+# Subscribe to fleet status topic
+node.create_subscription(FleetStatus, 'fleet_status', fleet_status_callback, 10)
 
 def get_shelf_list_callback(response):
     global available_shelves, shelf_to_product
@@ -118,7 +132,10 @@ def get_inventory():
 
     return jsonify(inventory_data)
 
-
+@app.route('/get_robot_status')
+def get_robot_status():
+    return jsonify(robot_status_data)
+    
 @app.route('/update_inventory', methods=['POST'])
 def update_inventory():
     try:
