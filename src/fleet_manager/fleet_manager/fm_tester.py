@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from robot_interfaces.srv import TaskList
 from robot_interfaces.msg import Task
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Pose  # Updated import
 
 class ServiceCaller(Node):
 
@@ -20,11 +20,18 @@ class ServiceCaller(Node):
         for i in range(5):
             task = Task()
             task.task_id = 100 + i
-            task.robot_id = 2
+            task.robot_id = 1
             task.shelf_id = 5 + i
             task.item = f'item_name_{i}'
             task.item_amount = 10 + i
-            task.shelf_location = Point(x=1.2 , y=0.6 + i, z=0.0)
+            task.shelf_location = Pose()  # Updated to Pose
+            task.shelf_location.position.x = 1.1
+            task.shelf_location.position.y = 0.6 + i
+            task.shelf_location.position.z = 0.0
+            task.shelf_location.orientation.x = 0.0
+            task.shelf_location.orientation.y = 0.0
+            task.shelf_location.orientation.z = 0.0
+            task.shelf_location.orientation.w = 1.0
             task.task_type = 'pickup' if i % 2 == 0 else 'dropoff'
             tasks.append(task)
         
