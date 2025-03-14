@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from robot_interfaces.msg import Order, Task
-from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskList, GetShelfList
+from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskList, GetShelfList, GetPose
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Pose
 import asyncio
@@ -36,6 +36,10 @@ class TaskManager(Node):
         
         self.task_assignment_client = self.create_client(
             TaskList, '/task_list', callback_group=self.callback_group)
+        
+        self.get_drop_off_pose_client = self.create_client(
+            GetPose, '/get_drop_off_pose', callback_group=self.callback_group)
+
 
         # Robot status dictionary
         self.robots = {}  # Format: {robot_id: RobotStatus}
@@ -95,8 +99,10 @@ class TaskManager(Node):
                 self.call_shelf_list_service()
             )
 
+            drop_off_pose = self.get_drop_off_pose()
+
             # Use the responses to allocate tasks to a robot
-            task_assigned = self.allocate_task(robot_fleet_response, shelf_query_response, msg)
+            task_assigned = self.allocate_task(robot_fleet_response, shelf_query_response, drop_off_pose, msg)
 
             if task_assigned:
                 # Call the /task_assignments service to assign the task to the robot
@@ -140,7 +146,25 @@ class TaskManager(Node):
         await future
         return future.result()
 
-    def allocate_task(self, robot_fleet_response, shelf_query_response, order):
+    def get_drop_off_pose(self):
+        """
+        Get the drop_off_pose from the shared_memory_node.
+        """
+        while not self.get_drop_off_pose_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('Waiting for get_drop_off_pose service...')
+        
+        request = GetPose.Request()
+        future = self.get_drop_off_pose_client.call_async(request)
+        rclpy.spin_until_future_complete(self, future)
+        
+        if future.result() is not None:
+            return future.result().pose
+        else:
+            self.get_logger().error('Failed to call get_drop_off_pose service')
+            return None
+
+
+    def allocate_task(self, robot_fleet_response, shelf_query_response, drop_off_pose, order):
         """
         Allocates a task to the best robot based on proximity, battery level, and availability.
         Returns the Task message if a robot was assigned, otherwise None.
@@ -197,6 +221,17 @@ class TaskManager(Node):
                 self.task_id_counter += 1
                 self.get_logger().info(f"Assigned task to robot {best_robot_id}: {task_msg}")
                 task_list.append(task_msg)
+
+            # Add a final task to move to the drop-off location
+            drop_off_task = Task()
+            drop_off_task.task_id = self.task_id_counter
+            drop_off_task.robot_id = best_robot_id
+            drop_off_task.shelf_id = None
+            drop_off_task.shelf_location = drop_off_pose
+            drop_off_task.item = None
+            drop_off_task.item_amount = 0
+            drop_off_task.task_type = "Move to Drop-off"
+            self.task_id_counter += 1       
             return task_list
         else:
             self.get_logger().warn("No available robots to assign task.")
