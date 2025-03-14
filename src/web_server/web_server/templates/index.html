@@ -24,6 +24,7 @@
         </ul>
 
         <div class="tab-content mt-3">
+            <!-- Orders Tab -->
             <div class="tab-pane fade show active" id="orders">
                 <h3>Orders</h3>
 
@@ -80,10 +81,54 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Inventory Tab -->
+            <div class="tab-pane fade" id="inventory">
+                <h3>Inventory</h3>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Shelf ID</th>
+                            <th>Product</th>
+                            <th>Capacity</th>
+                            <th>Current Inventory</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-table">
+                        <!-- Data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Logs Tab -->
+            <div class="tab-pane fade" id="logs">
+                <h3>Logs</h3>
+                <table class="table table-bordered" id="logs-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Level</th>
+                            <th>Robot ID</th>
+                            <th>Robot Pose</th>
+                            <th>Log Source</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Logs will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
+    <footer class="text-center mt-4">
+        <p>Created by <strong>Ayushi Arora</strong> (SDP Project)</p>
+    </footer>
+
     <script>
+        // 🛒 Validate order form before submission
         function validateOrderForm() {
             let shelfSelects = document.getElementsByName('shelf_id[]');
             for (let select of shelfSelects) {
@@ -94,6 +139,78 @@
             }
             return true;
         }
+
+        // ➕ Add new product selection dynamically
+        function addShelf() {
+            let newItem = document.createElement('div');
+            newItem.classList.add('order-item');
+            newItem.innerHTML = `
+                <label><strong>Select Product</strong></label>
+                <select name="shelf_id[]" class="form-control mb-2" required>
+                    <option value="" disabled selected>-- Select a Product --</option>
+                    {% for shelf in available_shelves %}
+                        <option value="{{ shelf.shelf_id }}">{{ shelf_to_product[shelf.shelf_id] }}</option>
+                    {% endfor %}
+                </select>
+
+                <label><strong>Quantity</strong></label>
+                <input type="number" name="quantity[]" class="form-control mb-2" required min="1">
+            `;
+            document.getElementById('order-items').appendChild(newItem);
+        }
+
+        // 🔄 Auto-update inventory every 5 seconds
+        function updateInventory() {
+            fetch('/get_inventory')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('inventory-table');
+                    tbody.innerHTML = '';  // Clear current table content
+                    
+                    data.forEach(shelf => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${shelf.shelf_id}</td>
+                            <td>${shelf.product}</td>
+                            <td>${shelf.capacity}</td>
+                            <td>${shelf.current_inventory}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching inventory:', error));
+        }
+
+        // Refresh inventory every 5 seconds
+        setInterval(updateInventory, 5000);
+        updateInventory(); // Load inventory immediately on page load
+
+        // 🔄 Auto-update logs every 5 seconds
+        function updateLogs() {
+            fetch('/get_logs')
+                .then(response => response.json())
+                .then(logs => {
+                    const tbody = document.querySelector('#logs-table tbody');
+                    tbody.innerHTML = '';  
+                    
+                    logs.forEach(log => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${log['Timestamp']}</td>
+                            <td>${log['Level']}</td>
+                            <td>${log['Robot ID']}</td>
+                            <td>${log['Robot Pose']}</td>
+                            <td>${log['Log Source']}</td>
+                            <td>${log['Message']}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching logs:', error));
+        }
+
+        setInterval(updateLogs, 5000);
+        updateLogs();
     </script>
 </body>
 </html>

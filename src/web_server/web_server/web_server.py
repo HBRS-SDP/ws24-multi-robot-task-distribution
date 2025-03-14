@@ -8,27 +8,20 @@ from datetime import datetime
 import csv
 import time
 
-# Initialize ROS node
 rclpy.init()
 node = Node('order_publisher')
 
-# Create a ROS publisher
 publisher = node.create_publisher(Order, '/order_requests', 10)
 
-# Create the ROS service client for fetching the shelf list
 shelf_list_client = node.create_client(GetShelfList, '/get_shelf_list')
 
-# Initialize Flask app
 app = Flask(__name__)
 
-# Store orders in memory (would be better in a database)
 orders = []
 
-# Store shelves and products globally
 available_shelves = []
 shelf_to_product = {}
 
-# 🚀 Read logs from `fleet_manager_log.csv`
 def read_logs():
     logs = []
     try:
@@ -37,44 +30,99 @@ def read_logs():
             for row in reader:
                 logs.append(row)
     except FileNotFoundError:
-        print("⚠️ Log file not found.")
+        print("Log file not found.")
     return logs
 
-# 🚀 ROS callback to handle shelf list service response
 def get_shelf_list_callback(response):
     global available_shelves, shelf_to_product
     available_shelves = [shelf for shelf in response.shelf_status_list if shelf.current_inventory > 0]
     shelf_to_product = {shelf.shelf_id: shelf.product for shelf in available_shelves}
+    
+    print(f"Updated Shelves: {available_shelves}")
+    print(f"Shelf to Product Mapping: {shelf_to_product}")
 
-# 🚀 Fetch shelf data from ROS service
+
 def fetch_shelf_data():
     while rclpy.ok():
         if shelf_list_client.wait_for_service(timeout_sec=1.0):
+            print("🔄 [DEBUG] Service available. Requesting shelf data...")
+
             request = GetShelfList.Request()
             future = shelf_list_client.call_async(request)
-            future.add_done_callback(lambda future: get_shelf_list_callback(future.result()))
-            rclpy.spin_once(node)
-            time.sleep(2)  # Fetch data every 2 seconds
+
+            # Wait for the service response
+            rclpy.spin_until_future_complete(node, future)
+            response = future.result()
+
+            if response:
+                global available_shelves, shelf_to_product
+                available_shelves = []
+                shelf_to_product = {}
+
+                for shelf in response.shelf_status_list:
+                    if shelf.current_inventory > 0:  # Only include shelves with stock
+                        available_shelves.append(shelf)
+                        shelf_to_product[shelf.shelf_id] = shelf.product
+
+            else:
+                print("[DEBUG] No response from service!")
+
+            time.sleep(2)
         else:
-            print("❌ Service not available, retrying...")
+            print("Service not available, retrying...")
 
 @app.route('/')
 def index():
-    logs = read_logs()  # Fetch logs from CSV
+    logs = read_logs() 
+    global available_shelves, shelf_to_product
+
+    # Wait up to 10 seconds for shelves to be available
+    attempts = 5
+    while not available_shelves and attempts > 0:
+        print("[DEBUG] Waiting for shelves to be fetched...")
+        time.sleep(2)
+        attempts -= 1 
+    print(f"Sending to HTML: {available_shelves}")
     return render_template('index.html', available_shelves=available_shelves, shelf_to_product=shelf_to_product, orders=orders, logs=logs)
 
 @app.route('/get_logs')
 def get_logs():
-    logs = read_logs()  # Fetch logs from CSV
-    return jsonify(logs)  # Return logs in JSON format
+    logs = read_logs() 
+    return jsonify(logs)
+    
+@app.route('/get_inventory')
+def get_inventory():
+    global available_shelves
+
+    # Request shelf data from ROS
+    request = GetShelfList.Request()
+    future = shelf_list_client.call_async(request)
+    rclpy.spin_until_future_complete(node, future)
+    response = future.result()
+
+    if response:
+        available_shelves = response.shelf_status_list
+        inventory_data = [
+            {
+                "shelf_id": shelf.shelf_id,
+                "product": shelf.product,
+                "capacity": shelf.shelf_capacity,
+                "current_inventory": shelf.current_inventory
+            }
+            for shelf in available_shelves
+        ]
+    else:
+        inventory_data = []
+
+    return jsonify(inventory_data)
+
 
 @app.route('/submit_order', methods=['POST'])
 def submit_order():
-    # Get shelf_ids and quantities from the form
+    
     shelf_ids = request.form.getlist('shelf_id[]')
     quantities = request.form.getlist('quantity[]')
 
-    # Create a list of shelves for the order
     shelves = []
     for shelf_id, quantity in zip(shelf_ids, quantities):
         try:
@@ -83,43 +131,41 @@ def submit_order():
             if shelf_id > 0 and quantity > 0:
                 shelves.append({'shelf_id': shelf_id, 'quantity': quantity})
             else:
-                print(f"⚠️ Ignored invalid shelf ID {shelf_id} or quantity {quantity}")
+                print(f"Ignored invalid shelf ID {shelf_id} or quantity {quantity}")
         except ValueError:
-            print(f"🚨 Error: Invalid data for shelf_id {shelf_id}")
-            continue  # Skip bad input
-
+            print(f"Error: Invalid data for shelf_id {shelf_id}")
+            continue
+            
     if not shelves:
-        print("🚨 No valid shelves in order submission! Rejecting order.")
-        return "Error: No valid shelves selected!", 400  # Return error response
+        print("No valid shelves in order submission! Rejecting order.")
+        return "Error: No valid shelves selected!", 400
 
-    # Generate timestamp and order ID
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    order_id = len(orders) + 1  # Simple order ID assignment
 
-    # Create order object
+    order_id = len(orders) + 1
+
     order = {'order_id': order_id, 'shelves': shelves, 'timestamp': timestamp}
     orders.append(order)
 
-    # Publish the order to the ROS topic
     order_msg = Order()
     for shelf in shelves:
         order_msg.shelf_id_list.append(shelf['shelf_id'])
         order_msg.quantity_list.append(shelf['quantity'])
     publisher.publish(order_msg)
 
-    print(f"🛒 Published Order: {order_msg}")
-
-    # Save order to CSV
+    print(f"Published Order: {order_msg}")
+    
     save_order_to_csv(order)
 
-    # Redirect back to the index page
+    # Log the published order
+    #node.get_logger().info(f"Published Order: {order}")
+
     return redirect(url_for('index'))
 
-# 🚀 Save orders to CSV
 def save_order_to_csv(order):
+    
     file_name = 'published_orders.csv'
     file_exists = False
-
     try:
         with open(file_name, mode='r'):
             file_exists = True
@@ -142,19 +188,17 @@ def delete_order(order_id):
     orders = [order for order in orders if order['order_id'] != order_id]
     return redirect(url_for('index'))
 
-# 🚀 Run Flask in a separate thread
 def run_flask():
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
 
-# 🚀 Run ROS node in a separate thread
 def run_ros():
-    fetch_shelf_data()  # Fetch shelf data asynchronously
+    fetch_shelf_data() 
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
-    # Start Flask and ROS in parallel
+
     flask_thread = threading.Thread(target=run_flask)
     ros_thread = threading.Thread(target=run_ros)
 
@@ -163,4 +207,3 @@ if __name__ == '__main__':
 
     flask_thread.join()
     ros_thread.join()
-
