@@ -99,6 +99,24 @@
                         <!-- Data will be dynamically inserted here -->
                     </tbody>
                 </table>
+
+                <div class="mt-4">
+                    <h4>Update Inventory</h4>
+                    <form id="updateInventoryForm" onsubmit="submitInventoryUpdate(event)">
+                        <label><strong>Select Shelf</strong></label>
+                        <select id="shelfSelect" class="form-control mb-2" required>
+                            <option value="" disabled selected>-- Select a Shelf --</option>
+                            {% for shelf in available_shelves %}
+                                <option value="{{ shelf.shelf_id }}">Shelf {{ shelf.shelf_id }} - {{ shelf.product }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <label><strong>New Inventory Quantity</strong></label>
+                        <input type="number" id="newInventory" class="form-control mb-2" required min="0">
+
+                        <button type="submit" class="btn btn-success">Update Inventory</button>
+                    </form>
+                </div>
             </div>
 
             <!-- Logs Tab -->
@@ -123,12 +141,7 @@
         </div>
     </div>
 
-    <footer class="text-center mt-4">
-        <p>Created by <strong>Ayushi Arora</strong> (SDP Project)</p>
-    </footer>
-
     <script>
-        // 🛒 Validate order form before submission
         function validateOrderForm() {
             let shelfSelects = document.getElementsByName('shelf_id[]');
             for (let select of shelfSelects) {
@@ -140,7 +153,6 @@
             return true;
         }
 
-        // ➕ Add new product selection dynamically
         function addShelf() {
             let newItem = document.createElement('div');
             newItem.classList.add('order-item');
@@ -152,64 +164,88 @@
                         <option value="{{ shelf.shelf_id }}">{{ shelf_to_product[shelf.shelf_id] }}</option>
                     {% endfor %}
                 </select>
-
                 <label><strong>Quantity</strong></label>
                 <input type="number" name="quantity[]" class="form-control mb-2" required min="1">
             `;
             document.getElementById('order-items').appendChild(newItem);
         }
 
-        // 🔄 Auto-update inventory every 5 seconds
         function updateInventory() {
             fetch('/get_inventory')
                 .then(response => response.json())
                 .then(data => {
                     const tbody = document.getElementById('inventory-table');
-                    tbody.innerHTML = '';  // Clear current table content
-                    
+                    tbody.innerHTML = '';  
                     data.forEach(shelf => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${shelf.shelf_id}</td>
-                            <td>${shelf.product}</td>
-                            <td>${shelf.capacity}</td>
-                            <td>${shelf.current_inventory}</td>
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${shelf.shelf_id}</td>
+                                <td>${shelf.product}</td>
+                                <td>${shelf.capacity}</td>
+                                <td>${shelf.current_inventory}</td>
+                            </tr>
                         `;
-                        tbody.appendChild(row);
                     });
                 })
                 .catch(error => console.error('Error fetching inventory:', error));
         }
+        
+        function submitInventoryUpdate(event) {
+        event.preventDefault(); // 🚀 Prevent form from refreshing the page
 
-        // Refresh inventory every 5 seconds
-        setInterval(updateInventory, 5000);
-        updateInventory(); // Load inventory immediately on page load
+        const shelfId = document.getElementById('shelfSelect').value;
+        const newInventory = document.getElementById('newInventory').value;
 
-        // 🔄 Auto-update logs every 5 seconds
+        if (!shelfId || newInventory === "") {
+            alert("⚠️ Please select a shelf and enter a valid inventory amount.");
+            return;
+        }
+
+        fetch('/update_inventory', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ shelf_id: parseInt(shelfId), new_inventory: parseInt(newInventory) })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`✅ Inventory updated successfully!`);
+                updateInventory(); // Refresh inventory table
+            } else {
+                alert(`❌ Error: ${data.error}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error updating inventory:', error);
+            alert("❌ Error updating inventory. Check console for details.");
+        });
+    }
+
         function updateLogs() {
             fetch('/get_logs')
                 .then(response => response.json())
                 .then(logs => {
                     const tbody = document.querySelector('#logs-table tbody');
                     tbody.innerHTML = '';  
-                    
                     logs.forEach(log => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${log['Timestamp']}</td>
-                            <td>${log['Level']}</td>
-                            <td>${log['Robot ID']}</td>
-                            <td>${log['Robot Pose']}</td>
-                            <td>${log['Log Source']}</td>
-                            <td>${log['Message']}</td>
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${log.timestamp}</td>
+                                <td>${log.level}</td>
+                                <td>${log.robot_id}</td>
+                                <td>${log.robot_pose}</td>
+                                <td>${log.log_source}</td>
+                                <td>${log.message}</td>
+                            </tr>
                         `;
-                        tbody.appendChild(row);
                     });
                 })
                 .catch(error => console.error('Error fetching logs:', error));
         }
 
+        setInterval(updateInventory, 5000);
         setInterval(updateLogs, 5000);
+        updateInventory();
         updateLogs();
     </script>
 </body>

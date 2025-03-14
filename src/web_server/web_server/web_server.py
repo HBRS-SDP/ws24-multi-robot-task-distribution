@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import rclpy
 from robot_interfaces.msg import Order
-from robot_interfaces.srv import GetShelfList
+from robot_interfaces.srv import GetShelfList, InventoryUpdate
 from rclpy.node import Node
 import threading
 from datetime import datetime
@@ -14,6 +14,8 @@ node = Node('order_publisher')
 publisher = node.create_publisher(Order, '/order_requests', 10)
 
 shelf_list_client = node.create_client(GetShelfList, '/get_shelf_list')
+
+inventory_update_client = node.create_client(InventoryUpdate, '/update_inventory')
 
 app = Flask(__name__)
 
@@ -115,6 +117,37 @@ def get_inventory():
         inventory_data = []
 
     return jsonify(inventory_data)
+
+
+@app.route('/update_inventory', methods=['POST'])
+def update_inventory():
+    try:
+        
+        request_data = request.get_json()  # Renamed 'request' to 'request_data'
+
+        if not request_data or 'shelf_id' not in request_data or 'new_inventory' not in request_data:
+            return jsonify({"success": False, "error": "Invalid request data"}), 400
+
+        shelf_id = int(request_data['shelf_id'])
+        new_inventory = int(request_data['new_inventory'])
+
+        # Call the ROS service to update inventory in shared memory
+        request_msg = InventoryUpdate.Request()  # Create a new request message
+        request_msg.shelf_id = shelf_id
+        request_msg.new_inventory = new_inventory
+
+        future = inventory_update_client.call_async(request_msg)
+        rclpy.spin_until_future_complete(node, future)
+        response = future.result()
+
+        if response.success:
+            return jsonify({"success": True, "message": f"✅ Inventory updated for shelf {shelf_id} to {new_inventory}"}), 200
+        else:
+            return jsonify({"success": False, "error": "❌ Shelf ID not found in shared memory"}), 404
+
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Internal Server Error: {str(e)}"}), 500
+
 
 
 @app.route('/submit_order', methods=['POST'])
