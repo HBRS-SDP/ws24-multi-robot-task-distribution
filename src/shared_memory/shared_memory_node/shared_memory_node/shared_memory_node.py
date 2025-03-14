@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSHistoryPolicy, QoSReliabilityPolicy
-from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus, GetShelfList
+from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus, GetShelfList, GetPose
 from robot_interfaces.msg import Task, ShelfStatus, FleetStatus
 from geometry_msgs.msg import Pose
 from ament_index_python.packages import get_package_share_directory
@@ -16,6 +16,7 @@ class SharedMemoryNode(Node):
         database_dir = get_package_share_directory("shared_memory_node")
         database_name = "shelves_database"
         database_file = os.path.join(database_dir, "databases", database_name + ".csv")
+        self.drop_off_pose = Pose()
 
         # Initialize the database with sample data
         self.database = {"shelves": []}
@@ -26,6 +27,7 @@ class SharedMemoryNode(Node):
         self.database["shelves"] = self.shelves
         self.database["robots"] = self.robots
         self.tasks = []
+
 
         # Create a QoS profile for fleet status
         qos_profile = QoSProfile(
@@ -52,6 +54,9 @@ class SharedMemoryNode(Node):
             GetRobotFleetStatus, '/get_robot_fleet_status', self.get_fleet_status_callback)
         self.shelf_list_service = self.create_service(
             GetShelfList, '/get_shelf_list', self.get_shelf_list_callback)
+        self.get_drop_off_pose_service = self.create_service(
+            GetPose, '/get_drop_off_pose', self.get_drop_off_pose_callback)
+
 
         self.get_logger().info("Database Module is ready.")
 
@@ -62,7 +67,6 @@ class SharedMemoryNode(Node):
             with open(database_file, mode='r') as file:
                 reader = csv.DictReader(file)
                 for row in reader:
-                    shelf = ShelfStatus()
                     shelf_pose = Pose()
                     shelf_pose.position.x = float(row["X"])
                     shelf_pose.position.y = float(row["Y"])
@@ -72,12 +76,17 @@ class SharedMemoryNode(Node):
                     shelf_pose.orientation.z = float(row["Q_Z"])
                     shelf_pose.orientation.w = float(row["Q_W"])
 
-                    shelf.shelf_id = int(row["id"])
-                    shelf.shelf_location = shelf_pose
-                    shelf.product = row["product"]
-                    shelf.shelf_capacity = int(row["capacity"])
-                    shelf.current_inventory = int(row["inventory"])
-                    self.shelves.append(shelf)
+                    if "product" in row and "capacity" in row and "inventory" in row:
+                        shelf = ShelfStatus()
+                        shelf.shelf_id = int(row["id"])
+                        shelf.shelf_location = shelf_pose
+                        shelf.product = row["product"]
+                        shelf.shelf_capacity = int(row["capacity"])
+                        shelf.current_inventory = int(row["inventory"])
+                        self.shelves.append(shelf)
+                    else:
+                        self.drop_off_pose = shelf_pose
+                        self.get_logger().info(f"Drop off location loaded with id: {row['id']}")
 
             self.get_logger().info("Inventory successfully loaded from CSV.")
             self.log_database()
@@ -260,7 +269,10 @@ class SharedMemoryNode(Node):
         self.get_logger().info("Returning ShelfList with {} shelves.".format(len(self.shelves)))
         return response
 
-
+    def get_drop_off_pose_callback(self, request, response):
+        response.pose = self.drop_off_pose
+        return response
+    
     def log_database(self):
         """
         Logs the current state of the database
