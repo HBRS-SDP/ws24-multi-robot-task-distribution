@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
-from robot_interfaces.msg import Order, Task
+from robot_interfaces.msg import Order, Task, Product
 from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskList, GetShelfList, GetPose
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Pose
@@ -94,12 +94,11 @@ class TaskManager(Node):
 
         try:
             # Call the two services concurrently using asyncio.gather
-            robot_fleet_response, shelf_query_response = await asyncio.gather(
+            robot_fleet_response, shelf_query_response, drop_off_pose = await asyncio.gather(
                 self.call_robot_fleet_service(),
-                self.call_shelf_list_service()
+                self.call_shelf_list_service(),
+                self.get_drop_off_pose()
             )
-
-            drop_off_pose = self.get_drop_off_pose()
 
             # Use the responses to allocate tasks to a robot
             task_assigned = self.allocate_task(robot_fleet_response, shelf_query_response, drop_off_pose, msg)
@@ -146,25 +145,23 @@ class TaskManager(Node):
         await future
         return future.result()
 
-    def get_drop_off_pose(self):
+    async def get_drop_off_pose(self):
         """
         Get the drop_off_pose from the shared_memory_node.
         """
         while not self.get_drop_off_pose_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('Waiting for get_drop_off_pose service...')
+            self.get_logger().warn('Waiting for get_drop_off_pose service...')
         
         request = GetPose.Request()
         future = self.get_drop_off_pose_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
         
-        if future.result() is not None:
-            return future.result().pose
-        else:
-            self.get_logger().error('Failed to call get_drop_off_pose service')
-            return None
+        await future
+        return future.result()
 
 
     def allocate_task(self, robot_fleet_response, shelf_query_response, drop_off_pose, order):
+        # Sort the order's product list based on shelf_id
+        order.product_list.sort(key=lambda product: product.shelf_id)
         """
         Allocates a task to the best robot based on proximity, battery level, and availability.
         Returns the Task message if a robot was assigned, otherwise None.
@@ -177,6 +174,7 @@ class TaskManager(Node):
         robot_fleet_list = robot_fleet_response.robot_status_list
         shelf_details = shelf_query_response.shelf_status_list
 
+     
         for robot in robot_fleet_list:
             if robot.is_available:
                 # Calculate proximity score (distance to shelf)
@@ -184,12 +182,12 @@ class TaskManager(Node):
 
                 first_shelf = None
                 for shelf in shelf_details:
-                    if shelf.shelf_id == order.shelf_id_list[0]:
+                    if shelf.shelf_id == order.product_list[0].shelf_id:
                         first_shelf = shelf
                         break
                 
                 if not first_shelf:
-                    self.get_logger().warn(f"Shelf {order.shelf_id_list[0]} not found.")
+                    self.get_logger().warn(f"Shelf {order.product_list[0].shelf_id} not found.")
                     return None
                 
                 shelf_location = first_shelf.shelf_location
@@ -208,30 +206,32 @@ class TaskManager(Node):
         if best_robot_id:
             # Create a Task message for each product in the order
             task_list = []
-            for idx, shelf_id in enumerate(order.shelf_id_list):
-                shelf = next((s for s in shelf_details if s.shelf_id == shelf_id), None)
+            for product in order.product_list:
+                shelf = next((s for s in shelf_details if s.shelf_id == product.shelf_id), None)
                 task_msg = Task()
                 task_msg.task_id = self.task_id_counter
                 task_msg.robot_id = best_robot_id
-                task_msg.shelf_id = shelf_id
+                task_msg.shelf_id = product.shelf_id
                 task_msg.shelf_location = shelf.shelf_location
                 task_msg.item = shelf.product
-                task_msg.item_amount = order.quantity_list[idx]
-                task_msg.task_type = f"Move to Shelf {shelf_id}"
+                task_msg.item_amount = product.quantity
+                task_msg.task_type = f"Move to Shelf {product.shelf_id}"
                 self.task_id_counter += 1
-                self.get_logger().info(f"Assigned task to robot {best_robot_id}: {task_msg}")
                 task_list.append(task_msg)
 
+            print(f"Drop off pose: {drop_off_pose}")
             # Add a final task to move to the drop-off location
             drop_off_task = Task()
             drop_off_task.task_id = self.task_id_counter
             drop_off_task.robot_id = best_robot_id
-            drop_off_task.shelf_id = None
-            drop_off_task.shelf_location = drop_off_pose
-            drop_off_task.item = None
+            drop_off_task.shelf_id = 0
+            drop_off_task.shelf_location = drop_off_pose.pose
+            drop_off_task.item = ""
             drop_off_task.item_amount = 0
             drop_off_task.task_type = "Move to Drop-off"
             self.task_id_counter += 1       
+            task_list.append(drop_off_task)
+            self.get_logger().info(f"Assigned Order to robot {best_robot_id}: {task_list}")
             return task_list
         else:
             self.get_logger().warn("No available robots to assign task.")

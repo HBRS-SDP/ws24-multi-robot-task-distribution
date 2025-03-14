@@ -16,6 +16,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Order.msg"
+  "msg/Product.msg"
   "msg/Task.msg"
   "msg/GoalStartMsg.msg"
   "msg/GoalReachMsg.msg"
@@ -28,6 +29,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/ShelfQuery.srv"
   "srv/InventoryUpdate.srv"
   "srv/TaskList.srv"
+  "srv/GetPose.srv"
   "action/TaskList.action"
   DEPENDENCIES geometry_msgs
 )

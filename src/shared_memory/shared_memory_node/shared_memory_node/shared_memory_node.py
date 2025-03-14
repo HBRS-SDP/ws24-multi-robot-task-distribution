@@ -66,7 +66,7 @@ class SharedMemoryNode(Node):
         try:
             with open(database_file, mode='r') as file:
                 reader = csv.DictReader(file)
-                for row in reader:
+                for idx, row in enumerate(reader):
                     shelf_pose = Pose()
                     shelf_pose.position.x = float(row["X"])
                     shelf_pose.position.y = float(row["Y"])
@@ -76,7 +76,11 @@ class SharedMemoryNode(Node):
                     shelf_pose.orientation.z = float(row["Q_Z"])
                     shelf_pose.orientation.w = float(row["Q_W"])
 
-                    if "product" in row and "capacity" in row and "inventory" in row:
+                    if idx == 0:
+                        self.drop_off_pose = shelf_pose
+                        self.get_logger().info(f"Drop off location loaded with id: {row['id']}")
+                    else:
+                        #"product" in row and "capacity" in row and "inventory" in row:
                         shelf = ShelfStatus()
                         shelf.shelf_id = int(row["id"])
                         shelf.shelf_location = shelf_pose
@@ -84,9 +88,8 @@ class SharedMemoryNode(Node):
                         shelf.shelf_capacity = int(row["capacity"])
                         shelf.current_inventory = int(row["inventory"])
                         self.shelves.append(shelf)
-                    else:
-                        self.drop_off_pose = shelf_pose
-                        self.get_logger().info(f"Drop off location loaded with id: {row['id']}")
+                 
+                        
 
             self.get_logger().info("Inventory successfully loaded from CSV.")
             self.log_database()

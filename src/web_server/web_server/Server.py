@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import rclpy
-from robot_interfaces.msg import Order, FleetStatus
+from robot_interfaces.msg import Order, FleetStatus, Product
 from robot_interfaces.srv import GetShelfList, InventoryUpdate
 from rclpy.node import Node
 import threading
@@ -173,13 +173,19 @@ def submit_order():
     shelf_ids = request.form.getlist('shelf_id[]')
     quantities = request.form.getlist('quantity[]')
 
+    product_list = []
     shelves = []
     for shelf_id, quantity in zip(shelf_ids, quantities):
         try:
             shelf_id = int(shelf_id)
             quantity = int(quantity)
+
             if shelf_id > 0 and quantity > 0:
                 shelves.append({'shelf_id': shelf_id, 'quantity': quantity})
+                product = Product()
+                product.shelf_id = shelf_id
+                product.quantity = quantity
+                product_list.append(product)
             else:
                 print(f"Ignored invalid shelf ID {shelf_id} or quantity {quantity}")
         except ValueError:
@@ -198,9 +204,7 @@ def submit_order():
     orders.append(order)
 
     order_msg = Order()
-    for shelf in shelves:
-        order_msg.shelf_id_list.append(shelf['shelf_id'])
-        order_msg.quantity_list.append(shelf['quantity'])
+    order_msg.product_list = product_list
     publisher.publish(order_msg)
 
     print(f"Published Order: {order_msg}")
