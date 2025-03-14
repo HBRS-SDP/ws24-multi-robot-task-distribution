@@ -8,8 +8,14 @@
   <license>TODO: License declaration</license>
   
   
+  <exec_depend>rclpy</exec_depend>
   <exec_depend>flask</exec_depend>
-  <exec_depend>rosbridge-websocket</exec_depend
+
+  <!-- ROS Interfaces Used -->
+  <exec_depend>robot_interfaces</exec_depend>
+  
+  <!-- Web Communication -->
+  <exec_depend>rosbridge-websocket</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
