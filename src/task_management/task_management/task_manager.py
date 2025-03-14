@@ -160,6 +160,8 @@ class TaskManager(Node):
 
 
     def allocate_task(self, robot_fleet_response, shelf_query_response, drop_off_pose, order):
+        # Sort the order's product list based on shelf_id
+        order.product_list.sort(key=lambda product: product.shelf_id)
         """
         Allocates a task to the best robot based on proximity, battery level, and availability.
         Returns the Task message if a robot was assigned, otherwise None.
