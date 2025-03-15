@@ -233,7 +233,7 @@ class SharedMemoryNode(Node):
         self.database.update({"shelves": self.shelves})
         self.database.update({"robots": self.robots})
         self.get_logger().info("Current Database State:")
-        print(self.database)
+        #print(self.database)
 
 
 def main(args=None):
