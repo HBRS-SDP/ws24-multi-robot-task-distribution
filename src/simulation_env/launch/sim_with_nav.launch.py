@@ -39,7 +39,7 @@ def generate_launch_description():
         {
             "name": f"{namespace}_{i+1}",
             "x_pose": str(i * 0.75),
-            "y_pose": "-0.4",
+            "y_pose": "0.0",
             "z_pose": "0.01",
         }
         for i in range(num_robots)

@@ -80,7 +80,7 @@ class FleetManager(Node):
                 robot_id = request.task_list[0].robot_id
                 robot_namespace = f'robot_{robot_id}'
                 if not self.robots[robot_namespace]["is_available"]:
-                    self.log_to_central('INFO', f'Robot {robot_id} is not available', robot_namespace, "handle_task_list")
+                    # self.log_to_central('INFO', f'Robot {robot_id} is not available', robot_namespace, "handle_task_list")
                     response.success = False
                     return response
 
@@ -90,7 +90,7 @@ class FleetManager(Node):
                 self.send_goal(robot_namespace, waypoints)
                 response.success = True
                 task_details = '\n'.join([f'Task: shelf_location=({task.shelf_location.position.x}, {task.shelf_location.position.y}) Shelf ID= {task.shelf_id}' for task in request.task_list])
-                self.log_to_central('INFO', f'TaskList service called for {robot_namespace}. Tasks: {task_details}', robot_namespace, "handle_task_list")
+                self.log_to_central('INFO', f'TaskList service called for {robot_namespace}. Task List:\n {task_details}', robot_namespace, "handle_task_list")
             else:
                 self.log_to_central('INFO', 'No tasks available', log_source="handle_task_list")
                 response.success = False

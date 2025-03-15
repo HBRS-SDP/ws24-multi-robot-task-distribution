@@ -36,7 +36,7 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(sim_with_nav_launch_path),
             launch_arguments={
-                'enable_rviz': 'false',
+                'enable_rviz': 'true',
                 'number_of_robots': num_of_robots
             }.items()
         ),
