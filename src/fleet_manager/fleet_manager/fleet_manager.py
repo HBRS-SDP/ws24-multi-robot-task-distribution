@@ -7,13 +7,8 @@ from geometry_msgs.msg import Pose, PoseStamped
 from nav2_msgs.action import FollowWaypoints
 from robot_interfaces.msg import RobotStatus, Task, FleetStatus
 from robot_interfaces.srv import TaskList
-import logging
-import csv
-import os
-from datetime import datetime
 import uuid
 from std_msgs.msg import String
-
 
 class FleetManager(Node):
     def __init__(self, num_robots):
@@ -55,7 +50,6 @@ class FleetManager(Node):
 
         # Create a service for task list
         self.srv = self.create_service(TaskList, 'task_list', self.handle_task_list)
-
      
     def log_to_central(self, level, message, robot_namespace=None, log_source="FleetManager"):
         """Publishes logs to the central logging topic."""
@@ -79,7 +73,6 @@ class FleetManager(Node):
             robot_status.status = robot["status"]
             fleet_status_msg.robot_status_list.append(robot_status)
         self.fleet_status_publisher.publish(fleet_status_msg)
-        #self.get_logger().info('Published fleet status')
 
     def handle_task_list(self, request, response):
         try:
@@ -87,7 +80,6 @@ class FleetManager(Node):
                 robot_id = request.task_list[0].robot_id
                 robot_namespace = f'robot_{robot_id}'
                 if not self.robots[robot_namespace]["is_available"]:
-                    #self.log_to_csv('INFO', f'Robot {robot_id} is not available', robot_namespace, "handle_task_list")
                     self.log_to_central('INFO', f'Robot {robot_id} is not available', robot_namespace, "handle_task_list")
                     response.success = False
                     return response
@@ -98,14 +90,11 @@ class FleetManager(Node):
                 self.send_goal(robot_namespace, waypoints)
                 response.success = True
                 task_details = '\n'.join([f'Task: shelf_location=({task.shelf_location.position.x}, {task.shelf_location.position.y}) Shelf ID= {task.shelf_id}' for task in request.task_list])
-                #self.log_to_csv('INFO', f'TaskList service called for {robot_namespace}. Tasks: {task_details}', robot_namespace, "handle_task_list")
                 self.log_to_central('INFO', f'TaskList service called for {robot_namespace}. Tasks: {task_details}', robot_namespace, "handle_task_list")
             else:
-                #self.log_to_csv('INFO', 'No tasks available', log_source="handle_task_list")
                 self.log_to_central('INFO', 'No tasks available', log_source="handle_task_list")
                 response.success = False
         except Exception as e:
-            #self.log_to_csv('ERROR', f'Service call failed: {e}', log_source="handle_task_list")
             self.log_to_central('ERROR', f'Service call failed: {e}', log_source="handle_task_list")
             response.success = False
         return response
@@ -140,7 +129,6 @@ class FleetManager(Node):
 
         robot_namespace = self.robot_to_goal_id.get(goal_id)
         if not robot_namespace:
-            #self.log_to_csv('ERROR', f'No robot namespace found for goal ID: {goal_id}', log_source="feedback_callback")
             self.log_to_central('ERROR', f'No robot namespace found for goal ID: {goal_id}', log_source="feedback_callback")
             return
 
@@ -148,20 +136,17 @@ class FleetManager(Node):
             self.previous_feedback[robot_namespace] = None
 
         if feedback_str != self.previous_feedback[robot_namespace]:
-            #self.log_to_csv('INFO', f'Robot {robot_namespace}: Feedback changed: {feedback_str}', robot_namespace, "feedback_callback")
             self.log_to_central('INFO', f'Robot {robot_namespace}: Feedback changed: {feedback_str}', robot_namespace, "feedback_callback")
             self.previous_feedback[robot_namespace] = feedback_str
 
     def goal_response_callback(self, future, robot_namespace, client):
         goal_handle = future.result()
         if not goal_handle.accepted:
-            #self.log_to_csv('INFO', f'Goal rejected for {robot_namespace}', robot_namespace, "goal_response_callback")
             self.log_to_central('INFO', f'Goal rejected for {robot_namespace}', robot_namespace, "goal_response_callback")
             self.robots[robot_namespace]["is_available"] = True
             self.robots[robot_namespace]["status"] = "idle"
             return
 
-        #self.log_to_csv('INFO', f'Goal accepted for {robot_namespace}', robot_namespace, "goal_response_callback")
         self.log_to_central('INFO', f'Goal accepted for {robot_namespace}', robot_namespace, "goal_response_callback")
         self.goal_handles[robot_namespace] = goal_handle
         self._get_result_future = goal_handle.get_result_async()
@@ -169,7 +154,6 @@ class FleetManager(Node):
 
     def get_result_callback(self, future, robot_namespace):
         result = future.result().result
-        #self.log_to_csv('INFO', f'Result received for {robot_namespace}: {result}', robot_namespace, "get_result_callback")
         self.log_to_central('INFO', f'Result received for {robot_namespace}: {result}', robot_namespace, "get_result_callback")
         for goal_id, stored_robot_namespace in list(self.robot_to_goal_id.items()):
           if stored_robot_namespace == robot_namespace:
@@ -182,7 +166,13 @@ class FleetManager(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    num_robots = 2  # Change based on setup
+    
+    # Create a temporary node to declare and retrieve parameters
+    temp_node = rclpy.create_node('temp_node')
+    temp_node.declare_parameter('num_robots', 2)  # Default value is 2
+    num_robots = temp_node.get_parameter('num_robots').value
+    temp_node.destroy_node()
+    
     fleet_manager = FleetManager(num_robots)
     rclpy.spin(fleet_manager)
     fleet_manager.destroy_node()
