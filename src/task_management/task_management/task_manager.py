@@ -54,7 +54,7 @@ class TaskManager(Node):
         self.task_id_counter = 1
 
         # Start the order processing loop in a separate thread
-        self.get_logger().info("Task Manager is ready.")
+        self.log_to_central("INFO", "Task Manager is ready.")
         self.loop = asyncio.new_event_loop()
         self.thread = threading.Thread(target=self.run_asyncio_loop, daemon=True)
         self.thread.start()
@@ -81,7 +81,7 @@ class TaskManager(Node):
         Callback triggered when a new order is received.
         Adds the order to the queue.
         """
-        self.get_logger().info(f'Received order request: {msg}')
+        self.log_to_central("INFO", f'Received order request: {msg}')
         self.order_queue.append(msg)
         self.create_task(self.process_orders())  # Trigger order processing
 
@@ -89,14 +89,14 @@ class TaskManager(Node):
         """
         Continuously processes orders from the queue.
         """
-        self.get_logger().info("process_orders coroutine started.")  # Debug log
+        self.log_to_central("INFO", "process_orders coroutine started.")  # Debug log
         while rclpy.ok():
             if self.order_queue:
                 order = self.order_queue.popleft()
-                self.get_logger().info(f'Processing order: {order}')
+                self.log_to_central("INFO", f'Processing order: {order}')
                 success = await self.process_order(order)
                 if not success:
-                    self.get_logger().warn("Order processing failed.")
+                    self.log_to_central("WARN", "Order processing failed.")
                     await asyncio.sleep(1)
             else:
                 await asyncio.sleep(1)  # Sleep if the queue is empty
@@ -105,7 +105,7 @@ class TaskManager(Node):
         """
         Asynchronously process the order by calling the two services concurrently.
         """
-        self.get_logger().info('Calling services concurrently...')
+        self.log_to_central("INFO", 'Calling services concurrently...')
 
         try:
             # Call the two services concurrently using asyncio.gather
@@ -124,17 +124,17 @@ class TaskManager(Node):
                     return success
 
                 # If task assignment failed, push the order back to the queue
-                self.get_logger().warn("Task assignment failed. Re-queueing order.")
+                self.log_to_central("WARN", "Task assignment failed. Re-queueing order.")
                 self.order_queue.append(order)
                 return False
             else:
                 # If no robot was available, push the order back to the queue
-                self.get_logger().warn("No available robots to assign task. Re-queueing order.")
+                self.log_to_central("WARN", "No available robots to assign task. Re-queueing order.")
                 self.order_queue.append(order)
                 return False
 
         except Exception as e:
-            self.get_logger().error(f'Error calling services: {e}')
+            self.log_to_central("ERROR", f'Error calling services: {e}')
             # Re-queue the order if an error occurs
             self.order_queue.append(order)
             return False
@@ -144,7 +144,7 @@ class TaskManager(Node):
         Call the /get_robot_fleet_status service asynchronously.
         """
         while not self.robot_fleet_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn('Waiting for /get_robot_fleet_status service...')
+            self.log_to_central("WARN", 'Waiting for /get_robot_fleet_status service...')
 
         request = GetRobotFleetStatus.Request()
         future = self.robot_fleet_client.call_async(request)
@@ -156,7 +156,7 @@ class TaskManager(Node):
         Call the /shelf_query service asynchronously.
         """
         while not self.shelf_list_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn('Waiting for /shelf_query service...')
+            self.log_to_central("WARN", 'Waiting for /shelf_query service...')
 
         # returns a list of shelf details
         request = GetShelfList.Request()
@@ -169,7 +169,7 @@ class TaskManager(Node):
         Get the drop_off_pose from the shared_memory_node.
         """
         while not self.get_drop_off_pose_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn('Waiting for get_drop_off_pose service...')
+            self.log_to_central("WARN", 'Waiting for get_drop_off_pose service...')
 
         request = GetPose.Request()
         future = self.get_drop_off_pose_client.call_async(request)
@@ -203,7 +203,7 @@ class TaskManager(Node):
                         break
 
                 if not first_shelf:
-                    self.get_logger().warn(f"Shelf {order.product_list[0].shelf_id} not found.")
+                    self.log_to_central("WARN", f"Shelf {order.product_list[0].shelf_id} not found.")
                     return None
 
                 shelf_location = first_shelf.shelf_location
@@ -237,11 +237,11 @@ class TaskManager(Node):
 
             drop_off_task = self.get_drop_off_task(best_robot_id, drop_off_pose)
             task_list.append(drop_off_task)
-            self.get_logger().info(f"Assigned Order to robot {best_robot_id}: {task_list}")
+            self.log_to_central("INFO", f"Assigned Order to robot {best_robot_id}: {task_list}")
 
             return task_list
         else:
-            self.get_logger().warn("No available robots to assign task.")
+            self.log_to_central("WARN", "No available robots to assign task.")
             return None
 
     def get_drop_off_task(self, robot_id, drop_off_pose):
@@ -271,7 +271,7 @@ class TaskManager(Node):
         Returns True if the task was successfully assigned, False otherwise.
         """
         while not self.task_assignment_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn('Waiting for /task_assignments service...')
+            self.log_to_central("WARN", 'Waiting for /task_assignments service...')
 
         request = TaskList.Request()
         request.task_list = task_list
