@@ -5,6 +5,8 @@ from robot_interfaces.msg import Order, Task, Product
 from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskList, GetShelfList, GetPose
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Pose
+from std_msgs.msg import String
+
 import asyncio
 import math
 from collections import deque
@@ -26,6 +28,7 @@ class TaskManager(Node):
 
         # Publishers
         self.order_end_publisher = self.create_publisher(Order, '/end_order', 10)
+        self.log_publisher = self.create_publisher(String, '/central_logs', 10)
 
         # Service clients
         self.shelf_query_client = self.create_client(
@@ -55,6 +58,14 @@ class TaskManager(Node):
         self.loop = asyncio.new_event_loop()
         self.thread = threading.Thread(target=self.run_asyncio_loop, daemon=True)
         self.thread.start()
+
+
+    def log_to_central(self, level, message, robot_namespace=None, log_source="TaskManager"):
+        """Publishes logs to the central logging topic."""
+        log_msg = String()
+        log_msg.data = f"TaskManager|{level}|{message}"
+        self.log_publisher.publish(log_msg)
+
 
     def run_asyncio_loop(self):
         """Run the asyncio event loop in a separate thread."""
