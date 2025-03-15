@@ -10,6 +10,8 @@ import math
 from collections import deque
 import threading
 
+from sympy import false
+
 
 class TaskManager(Node):
     def __init__(self):
@@ -81,9 +83,11 @@ class TaskManager(Node):
             if self.order_queue:
                 order = self.order_queue.popleft()
                 self.get_logger().info(f'Processing order: {order}')
-                await self.process_order(order)
+                success = await self.process_order(order)
+                if not success:
+                    self.get_logger().warn("Order processing failed.")
+                    await asyncio.sleep(1)
             else:
-                # self.get_logger().info(f'No orders.')
                 await asyncio.sleep(1)  # Sleep if the queue is empty
 
     async def process_order(self, order):
@@ -100,28 +104,29 @@ class TaskManager(Node):
                 self.get_drop_off_pose()
             )
 
-            # Use the responses to allocate tasks to a robot
             task_assigned = self.allocate_task(robot_fleet_response, shelf_query_response, drop_off_pose, order)
 
             if task_assigned:
-                # Call the /task_assignments service to assign the task to the robot
                 success = await self.call_task_assignment_service(task_assigned)
                 if success:
-                    # If task assignment was successful, publish the task
                     self.order_end_publisher.publish(order)
-                if not success:
-                    # If task assignment failed, push the order back to the queue
-                    self.get_logger().warn("Task assignment failed. Re-queueing order.")
-                    self.order_queue.append(order)
+                    return success
+
+                # If task assignment failed, push the order back to the queue
+                self.get_logger().warn("Task assignment failed. Re-queueing order.")
+                self.order_queue.append(order)
+                return False
             else:
                 # If no robot was available, push the order back to the queue
                 self.get_logger().warn("No available robots to assign task. Re-queueing order.")
                 self.order_queue.append(order)
+                return False
 
         except Exception as e:
             self.get_logger().error(f'Error calling services: {e}')
             # Re-queue the order if an error occurs
             self.order_queue.append(order)
+            return False
 
     async def call_robot_fleet_service(self):
         """
