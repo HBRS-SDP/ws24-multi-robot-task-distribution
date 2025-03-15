@@ -10,6 +10,9 @@ import math
 from collections import deque
 import threading
 
+from sympy import false
+
+
 class TaskManager(Node):
     def __init__(self):
         super().__init__('task_manager')
@@ -22,24 +25,23 @@ class TaskManager(Node):
             Order, '/order_requests', self.order_callback, 10)
 
         # Publishers
-        self.task_publisher = self.create_publisher(Task, '/task_assignments', 10)
+        self.order_end_publisher = self.create_publisher(Order, '/end_order', 10)
 
         # Service clients
         self.shelf_query_client = self.create_client(
             ShelfQuery, '/shelf_query', callback_group=self.callback_group)
-        
+
         self.robot_fleet_client = self.create_client(
             GetRobotFleetStatus, '/get_robot_fleet_status', callback_group=self.callback_group)
-        
+
         self.shelf_list_client = self.create_client(
             GetShelfList, '/get_shelf_list', callback_group=self.callback_group)
-        
+
         self.task_assignment_client = self.create_client(
             TaskList, '/task_list', callback_group=self.callback_group)
-        
+
         self.get_drop_off_pose_client = self.create_client(
             GetPose, '/get_drop_off_pose', callback_group=self.callback_group)
-
 
         # Robot status dictionary
         self.robots = {}  # Format: {robot_id: RobotStatus}
@@ -81,12 +83,14 @@ class TaskManager(Node):
             if self.order_queue:
                 order = self.order_queue.popleft()
                 self.get_logger().info(f'Processing order: {order}')
-                await self.process_order(order)
+                success = await self.process_order(order)
+                if not success:
+                    self.get_logger().warn("Order processing failed.")
+                    await asyncio.sleep(1)
             else:
-                # self.get_logger().info(f'No orders.')
                 await asyncio.sleep(1)  # Sleep if the queue is empty
 
-    async def process_order(self, msg):
+    async def process_order(self, order):
         """
         Asynchronously process the order by calling the two services concurrently.
         """
@@ -100,25 +104,29 @@ class TaskManager(Node):
                 self.get_drop_off_pose()
             )
 
-            # Use the responses to allocate tasks to a robot
-            task_assigned = self.allocate_task(robot_fleet_response, shelf_query_response, drop_off_pose, msg)
+            task_assigned = self.allocate_task(robot_fleet_response, shelf_query_response, drop_off_pose, order)
 
             if task_assigned:
-                # Call the /task_assignments service to assign the task to the robot
                 success = await self.call_task_assignment_service(task_assigned)
-                if not success:
-                    # If task assignment failed, push the order back to the queue
-                    self.get_logger().warn("Task assignment failed. Re-queueing order.")
-                    self.order_queue.append(msg)
+                if success:
+                    self.order_end_publisher.publish(order)
+                    return success
+
+                # If task assignment failed, push the order back to the queue
+                self.get_logger().warn("Task assignment failed. Re-queueing order.")
+                self.order_queue.append(order)
+                return False
             else:
                 # If no robot was available, push the order back to the queue
                 self.get_logger().warn("No available robots to assign task. Re-queueing order.")
-                self.order_queue.append(msg)
+                self.order_queue.append(order)
+                return False
 
         except Exception as e:
             self.get_logger().error(f'Error calling services: {e}')
             # Re-queue the order if an error occurs
-            self.order_queue.append(msg)
+            self.order_queue.append(order)
+            return False
 
     async def call_robot_fleet_service(self):
         """
@@ -151,13 +159,12 @@ class TaskManager(Node):
         """
         while not self.get_drop_off_pose_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warn('Waiting for get_drop_off_pose service...')
-        
+
         request = GetPose.Request()
         future = self.get_drop_off_pose_client.call_async(request)
-        
+
         await future
         return future.result()
-
 
     def allocate_task(self, robot_fleet_response, shelf_query_response, drop_off_pose, order):
         # Sort the order's product list based on shelf_id
@@ -169,12 +176,10 @@ class TaskManager(Node):
         best_robot_id = None
         best_score = -1
 
-
-        # A list of RobotStatus    
+        # A list of RobotStatus
         robot_fleet_list = robot_fleet_response.robot_status_list
         shelf_details = shelf_query_response.shelf_status_list
 
-     
         for robot in robot_fleet_list:
             if robot.is_available:
                 # Calculate proximity score (distance to shelf)
@@ -185,11 +190,11 @@ class TaskManager(Node):
                     if shelf.shelf_id == order.product_list[0].shelf_id:
                         first_shelf = shelf
                         break
-                
+
                 if not first_shelf:
                     self.get_logger().warn(f"Shelf {order.product_list[0].shelf_id} not found.")
                     return None
-                
+
                 shelf_location = first_shelf.shelf_location
                 distance = self.calculate_distance(robot_location, shelf_location)
 
@@ -219,23 +224,35 @@ class TaskManager(Node):
                 self.task_id_counter += 1
                 task_list.append(task_msg)
 
-            print(f"Drop off pose: {drop_off_pose}")
-            # Add a final task to move to the drop-off location
-            drop_off_task = Task()
-            drop_off_task.task_id = self.task_id_counter
-            drop_off_task.robot_id = best_robot_id
-            drop_off_task.shelf_id = 0
-            drop_off_task.shelf_location = drop_off_pose.pose
-            drop_off_task.item = ""
-            drop_off_task.item_amount = 0
-            drop_off_task.task_type = "Move to Drop-off"
-            self.task_id_counter += 1       
+            drop_off_task = self.get_drop_off_task(best_robot_id, drop_off_pose)
             task_list.append(drop_off_task)
             self.get_logger().info(f"Assigned Order to robot {best_robot_id}: {task_list}")
+
             return task_list
         else:
             self.get_logger().warn("No available robots to assign task.")
             return None
+
+    def get_drop_off_task(self, robot_id, drop_off_pose):
+        # Calculate specific drop-off location for the robot
+        drop_off_x_offset = 0.6  # 60 cm offset
+        specific_drop_off_pose = Pose()
+        specific_drop_off_pose.position.x = drop_off_pose.pose.position.x + robot_id * drop_off_x_offset
+        specific_drop_off_pose.position.y = drop_off_pose.pose.position.y
+        specific_drop_off_pose.position.z = drop_off_pose.pose.position.z
+        specific_drop_off_pose.orientation = drop_off_pose.pose.orientation
+
+        # Add a final task to move to the specific drop-off location
+        drop_off_task = Task()
+        drop_off_task.task_id = self.task_id_counter
+        drop_off_task.robot_id = robot_id
+        drop_off_task.shelf_id = 0
+        drop_off_task.shelf_location = specific_drop_off_pose
+        drop_off_task.item = ""
+        drop_off_task.item_amount = 0
+        drop_off_task.task_type = "Move to Drop-off"
+        self.task_id_counter += 1
+        return drop_off_task
 
     async def call_task_assignment_service(self, task_list):
         """
@@ -255,7 +272,9 @@ class TaskManager(Node):
         """
         Calculates the distance between two locations.
         """
-        return math.sqrt((location2.position.x - location1.position.x) ** 2 + (location2.position.y - location1.position.y) ** 2)
+        return math.sqrt(
+            (location2.position.x - location1.position.x) ** 2 + (location2.position.y - location1.position.y) ** 2)
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -275,6 +294,7 @@ def main(args=None):
         # Clean up
         task_manager.destroy_node()
         rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

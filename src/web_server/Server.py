@@ -214,6 +214,7 @@ def submit_order():
     orders.append(order)
 
     order_msg = Order()
+    order_msg.order_id = order_id
     for shelf in shelves:
         product = Product()
         product.shelf_id = shelf['shelf_id']

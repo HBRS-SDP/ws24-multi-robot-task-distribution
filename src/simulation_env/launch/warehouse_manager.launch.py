@@ -10,7 +10,7 @@ def generate_launch_description():
     # Declare the num_of_robots argument
     num_of_robots_arg = DeclareLaunchArgument(
         'num_of_robots',
-        default_value='2',
+        default_value='3',
         description='Number of robots to spawn'
     )
 
