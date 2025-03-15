@@ -59,7 +59,7 @@ class SharedMemoryNode(Node):
         self.get_drop_off_pose_service = self.create_service(
             GetPose, '/get_drop_off_pose', self.get_drop_off_pose_callback)
 
-        self.get_logger().info("Database Module is ready.")
+        self.log_to_central("INFO", "Database Module is ready.")
 
     def log_to_central(self, level, message, robot_namespace=None, log_source="SharedMemory"):
         """Publishes logs to the central logging topic."""
@@ -85,7 +85,7 @@ class SharedMemoryNode(Node):
 
                     if idx == 0:
                         self.drop_off_pose = shelf_pose
-                        self.get_logger().info(f"Drop off location loaded with id: {row['id']}")
+                        self.log_to_central("INFO", f"Drop off location loaded with id: {row['id']}")
                     else:
                         # "product" in row and "capacity" in row and "inventory" in row:
                         shelf = ShelfStatus()
@@ -96,10 +96,10 @@ class SharedMemoryNode(Node):
                         shelf.current_inventory = int(row["inventory"])
                         self.shelves.append(shelf)
 
-            self.get_logger().info("Inventory successfully loaded from CSV.")
+            self.log_to_central("INFO", "Inventory successfully loaded from CSV.")
             self.log_database()
         except Exception as e:
-            self.get_logger().error(f"Error loading inventory from CSV: {e}")
+            self.log_to_central("ERROR", f"Error loading inventory from CSV: {e}")
 
 
 
@@ -107,7 +107,7 @@ class SharedMemoryNode(Node):
         """Updates robot status and inventories when it reaches a shelf."""
 
         if not order.product_list:
-            self.get_logger().warn("No product list in order.")
+            self.log_to_central("WARN", "No product list in order.")
             return
 
         self.update_inventory_status(order)
@@ -117,7 +117,7 @@ class SharedMemoryNode(Node):
 
     def update_inventory_status(self, order):
         if not self.shelves:
-            self.get_logger().info("No shelves available to update inventory.")
+            self.log_to_central("INFO", "No shelves available to update inventory.")
             return
 
         for product in order.product_list:
@@ -125,8 +125,8 @@ class SharedMemoryNode(Node):
                 if shelf.shelf_id == product.shelf_id:
                     shelf.current_inventory -= product.quantity
                     self.shelves[idx] = shelf
-                    self.get_logger().info(
-                        f"📉 Inventory updated: {shelf.current_inventory} items of type {shelf.product} left on shelf {shelf.shelf_id}")
+                    self.log_to_central(
+                        "INFO", f"📉 Inventory updated: {shelf.current_inventory} items of type {shelf.product} left on shelf {shelf.shelf_id}")
 
     def fleet_status_callback(self, msg):
         self.robots = msg.robot_status_list
@@ -143,7 +143,7 @@ class SharedMemoryNode(Node):
             if shelf_id == shelf.shelf_id:
                 response = shelf
                 shelf_found = True
-                self.get_logger().info(f"Query successful for shelf_id: {shelf_id}")
+                self.log_to_central("INFO", f"Query successful for shelf_id: {shelf_id}")
                 break
 
         if not shelf_found:
@@ -158,7 +158,7 @@ class SharedMemoryNode(Node):
             response.shelf_location = default_pose
             response.shelf_capacity = 0
             response.current_inventory = 0
-            self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
+            self.log_to_central("WARN", f"Shelf_id {shelf_id} not found in database.")
 
         return response
 
@@ -171,7 +171,7 @@ class SharedMemoryNode(Node):
             if robot_id == robot.robot_id:
                 response = robot
                 robot_found = True
-                self.get_logger().info(f"Query successful for robot_id: {robot_id}")
+                self.log_to_central("INFO", f"Query successful for robot_id: {robot_id}")
                 break
 
         if not robot_found:
@@ -187,7 +187,7 @@ class SharedMemoryNode(Node):
             response.current_location = default_pose
             response.battery_level = 0
             response.is_available = False
-            self.get_logger().warn(f"Robot_id {robot_id} not found in database.")
+            self.log_to_central("WARN", f"Robot_id {robot_id} not found in database.")
         return response
 
     def inventory_update_callback(self, request, response):
@@ -203,34 +203,34 @@ class SharedMemoryNode(Node):
             if shelf_id == shelf.shelf_id:
                 self.shelves[index].current_inventory = new_inventory
                 response.success = True
-                self.get_logger().info(f"Inventory updated for shelf_id: {shelf_id}")
+                self.log_to_central("INFO", f"Inventory updated for shelf_id: {shelf_id}")
                 break
         if not response.success:
-            self.get_logger().warn(f"Shelf_id {shelf_id} not found in database.")
+            self.log_to_central("WARN", f"Shelf_id {shelf_id} not found in database.")
 
         return response
 
     def get_fleet_status_callback(self, request, response):
 
         if not self.robots:
-            print("NO Robot Data")
+            self.log_to_central("WARN", "NO Robot Data")
             return
 
         response.robot_status_list = self.robots
 
-        self.get_logger().info('Returning RobotFleetStatus.')
+        self.log_to_central("INFO", 'Returning RobotFleetStatus.')
         return response
 
     def get_shelf_list_callback(self, request, response):
 
         if not self.shelves:
-            self.get_logger().warn("NO Shelf Data to return.")
+            self.log_to_central("WARN", "NO Shelf Data to return.")
             response.shelf_status_list = []
             return response
 
         response.shelf_status_list = self.shelves
 
-        self.get_logger().info("Returning ShelfList with {} shelves.".format(len(self.shelves)))
+        self.log_to_central("INFO", "Returning ShelfList with {} shelves.".format(len(self.shelves)))
         return response
 
     def get_drop_off_pose_callback(self, request, response):
@@ -243,7 +243,7 @@ class SharedMemoryNode(Node):
         """
         self.database.update({"shelves": self.shelves})
         self.database.update({"robots": self.robots})
-        self.get_logger().info("Current Database State:")
+        self.log_to_central("INFO", "Current Database State:")
         #print(self.database)
 
 
