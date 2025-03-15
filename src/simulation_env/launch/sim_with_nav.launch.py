@@ -22,7 +22,7 @@ def generate_launch_description():
     # Namespace and number of robots
     namespace = "robot"
 
-    number_of_robots = LaunchConfiguration("number_of_robots", default="2")
+    number_of_robots = LaunchConfiguration("number_of_robots", default="3")
     declare_number_of_robots = DeclareLaunchArgument(
         name="number_of_robots",
         default_value=number_of_robots,
@@ -38,7 +38,7 @@ def generate_launch_description():
     robots = [
         {
             "name": f"{namespace}_{i+1}",
-            "x_pose": str(i * 0.75),
+            "x_pose": str((i - 2) * 0.75),
             "y_pose": "-0.4",
             "z_pose": "0.01",
         }

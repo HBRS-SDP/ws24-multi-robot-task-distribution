@@ -10,7 +10,7 @@ def generate_launch_description():
     # Declare the num_of_robots argument
     num_of_robots_arg = DeclareLaunchArgument(
         'num_of_robots',
-        default_value='2',
+        default_value='3',
         description='Number of robots to spawn'
     )
 
@@ -36,7 +36,7 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(sim_with_nav_launch_path),
             launch_arguments={
-                'enable_rviz': 'false',
+                'enable_rviz': 'true',
                 'number_of_robots': num_of_robots
             }.items()
         ),
