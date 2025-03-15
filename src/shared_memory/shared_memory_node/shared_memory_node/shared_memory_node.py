@@ -4,6 +4,7 @@ from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSHistoryPolicy, QoSReli
 from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus, GetShelfList, GetPose
 from robot_interfaces.msg import ShelfStatus, FleetStatus, Order
 from geometry_msgs.msg import Pose
+from std_msgs.msg import String
 from ament_index_python.packages import get_package_share_directory
 import json
 import os
@@ -40,6 +41,9 @@ class SharedMemoryNode(Node):
         self.order_end_sub = self.create_subscription(Order, '/end_order', self.order_end_callback, 10)
         self.fleet_status_sub = self.create_subscription(FleetStatus, '/fleet_status', self.fleet_status_callback,
                                                          qos_profile=qos_profile)
+        
+        # Publishers
+        self.log_publisher = self.create_publisher(String, '/central_logs', 10)
 
         # Services
         self.database_query_service = self.create_service(
@@ -56,6 +60,12 @@ class SharedMemoryNode(Node):
             GetPose, '/get_drop_off_pose', self.get_drop_off_pose_callback)
 
         self.get_logger().info("Database Module is ready.")
+
+    def log_to_central(self, level, message, robot_namespace=None, log_source="SharedMemory"):
+        """Publishes logs to the central logging topic."""
+        log_msg = String()
+        log_msg.data = f"SharedMemory|{level}|{message}"
+        self.log_publisher.publish(log_msg)
 
     def load_inventory(self, database_file):
         """Reads inventory data from the CSV file and stores it in a dictionary."""
@@ -117,6 +127,7 @@ class SharedMemoryNode(Node):
                     self.shelves[idx] = shelf
                     self.get_logger().info(
                         f"📉 Inventory updated: {shelf.current_inventory} items of type {shelf.product} left on shelf {shelf.shelf_id}")
+
     def fleet_status_callback(self, msg):
         self.robots = msg.robot_status_list
 
