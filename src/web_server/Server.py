@@ -229,10 +229,37 @@ def submit_order():
                            orders=orders, 
                            success_message="Order placed successfully!")
 
-@app.route('/delete_order/<int:order_id>', methods=['POST'])
-def delete_order(order_id):
-    global orders
-    orders = [order for order in orders if order['order_id'] != order_id]
+@app.route('/repeat_order/<int:order_id>', methods=['POST'])
+def repeat_order(order_id):
+    global orders, available_shelves, shelf_to_product
+
+    order_to_repeat = next((order for order in orders if order['order_id'] == order_id), None)
+
+    if not order_to_repeat:
+        return jsonify({"success": False, "error": "Order not found"}), 404
+
+    new_order_id = len(orders) + 1
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    new_order = {
+        'order_id': new_order_id,
+        'shelves': order_to_repeat['shelves'],  
+        'timestamp': timestamp
+    }
+
+    orders.append(new_order)
+
+    order_msg = Order()
+    for shelf in new_order['shelves']:
+        product = Product()
+        product.shelf_id = shelf['shelf_id']
+        product.quantity = shelf['quantity']
+        order_msg.product_list.append(product)
+
+    publisher.publish(order_msg)  
+
+    print(f"[DEBUG] Repeated Order {new_order_id} published: {new_order}")
+
     return redirect(url_for('index'))
 
 def run_flask():

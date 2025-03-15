@@ -25,8 +25,8 @@ def generate_launch_description():
     )
 
     # Dynamically get the path to the Server.py script
-    package_share_directory = get_package_share_directory('web_server')
-    server_script_path = os.path.join(package_share_directory, 'web_server', 'Server.py')
+    # package_share_directory = get_package_share_directory('web_server')
+    # server_script_path = os.path.join(package_share_directory, 'web_server', 'Server.py')
 
     return LaunchDescription([
         # Declare the num_of_robots argument
@@ -36,7 +36,7 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(sim_with_nav_launch_path),
             launch_arguments={
-                'enable_rviz': 'true',
+                'enable_rviz': 'false',
                 'number_of_robots': num_of_robots
             }.items()
         ),
@@ -74,9 +74,9 @@ def generate_launch_description():
             output='screen'
         ),
 
-        # Execute the Server.py script using python3
-        ExecuteProcess(
-            cmd=['python3', server_script_path],
-            output='screen'
-        ),
+        # # Execute the Server.py script using python3
+        # ExecuteProcess(
+        #     cmd=['python3', server_script_path],
+        #     output='screen'
+        # ),
     ])
