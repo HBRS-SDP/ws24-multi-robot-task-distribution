@@ -129,10 +129,8 @@
                     <thead>
                         <tr>
                             <th>Timestamp</th>
-                            <th>Level</th>
-                            <th>Robot ID</th>
-                            <th>Robot Pose</th>
-                            <th>Log Source</th>
+                            <th>Log Level</th>
+                            <th>Node</th>
                             <th>Message</th>
                         </tr>
                     </thead>
@@ -166,7 +164,7 @@
             let shelfSelects = document.getElementsByName('shelf_id[]');
             for (let select of shelfSelects) {
                 if (select.value === "") {
-                    alert("🚨 Please select a valid product before submitting!");
+                    alert("Please select a valid product before submitting!");
                     return false;
                 }
             }
@@ -217,7 +215,7 @@
         const newInventory = document.getElementById('newInventory').value;
 
         if (!shelfId || newInventory === "") {
-            alert("⚠️ Please select a shelf and enter a valid inventory amount.");
+            alert("Please select a shelf and enter a valid inventory amount.");
             return;
         }
 
@@ -232,12 +230,12 @@
                 alert(`✅ Inventory updated successfully!`);
                 updateInventory(); // Refresh inventory table
             } else {
-                alert(`❌ Error: ${data.error}`);
+                alert(`Error: ${data.error}`);
             }
         })
         .catch(error => {
             console.error('Error updating inventory:', error);
-            alert("❌ Error updating inventory. Check console for details.");
+            alert("Error updating inventory. Check console for details.");
         });
     }
 
@@ -251,10 +249,8 @@
                         tbody.innerHTML += `
                             <tr>
                                 <td>${log.timestamp}</td>
-                                <td>${log.level}</td>
-                                <td>${log.robot_id}</td>
-                                <td>${log.robot_pose}</td>
-                                <td>${log.log_source}</td>
+                                <td>${log.log_level}</td>
+                                <td>${log.node}</td>
                                 <td>${log.message}</td>
                             </tr>
                         `;
@@ -285,7 +281,7 @@
 
 
         setInterval(updateInventory, 5000);
-        setInterval(updateLogs, 5000);
+        setInterval(updateLogs, 1000);
         setInterval(updateRobotStatus, 500);
         
         updateInventory();

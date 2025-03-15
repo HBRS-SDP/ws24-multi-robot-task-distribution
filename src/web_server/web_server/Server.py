@@ -9,32 +9,19 @@ import csv
 import time
 
 rclpy.init()
-node = Node('order_publisher')
+node = Node('web_server')
 
 publisher = node.create_publisher(Order, '/order_requests', 10)
-
 shelf_list_client = node.create_client(GetShelfList, '/get_shelf_list')
-
 inventory_update_client = node.create_client(InventoryUpdate, '/update_inventory')
 
 app = Flask(__name__)
 
 orders = []
-
 available_shelves = []
 shelf_to_product = {}
 robot_status_data = {}
-
-def read_logs():
-    logs = []
-    try:
-        with open('fleet_manager_log.csv', mode='r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                logs.append(row)
-    except FileNotFoundError:
-        print("Log file not found.")
-    return logs
+logs_list = []
     
 def fleet_status_callback(msg):
     global robot_status_data
@@ -44,9 +31,7 @@ def fleet_status_callback(msg):
             "battery_level": robot.battery_level,
             "status": "idle" if robot.is_available else "occupied"
         }
-    #print("Updated robot status:", robot_status_data)  # Debugging output
 
-# Subscribe to fleet status topic
 node.create_subscription(FleetStatus, 'fleet_status', fleet_status_callback, 10)
 
 def get_shelf_list_callback(response):
@@ -54,14 +39,14 @@ def get_shelf_list_callback(response):
     available_shelves = [shelf for shelf in response.shelf_status_list if shelf.current_inventory > 0]
     shelf_to_product = {shelf.shelf_id: shelf.product for shelf in available_shelves}
     
-    print(f"Updated Shelves: {available_shelves}")
-    print(f"Shelf to Product Mapping: {shelf_to_product}")
+    #print(f"Updated Shelves: {available_shelves}")
+    #print(f"Shelf to Product Mapping: {shelf_to_product}")
 
 
 def fetch_shelf_data():
     while rclpy.ok():
         if shelf_list_client.wait_for_service(timeout_sec=1.0):
-            print("🔄 [DEBUG] Service available. Requesting shelf data...")
+            print("[DEBUG] Service available. Requesting shelf data...")
 
             request = GetShelfList.Request()
             future = shelf_list_client.call_async(request)
@@ -88,29 +73,39 @@ def fetch_shelf_data():
             print("Service not available, retrying...")
 
 @app.route('/')
-def index():
-    logs = read_logs() 
+def index(): 
     global available_shelves, shelf_to_product
 
-    # Wait up to 10 seconds for shelves to be available
     attempts = 5
     while not available_shelves and attempts > 0:
         print("[DEBUG] Waiting for shelves to be fetched...")
         time.sleep(2)
         attempts -= 1 
     print(f"Sending to HTML: {available_shelves}")
-    return render_template('index.html', available_shelves=available_shelves, shelf_to_product=shelf_to_product, orders=orders, logs=logs)
+    return render_template('index.html', available_shelves=available_shelves, shelf_to_product=shelf_to_product, orders=orders, logs=logs_list)
 
-@app.route('/get_logs')
+@app.route('/add_log', methods=['POST'])
+def add_log():
+    """Receive logs from Central Logger and store them."""
+    log_data = request.json
+    logs_list.append(log_data)  # Store in memory
+
+    # Save log to CSV file
+    with open("web_logs.csv", mode="a", newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([log_data["timestamp"], log_data["node"], log_data["log_level"], log_data["message"]])
+
+    return jsonify({"success": True}), 200
+
+@app.route('/get_logs', methods=['GET'])
 def get_logs():
-    logs = read_logs() 
-    return jsonify(logs)
     
+    return jsonify(logs_list)
+
 @app.route('/get_inventory')
 def get_inventory():
     global available_shelves
 
-    # Request shelf data from ROS
     request = GetShelfList.Request()
     future = shelf_list_client.call_async(request)
     rclpy.spin_until_future_complete(node, future)
@@ -140,7 +135,7 @@ def get_robot_status():
 def update_inventory():
     try:
         
-        request_data = request.get_json()  # Renamed 'request' to 'request_data'
+        request_data = request.get_json()  
 
         if not request_data or 'shelf_id' not in request_data or 'new_inventory' not in request_data:
             return jsonify({"success": False, "error": "Invalid request data"}), 400
@@ -148,8 +143,8 @@ def update_inventory():
         shelf_id = int(request_data['shelf_id'])
         new_inventory = int(request_data['new_inventory'])
 
-        # Call the ROS service to update inventory in shared memory
-        request_msg = InventoryUpdate.Request()  # Create a new request message
+        
+        request_msg = InventoryUpdate.Request()
         request_msg.shelf_id = shelf_id
         request_msg.new_inventory = new_inventory
 
@@ -158,9 +153,9 @@ def update_inventory():
         response = future.result()
 
         if response.success:
-            return jsonify({"success": True, "message": f"✅ Inventory updated for shelf {shelf_id} to {new_inventory}"}), 200
+            return jsonify({"success": True, "message": f"Inventory updated for shelf {shelf_id} to {new_inventory}"}), 200
         else:
-            return jsonify({"success": False, "error": "❌ Shelf ID not found in shared memory"}), 404
+            return jsonify({"success": False, "error": "Shelf ID not found in shared memory"}), 404
 
     except Exception as e:
         return jsonify({"success": False, "error": f"Internal Server Error: {str(e)}"}), 500

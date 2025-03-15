@@ -3,6 +3,7 @@ from rclpy.node import Node
 from std_msgs.msg import String
 import csv
 import os
+import requests
 from datetime import datetime
 
 class CentralLogger(Node):
@@ -15,7 +16,6 @@ class CentralLogger(Node):
 
         self.log_file = os.path.join(log_dir, 'central_log.csv')
 
-        # Create CSV file with headers if not exists
         if not os.path.isfile(self.log_file):
             with open(self.log_file, mode='w', newline='') as file:
                 writer = csv.writer(file)
@@ -33,10 +33,27 @@ class CentralLogger(Node):
                 writer = csv.writer(file)
                 writer.writerow([timestamp, node_name, log_level, message])
 
-            self.get_logger().info(f"Logged from {node_name}: {message}")
+            self.send_log_to_web(timestamp, node_name, log_level, message)
 
         except Exception as e:
             self.get_logger().error(f"Error processing log message: {e}")
+
+    def send_log_to_web(self, timestamp, node, log_level, message):
+        
+        try:
+            log_data = {
+                "timestamp": timestamp,
+                "node": node,
+                "log_level": log_level,
+                "message": message
+            }
+            response = requests.post("http://localhost:5000/add_log", json=log_data)
+            if response.status_code == 200:
+                self.get_logger().info("Log successfully sent to web server")
+            else:
+                self.get_logger().error(f"Failed to send log: {response.status_code}")
+        except Exception as e:
+            self.get_logger().error(f"Error sending log to web: {e}")
 
 def main(args=None):
     rclpy.init(args=args)
