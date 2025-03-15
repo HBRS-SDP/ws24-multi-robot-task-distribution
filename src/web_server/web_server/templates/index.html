@@ -30,6 +30,19 @@
             <!-- Orders Tab -->
             <div class="tab-pane fade show active" id="orders">
                 <h3>Orders</h3>
+                
+                <!-- Display error messages dynamically -->
+		{% if error_message %}
+		    <div class="alert alert-danger" role="alert">
+			{{ error_message }}
+		    </div>
+		{% endif %}
+
+		{% if success_message %}
+		    <div class="alert alert-success" role="alert">
+			{{ success_message }}
+		    </div>
+		{% endif %}
 
                 <form action="/submit_order" method="post" onsubmit="return validateOrderForm();">
                     <h4>New Order</h4>
@@ -129,10 +142,8 @@
                     <thead>
                         <tr>
                             <th>Timestamp</th>
-                            <th>Level</th>
-                            <th>Robot ID</th>
-                            <th>Robot Pose</th>
-                            <th>Log Source</th>
+                            <th>Log Level</th>
+                            <th>Node</th>
                             <th>Message</th>
                         </tr>
                     </thead>
@@ -162,14 +173,32 @@
     </div>
 
     <script>
-        function validateOrderForm() {
+        async function validateOrderForm() {
             let shelfSelects = document.getElementsByName('shelf_id[]');
-            for (let select of shelfSelects) {
-                if (select.value === "") {
-                    alert("🚨 Please select a valid product before submitting!");
+            let quantityInputs = document.getElementsByName('quantity[]');
+
+            let inventoryData = await fetch('/get_inventory').then(res => res.json());
+
+            let inventoryMap = {};
+            inventoryData.forEach(shelf => {
+                inventoryMap[shelf.shelf_id] = shelf.current_inventory;
+            });
+
+            for (let i = 0; i < shelfSelects.length; i++) {
+                let shelfId = shelfSelects[i].value;
+                let quantity = quantityInputs[i].value;
+
+                if (!shelfId || quantity <= 0) {
+                    alert("Please enter a valid quantity for all selected products!");
+                    return false;
+                }
+
+                if (shelfId in inventoryMap && quantity > inventoryMap[shelfId]) {
+                    alert(`Only ${inventoryMap[shelfId]} items available in stock for selected product.`);
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -211,13 +240,13 @@
         }
         
         function submitInventoryUpdate(event) {
-        event.preventDefault(); // 🚀 Prevent form from refreshing the page
+        event.preventDefault(); 
 
         const shelfId = document.getElementById('shelfSelect').value;
         const newInventory = document.getElementById('newInventory').value;
 
         if (!shelfId || newInventory === "") {
-            alert("⚠️ Please select a shelf and enter a valid inventory amount.");
+            alert("Please select a shelf and enter a valid inventory amount.");
             return;
         }
 
@@ -230,14 +259,14 @@
         .then(data => {
             if (data.success) {
                 alert(`✅ Inventory updated successfully!`);
-                updateInventory(); // Refresh inventory table
+                updateInventory(); 
             } else {
-                alert(`❌ Error: ${data.error}`);
+                alert(`Error: ${data.error}`);
             }
         })
         .catch(error => {
             console.error('Error updating inventory:', error);
-            alert("❌ Error updating inventory. Check console for details.");
+            alert("Error updating inventory. Check console for details.");
         });
     }
 
@@ -251,10 +280,8 @@
                         tbody.innerHTML += `
                             <tr>
                                 <td>${log.timestamp}</td>
-                                <td>${log.level}</td>
-                                <td>${log.robot_id}</td>
-                                <td>${log.robot_pose}</td>
-                                <td>${log.log_source}</td>
+                                <td>${log.log_level}</td>
+                                <td>${log.node}</td>
                                 <td>${log.message}</td>
                             </tr>
                         `;
@@ -282,10 +309,16 @@
                 })
                 .catch(error => console.error('Error fetching robot status:', error));
         }
-
+        
+        setTimeout(function() {
+           let alertBox = document.querySelector(".alert");
+           if (alertBox) {
+               alertBox.style.display = "none";
+           }
+        }, 5000);
 
         setInterval(updateInventory, 5000);
-        setInterval(updateLogs, 5000);
+        setInterval(updateLogs, 1000);
         setInterval(updateRobotStatus, 500);
         
         updateInventory();
