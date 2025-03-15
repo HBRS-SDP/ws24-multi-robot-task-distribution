@@ -7,6 +7,7 @@ import threading
 from datetime import datetime
 import csv
 import time
+import webbrowser
 
 rclpy.init()
 node = Node('web_server')
@@ -38,10 +39,6 @@ def get_shelf_list_callback(response):
     global available_shelves, shelf_to_product
     available_shelves = [shelf for shelf in response.shelf_status_list if shelf.current_inventory > 0]
     shelf_to_product = {shelf.shelf_id: shelf.product for shelf in available_shelves}
-    
-    #print(f"Updated Shelves: {available_shelves}")
-    #print(f"Shelf to Product Mapping: {shelf_to_product}")
-
 
 def fetch_shelf_data():
     while rclpy.ok():
@@ -86,20 +83,13 @@ def index():
 
 @app.route('/add_log', methods=['POST'])
 def add_log():
-    """Receive logs from Central Logger and store them."""
     log_data = request.json
     logs_list.append(log_data)  # Store in memory
-
-    # Save log to CSV file
-    with open("web_logs.csv", mode="a", newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([log_data["timestamp"], log_data["node"], log_data["log_level"], log_data["message"]])
 
     return jsonify({"success": True}), 200
 
 @app.route('/get_logs', methods=['GET'])
 def get_logs():
-    
     return jsonify(logs_list)
 
 @app.route('/get_inventory')
@@ -138,11 +128,10 @@ def update_inventory():
         request_data = request.get_json()  
 
         if not request_data or 'shelf_id' not in request_data or 'new_inventory' not in request_data:
-            return jsonify({"success": False, "error": "Invalid request data"}), 400
+             return jsonify({"success": False, "error": "Invalid request data"}), 400
 
         shelf_id = int(request_data['shelf_id'])
         new_inventory = int(request_data['new_inventory'])
-
         
         request_msg = InventoryUpdate.Request()
         request_msg.shelf_id = shelf_id
@@ -160,76 +149,82 @@ def update_inventory():
     except Exception as e:
         return jsonify({"success": False, "error": f"Internal Server Error: {str(e)}"}), 500
 
-
-
 @app.route('/submit_order', methods=['POST'])
 def submit_order():
+    
+    global orders, available_shelves, shelf_to_product
     
     shelf_ids = request.form.getlist('shelf_id[]')
     quantities = request.form.getlist('quantity[]')
 
-    product_list = []
+    # Fetch current inventory data
+    request_msg = GetShelfList.Request()
+    future = shelf_list_client.call_async(request_msg)
+    rclpy.spin_until_future_complete(node, future)
+    response = future.result()
+
+    if not response:
+        return render_template('index.html', 
+                               available_shelves=available_shelves, 
+                               shelf_to_product=shelf_to_product, 
+                               orders=orders, 
+                               error_message="Failed to fetch inventory data.")
+
+    inventory_map = {shelf.shelf_id: shelf.current_inventory for shelf in response.shelf_status_list}
+
     shelves = []
+    error_messages = []
+    
     for shelf_id, quantity in zip(shelf_ids, quantities):
         try:
-            shelf_id = int(shelf_id)
-            quantity = int(quantity)
+            shelf_id, quantity = int(shelf_id), int(quantity)
 
             if shelf_id > 0 and quantity > 0:
-                shelves.append({'shelf_id': shelf_id, 'quantity': quantity})
-                product = Product()
-                product.shelf_id = shelf_id
-                product.quantity = quantity
-                product_list.append(product)
-            else:
-                print(f"Ignored invalid shelf ID {shelf_id} or quantity {quantity}")
+                
+                if shelf_id in inventory_map and quantity <= inventory_map[shelf_id]:
+                    shelves.append({'shelf_id': shelf_id, 'quantity': quantity})
+                else:
+                    product_name = shelf_to_product.get(shelf_id, "Unknown Product")
+                    error_messages.append(f"Only {inventory_map.get(shelf_id, 0)} items available for product '{product_name}'!")
+                   
         except ValueError:
-            print(f"Error: Invalid data for shelf_id {shelf_id}")
             continue
-            
+
+    if error_messages:
+        return render_template('index.html', 
+                               available_shelves=available_shelves, 
+                               shelf_to_product=shelf_to_product, 
+                               orders=orders, 
+                               error_message="<br>".join(error_messages))  # Joining errors with line breaks
+
     if not shelves:
-        print("No valid shelves in order submission! Rejecting order.")
-        return "Error: No valid shelves selected!", 400
+        return render_template('index.html', 
+                               available_shelves=available_shelves, 
+                               shelf_to_product=shelf_to_product, 
+                               orders=orders, 
+                               error_message="No valid products in the order!")
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
+    # Create and publish order
     order_id = len(orders) + 1
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     order = {'order_id': order_id, 'shelves': shelves, 'timestamp': timestamp}
     orders.append(order)
 
     order_msg = Order()
-    order_msg.product_list = product_list
+    for shelf in shelves:
+        product = Product()
+        product.shelf_id = shelf['shelf_id']
+        product.quantity = shelf['quantity']
+        order_msg.product_list.append(product)
+
     publisher.publish(order_msg)
 
-    print(f"Published Order: {order_msg}")
-    
-    save_order_to_csv(order)
-
-    # Log the published order
-    #node.get_logger().info(f"Published Order: {order}")
-
-    return redirect(url_for('index'))
-
-def save_order_to_csv(order):
-    
-    file_name = 'published_orders.csv'
-    file_exists = False
-    try:
-        with open(file_name, mode='r'):
-            file_exists = True
-    except FileNotFoundError:
-        file_exists = False
-
-    if not file_exists:
-        with open(file_name, mode='w', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=['order_id', 'timestamp', 'shelf_id', 'quantity'])
-            writer.writeheader()
-
-    with open(file_name, mode='a', newline='') as file:
-        writer = csv.writer(file)
-        for shelf in order['shelves']:
-            writer.writerow([order['order_id'], order['timestamp'], shelf['shelf_id'], shelf['quantity']])
+    return render_template('index.html', 
+                           available_shelves=available_shelves, 
+                           shelf_to_product=shelf_to_product, 
+                           orders=orders, 
+                           success_message="Order placed successfully!")
 
 @app.route('/delete_order/<int:order_id>', methods=['POST'])
 def delete_order(order_id):
@@ -238,7 +233,11 @@ def delete_order(order_id):
     return redirect(url_for('index'))
 
 def run_flask():
-    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
+    url = "http://127.0.0.1:5000/"
+    flask_thread = threading.Thread(target=lambda: app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False))
+    flask_thread.start()
+    time.sleep(3)
+    webbrowser.open(url)
 
 def run_ros():
     fetch_shelf_data() 
