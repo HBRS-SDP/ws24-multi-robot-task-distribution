@@ -1,3 +1,64 @@
+"""
+fleet_manager.py
+
+This module implements the FleetManager class, which is responsible for managing a fleet of robots in a multi-robot task distribution system. 
+The FleetManager node handles robot status, task assignment, and communication with robots using ROS 2.
+
+Classes:
+    FleetManager(Node): A ROS 2 node that manages a fleet of robots, including their status, task assignments, and communication.
+
+Functions:
+    main(args=None): Initializes the FleetManager node and starts the ROS 2 event loop.
+
+FleetManager Class:
+    Methods:
+        __init__(num_robots): Initializes the FleetManager node, sets up robot data structures, subscriptions, publishers, and services.
+        log_to_central(level, message, robot_namespace=None, log_source="FleetManager"): Publishes logs to a central logging topic.
+        odom_callback(msg, robot_name): Updates the location of a robot based on Odometry messages.
+        publish_fleet_status(): Publishes the current status of the fleet to the 'fleet_status' topic.
+        handle_task_list(request, response): Handles incoming task list service requests and assigns tasks to robots.
+        create_waypoints(task_list): Converts a list of tasks into waypoints for robot navigation.
+        send_goal(robot_namespace, waypoints): Sends a navigation goal to a robot using the FollowWaypoints action.
+        feedback_callback(feedback_msg, goal_id): Handles feedback from the robot during task execution.
+        goal_response_callback(future, robot_namespace, client): Handles the response to a goal request, updating robot availability.
+        get_result_callback(future, robot_namespace): Processes the result of a completed goal and updates robot status.
+
+Usage:
+    This script is intended to be run as a ROS 2 node. It manages a fleet of robots, assigns tasks, and monitors their progress.
+    To run the node, execute the script directly:
+        $ python3 fleet_manager.py
+
+Dependencies:
+    - ROS 2 (rclpy)
+    - nav_msgs.msg (Odometry)
+    - geometry_msgs.msg (Pose, PoseStamped)
+    - nav2_msgs.action (FollowWaypoints)
+    - robot_interfaces.msg (RobotStatus, Task, FleetStatus)
+    - robot_interfaces.srv (TaskList)
+    - std_msgs.msg (String)
+    - uuid (for generating unique goal IDs)
+
+Parameters:
+    - num_robots (int): The number of robots in the fleet. This parameter is retrieved from the ROS 2 parameter server.
+
+Topics:
+    - /central_logs (String): Publishes logs for centralized monitoring.
+    - /<robot_name>/odom (Odometry): Subscribes to robot odometry data.
+    - fleet_status (FleetStatus): Publishes the status of the fleet.
+
+Services:
+    - task_list (TaskList): Handles task assignment requests.
+
+Actions:
+    - /<robot_name>/follow_waypoints (FollowWaypoints): Sends navigation goals to robots.
+
+Example:
+    To run the FleetManager node with 3 robots:
+        1. Set the 'num_robots' parameter to 3 in the ROS 2 parameter server.
+        2. Run the script:
+            $ python3 fleet_manager.py
+"""
+
 import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient

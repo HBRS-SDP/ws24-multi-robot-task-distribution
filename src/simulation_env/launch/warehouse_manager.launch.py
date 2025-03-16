@@ -1,16 +1,36 @@
+"""
+Launch file for managing a warehouse simulation with multiple robots.
+
+This launch file performs the following tasks:
+1. Declares a launch argument:
+   - `num_of_robots`: Specifies the number of robots to spawn in the simulation (default: 3).
+
+2. Launches the following nodes:
+   - `logger_node`: Logs simulation events and data.
+   - `fleet_manager_node`: Manages the fleet of robots, with the number of robots specified by the `num_of_robots` parameter.
+   - `shared_memory_node`: Handles shared memory for inter-process communication.
+   - `task_manager_node`: Manages tasks and distributes them among the robots.
+
+Dependencies:
+- `logger`: Provides the `logger` node for logging.
+- `fleet_manager`: Provides the `fleet_manager` node for robot fleet management.
+- `shared_memory_node`: Provides the `shared_memory_node` for shared memory operations.
+- `task_management`: Provides the `task_manager_node` for task distribution.
+
+Returns:
+    LaunchDescription: The complete launch description for the warehouse manager.
+"""
+
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, ExecuteProcess
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
-from ament_index_python.packages import get_package_share_directory
-import os
 
 def generate_launch_description():
     # Declare the num_of_robots argument
     num_of_robots_arg = DeclareLaunchArgument(
         'num_of_robots',
-        default_value='3',
+        default_value='2',
         description='Number of robots to spawn'
     )
 
