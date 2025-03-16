@@ -88,9 +88,9 @@
                                 {% endfor %}
                             </td>
                             <td>
-                                <form action="/delete_order/{{ order['order_id'] }}" method="POST">
-                                    <button class="btn btn-danger btn-sm">Delete</button>
-                                </form>
+                                <form action="/repeat_order/{{ order['order_id'] }}" method="POST" class="d-inline">
+				    <button class="btn btn-warning btn-sm">Repeat</button>
+			        </form>
                             </td>
                         </tr>
                         {% endfor %}

@@ -53,10 +53,4 @@ def generate_launch_description():
             name='task_manager_node',
             output='screen'
         ),
-
-        # Execute the Server.py script using python3
-        ExecuteProcess(
-            cmd=['python3', server_script_path],
-            output='screen'
-        ),
     ])
