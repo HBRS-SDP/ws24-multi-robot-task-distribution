@@ -1,5 +1,46 @@
 #!/usr/bin/env python3
 
+"""
+Launch file for simulating multiple TurtleBot3 robots with navigation in Gazebo.
+
+This launch file performs the following tasks:
+1. Declares launch arguments for configuring the simulation:
+   - `number_of_robots`: Number of robots to spawn (default: 2).
+   - `use_sim_time`: Whether to use simulation time (default: false).
+   - `enable_drive`: Whether to enable the robot drive node (default: false).
+   - `enable_rviz`: Whether to enable RViz visualization (default: true).
+   - `rviz_config_file`: Path to the RViz configuration file.
+   - `nav_params_file`: Path to the navigation parameters file.
+
+2. Sets up the Gazebo simulation environment:
+   - Includes Gazebo server and client launch files.
+   - Loads the simulation world file.
+
+3. Spawns multiple TurtleBot3 robots in Gazebo:
+   - Generates robot namespaces and positions dynamically based on the number of robots.
+   - Spawns each robot with its URDF model and state publisher.
+   - Ensures sequential spawning of robots using event handlers.
+
+4. Configures navigation for each robot:
+   - Launches the navigation stack for each robot with its namespace.
+   - Publishes initial pose topics for each robot.
+
+5. Optionally launches RViz and drive nodes for each robot:
+   - RViz is launched if `enable_rviz` is true.
+   - Drive nodes are launched if `enable_drive` is true.
+
+6. Handles remapping of `/tf` and `/tf_static` topics to avoid conflicts.
+
+Dependencies:
+- `turtlebot3_multi_robot`: Provides URDF models and navigation configurations.
+- `simulation_env`: Provides the simulation world and RViz configuration.
+- `robot_navigation`: Provides navigation parameters and behavior trees.
+- `gazebo_ros`: Provides Gazebo integration with ROS2.
+
+Returns:
+    LaunchDescription: The complete launch description for the simulation.
+"""
+
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -22,7 +63,7 @@ def generate_launch_description():
     # Namespace and number of robots
     namespace = "robot"
 
-    number_of_robots = LaunchConfiguration("number_of_robots", default="3")
+    number_of_robots = LaunchConfiguration("number_of_robots", default="2")
     declare_number_of_robots = DeclareLaunchArgument(
         name="number_of_robots",
         default_value=number_of_robots,
@@ -45,7 +86,7 @@ def generate_launch_description():
         for i in range(num_robots)
     ]
 
-    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
+    use_sim_time = LaunchConfiguration("use_sim_time", default="false")
     declare_use_sim_time = DeclareLaunchArgument(
         name="use_sim_time",
         default_value=use_sim_time,

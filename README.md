@@ -84,33 +84,74 @@ colcon build --symlink-install
 
 ## Launching the System
 
-Source the workspace and launch the nodes:
+To start the system, follow these steps:
+
+### 1. Source the Workspace
+
+Before launching any nodes, ensure the workspace is sourced:
 
 ```bash
-# Source the workspace
 source ~/ros_ws/install/setup.bash
 ```
 
----
+### 2. Launch the Simulation Environment
 
-## Simulation Environment
+The simulation environment replicates a warehouse with 8 shelves and includes:
+- **Gazebo**: For 3D simulation.
+- **Map Server**: For navigation.
+- **RViz**: For visualization.
 
-The simulation environment resembles a warehouse with 8 shelves. It includes:
-- Gazebo for 3D simulation.
-- A map server for navigation.
-- RViz for visualization.
+Launch the simulation environment using:
 
-Launch the simulation environment using the following command:
+```bash
+ros2 launch simulation_env sim_with_nav.launch.py
+```
+
+![Simulation Environment](docs/simulation_environment.png?raw=true)
+
+### 3. Launch the Warehouse Manager
+
+The Warehouse Manager initializes the core nodes required for the system. It includes:
+- **Logger Node**: Logs simulation events and data.
+- **Fleet Manager Node**: Manages the robot fleet, with the number of robots specified by the `num_of_robots` parameter.
+- **Shared Memory Node**: Handles shared memory for inter-process communication.
+- **Task Manager Node**: Distributes tasks among robots.
+
+Run the following command to launch the Warehouse Manager:
 
 ```bash
 ros2 launch simulation_env warehouse_manager.launch.py
 ```
 
-![Simulation Environment](docs/simulation_environment.png?raw=true)
+### 4. Start the Web Client
+
+The Web Client provides a graphical interface for managing orders and monitoring the system. It interacts with the Shared Memory to access data.
+
+Navigate to the Web Server directory and start the server:
+
+```bash
+cd ~/ros_ws/src/ws24-multi-robot-task-distribution/src/web_server
+./Server.py
+```
+
+Once started, access the Web Client through your browser to place orders and monitor the system in real-time.
 
 ---
 
 ## Architecture Overview
+This architecture represents a **multi-robot task distribution system** with the following key components:
+
+1. **Web Server**: Handles client orders via a GUI and interacts with Shared Memory for data access.
+2. **Task Manager**: Processes order requests, queries the database, and uses a task allocation algorithm to assign tasks based on robot proximity, battery, and availability.
+3. **Fleet Manager**: Manages robot statuses, aggregates fleet status, and assigns tasks to robots via a task assignment service.
+4. **Robot Fleet**: Consists of multiple robots that navigate, pick up, and drop off parcels while reporting their status to the Fleet Manager.
+5. **Shared Memory**: Stores and updates inventory, robot locations, and other critical data.
+6. **Database**: Maintains shelf locations, capacities, inventory, robot locations, and order history.
+7. **Central Logger**: Logs activities from the Task Manager, Fleet Manager, and Shared Memory for monitoring and debugging.
+
+The system ensures efficient task distribution, real-time fleet monitoring, and seamless coordination between robots, tasks, and inventory management.
+
+![Software Architecture](docs/MRTD_arch3.png)
 
 ---
 
