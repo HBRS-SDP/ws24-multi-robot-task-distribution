@@ -7,6 +7,9 @@ import threading
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
+import time
+import aiofiles
+import asyncio
 
 class CentralLogger(Node):
     def __init__(self):
@@ -26,7 +29,7 @@ class CentralLogger(Node):
         self.log_subscriber = self.create_subscription(String, '/central_logs', self.log_callback, 10)
         self.get_logger().info("Central Logger Node started, listening for logs...")
 
-        self.log_queue = deque()
+        self.log_queue = deque(maxlen=10000)  # Limit the queue size
         self.lock = threading.Lock()
 
         self.log_thread = threading.Thread(target=self.process_logs, daemon=True)
@@ -45,40 +48,38 @@ class CentralLogger(Node):
         except Exception as e:
             self.get_logger().error(f"Error processing log message: {e}")
 
-    def process_logs(self):
-        """Process log messages in a separate thread."""
-        while rclpy.ok():
-            if self.log_queue:
-                with self.lock:
-                    log_entry = self.log_queue.popleft()
-                self.write_log(log_entry)
-                self.send_log_to_web(*log_entry)
-            else:
-                rclpy.spin_once(self, timeout_sec=0.1)
-
-    def write_log(self, log_entry):
-        """Write log message to a file."""
+    async def write_logs_async(self, log_entries):
+        """Write log messages to a file asynchronously."""
         try:
-            with open(self.log_file, mode='a', newline='') as file:
+            async with aiofiles.open(self.log_file, mode='a', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow(log_entry)
+                await writer.writerows(log_entries)
         except Exception as e:
-            self.get_logger().error(f"Error writing log to file: {e}")
+            self.get_logger().error(f"Error writing logs to file: {e}")
 
-    def send_log_to_web(self, timestamp, node, log_level, message):
-        """Send log message to a web service."""
+    def send_logs_to_web(self, log_entries):
+        """Send log messages to a web service."""
         try:
-            log_data = {
-                "timestamp": timestamp,
-                "node": node,
-                "log_level": log_level,
-                "message": message
-            }
+            log_data = [{"timestamp": entry[0], "node": entry[1], "log_level": entry[2], "message": entry[3]} for entry in log_entries]
             response = requests.post("http://localhost:5000/add_log", json=log_data)
             if response.status_code != 200:
-                self.get_logger().error(f"Failed to send log to web: {response.status_code}")
+                self.get_logger().error(f"Failed to send logs to web: {response.status_code}")
         except Exception as e:
-            self.get_logger().error(f"Error sending log to web: {e}")
+            self.get_logger().error(f"Error sending logs to web: {e}")
+
+    def process_logs(self):
+        """Process log messages in a separate thread."""
+        buffer = []
+        while rclpy.ok():
+            time.sleep(10)  # Flush buffer every 10 seconds
+            with self.lock:
+                while self.log_queue:
+                    buffer.append(self.log_queue.popleft())
+
+            if buffer:
+                asyncio.run(self.write_logs_async(buffer))
+                self.send_logs_to_web(buffer)
+                buffer.clear()
 
 def main(args=None):
     rclpy.init(args=args)
