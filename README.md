@@ -111,6 +111,19 @@ ros2 launch simulation_env warehouse_manager.launch.py
 ---
 
 ## Architecture Overview
+This architecture represents a **multi-robot task distribution system** with the following key components:
+
+1. **Web Server**: Handles client orders via a GUI and interacts with Shared Memory for data access.
+2. **Task Manager**: Processes order requests, queries the database, and uses a task allocation algorithm to assign tasks based on robot proximity, battery, and availability.
+3. **Fleet Manager**: Manages robot statuses, aggregates fleet status, and assigns tasks to robots via a task assignment service.
+4. **Robot Fleet**: Consists of multiple robots that navigate, pick up, and drop off parcels while reporting their status to the Fleet Manager.
+5. **Shared Memory**: Stores and updates inventory, robot locations, and other critical data.
+6. **Database**: Maintains shelf locations, capacities, inventory, robot locations, and order history.
+7. **Central Logger**: Logs activities from the Task Manager, Fleet Manager, and Shared Memory for monitoring and debugging.
+
+The system ensures efficient task distribution, real-time fleet monitoring, and seamless coordination between robots, tasks, and inventory management.
+
+![Software Architecture](docs/MRTD_arch3.svg)
 
 ---
 
