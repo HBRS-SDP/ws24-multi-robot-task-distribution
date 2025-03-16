@@ -25,6 +25,9 @@ class SharedMemoryNode(Node):
         self.robots = []
         self.shelves = []
 
+        # Publishers
+        self.log_publisher = self.create_publisher(String, '/central_logs', 10)
+
         self.load_inventory(database_file)
         self.database["shelves"] = self.shelves
         self.database["robots"] = self.robots
@@ -42,8 +45,6 @@ class SharedMemoryNode(Node):
         self.fleet_status_sub = self.create_subscription(FleetStatus, '/fleet_status', self.fleet_status_callback,
                                                          qos_profile=qos_profile)
         
-        # Publishers
-        self.log_publisher = self.create_publisher(String, '/central_logs', 10)
 
         # Services
         self.database_query_service = self.create_service(
