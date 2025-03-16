@@ -123,7 +123,7 @@ This architecture represents a **multi-robot task distribution system** with the
 
 The system ensures efficient task distribution, real-time fleet monitoring, and seamless coordination between robots, tasks, and inventory management.
 
-![Software Architecture](docs/MRTD_arch3.svg)
+![Software Architecture](docs/MRTD_arch3.png)
 
 ---
 

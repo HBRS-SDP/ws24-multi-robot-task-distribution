@@ -22,7 +22,7 @@ def generate_launch_description():
     # Namespace and number of robots
     namespace = "robot"
 
-    number_of_robots = LaunchConfiguration("number_of_robots", default="3")
+    number_of_robots = LaunchConfiguration("number_of_robots", default="2")
     declare_number_of_robots = DeclareLaunchArgument(
         name="number_of_robots",
         default_value=number_of_robots,
@@ -45,7 +45,7 @@ def generate_launch_description():
         for i in range(num_robots)
     ]
 
-    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
+    use_sim_time = LaunchConfiguration("use_sim_time", default="false")
     declare_use_sim_time = DeclareLaunchArgument(
         name="use_sim_time",
         default_value=use_sim_time,

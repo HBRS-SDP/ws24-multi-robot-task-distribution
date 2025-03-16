@@ -17,29 +17,9 @@ def generate_launch_description():
     # Get the num_of_robots value from the launch configuration
     num_of_robots = LaunchConfiguration('num_of_robots')
 
-    # Path to the sim_with_nav.launch.py file
-    sim_with_nav_launch_path = os.path.join(
-        get_package_share_directory('simulation_env'),
-        'launch',
-        'sim_with_nav.launch.py'
-    )
-
-    # Dynamically get the path to the Server.py script
-    package_share_directory = get_package_share_directory('web_server')
-    server_script_path = os.path.join(package_share_directory, 'web_server', 'Server.py')
-
     return LaunchDescription([
         # Declare the num_of_robots argument
         num_of_robots_arg,
-
-        # Include the sim_with_nav.launch.py file with the num_of_robots argument
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(sim_with_nav_launch_path),
-            launch_arguments={
-                'enable_rviz': 'true',
-                'number_of_robots': num_of_robots
-            }.items()
-        ),
 
         # Launch the logger node
         Node(
