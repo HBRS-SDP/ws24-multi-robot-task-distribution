@@ -37,6 +37,9 @@ Dependencies:
 - `robot_navigation`: Provides navigation parameters and behavior trees.
 - `gazebo_ros`: Provides Gazebo integration with ROS2.
 
+Environment Variables:
+- `NUM_OF_ROBOTS`: Specifies the number of robots to spawn. If not set, defaults to 2.
+
 Returns:
     LaunchDescription: The complete launch description for the simulation.
 """
@@ -63,17 +66,15 @@ def generate_launch_description():
     # Namespace and number of robots
     namespace = "robot"
 
-    number_of_robots = LaunchConfiguration("number_of_robots", default="2")
-    declare_number_of_robots = DeclareLaunchArgument(
-        name="number_of_robots",
-        default_value=number_of_robots,
-        description="Number of robots",
-    )
+    # Retrieve the number of robots from an environment variable
+    num_of_robots_env = os.environ.get('NUM_OF_ROBOTS', '2')  # Default to '2' if not set
 
-    # Create a LaunchContext to evaluate LaunchConfiguration
-    context = LaunchContext()
-    number_of_robots_value = number_of_robots.perform(context)
-    num_robots = int(number_of_robots_value)
+    # Declare the num_of_robots argument
+    num_of_robots_arg = DeclareLaunchArgument(
+        'num_of_robots',
+        default_value=num_of_robots_env,
+        description='Number of robots to spawn'
+    )
 
     # Generate robots list
     robots = [
@@ -83,7 +84,7 @@ def generate_launch_description():
             "y_pose": "-0.2",
             "z_pose": "0.01",
         }
-        for i in range(num_robots)
+        for i in range(int(num_of_robots_env))  # Convert to int for iteration
     ]
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="false")
@@ -153,7 +154,7 @@ def generate_launch_description():
         description="Full path to the ROS2 parameters file to use for all launched nodes",
     )
 
-    ld.add_action(declare_number_of_robots)
+    ld.add_action(num_of_robots_arg)
     ld.add_action(declare_use_sim_time)
     ld.add_action(declare_enable_drive)
     ld.add_action(declare_enable_rviz)
