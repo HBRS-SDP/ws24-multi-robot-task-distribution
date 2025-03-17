@@ -164,7 +164,6 @@ class TaskManager(Node):
                 self.log_to_central("INFO", f'Processing order: {order}')
                 success = await self.process_order(order)
                 if not success:
-                    self.log_to_central("WARN", "Order processing failed.")
                     await asyncio.sleep(1)
             else:
                 await asyncio.sleep(1)  # Sleep if the queue is empty
@@ -173,7 +172,6 @@ class TaskManager(Node):
         """
         Asynchronously process the order by calling the two services concurrently.
         """
-        self.log_to_central("INFO", 'Calling services concurrently...')
 
         try:
             # Call the two services concurrently using asyncio.gather
@@ -339,7 +337,7 @@ class TaskManager(Node):
         Returns True if the task was successfully assigned, False otherwise.
         """
         while not self.task_assignment_client.wait_for_service(timeout_sec=1.0):
-            self.log_to_central("WARN", 'Waiting for /task_assignments service...')
+            self.log_to_central("WARN", 'Waiting for /task_list service...')
 
         request = TaskList.Request()
         request.task_list = task_list
