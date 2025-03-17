@@ -1,11 +1,11 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
-from robot_interfaces.msg import Order, Task, Product
+from robot_interfaces.msg import Order, Task, Product, Logs
 from robot_interfaces.srv import ShelfQuery, GetRobotStatus, GetRobotFleetStatus, TaskList, GetShelfList, GetPose
 from rclpy.callback_groups import ReentrantCallbackGroup
 from geometry_msgs.msg import Pose
-from std_msgs.msg import String
+from builtin_interfaces.msg import Time
 
 import asyncio
 import math
@@ -28,7 +28,7 @@ class TaskManager(Node):
 
         # Publishers
         self.order_end_publisher = self.create_publisher(Order, '/end_order', 10)
-        self.log_publisher = self.create_publisher(String, '/central_logs', 10)
+        self.log_publisher = self.create_publisher(Logs, '/central_logs', 10)
 
         # Service clients
         self.shelf_query_client = self.create_client(
@@ -60,10 +60,13 @@ class TaskManager(Node):
         self.thread.start()
 
 
-    def log_to_central(self, level, message, robot_namespace=None, log_source="TaskManager"):
+    def log_to_central(self, level, message):
         """Publishes logs to the central logging topic."""
-        log_msg = String()
-        log_msg.data = f"TaskManager|{level}|{message}"
+        log_msg = Logs()
+        log_msg.timestamp =  self.get_clock().now().to_msg()
+        log_msg.node_name = "Task Manager"
+        log_msg.log_level = level
+        log_msg.message = message
         self.log_publisher.publish(log_msg)
 
 

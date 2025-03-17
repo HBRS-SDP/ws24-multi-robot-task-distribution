@@ -18,6 +18,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Order.msg"
   "msg/Product.msg"
   "msg/Task.msg"
+  "msg/Logs.msg"
   "msg/GoalStartMsg.msg"
   "msg/GoalReachMsg.msg"
   "msg/RobotStatus.msg"

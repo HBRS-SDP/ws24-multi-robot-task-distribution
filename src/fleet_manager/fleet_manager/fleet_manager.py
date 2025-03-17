@@ -66,16 +66,16 @@ from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSHistoryPolicy, QoSReli
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Pose, PoseStamped
 from nav2_msgs.action import FollowWaypoints
-from robot_interfaces.msg import RobotStatus, Task, FleetStatus
+from robot_interfaces.msg import RobotStatus, Task, FleetStatus, Logs
 from robot_interfaces.srv import TaskList
 import uuid
-from std_msgs.msg import String
+from builtin_interfaces.msg import Time
 
 class FleetManager(Node):
     def __init__(self, num_robots):
         super().__init__('fleet_manager')
        
-        self.log_publisher = self.create_publisher(String, '/central_logs', 10)
+        self.log_publisher = self.create_publisher(Logs, '/central_logs', 10)
 
         self.robots = {}
         self.goal_handles = {}
@@ -112,10 +112,13 @@ class FleetManager(Node):
         # Create a service for task list
         self.srv = self.create_service(TaskList, 'task_list', self.handle_task_list)
      
-    def log_to_central(self, level, message, robot_namespace=None, log_source="FleetManager"):
+    def log_to_central(self, level, message):
         """Publishes logs to the central logging topic."""
-        log_msg = String()
-        log_msg.data = f"FleetManager|{level}|{message}"
+        log_msg = Logs()
+        log_msg.timestamp =  self.get_clock().now().to_msg()
+        log_msg.node_name = "Fleet Manager"
+        log_msg.log_level = level
+        log_msg.message = message
         self.log_publisher.publish(log_msg)
         
     def odom_callback(self, msg, robot_name):

@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
+from robot_interfaces.msg import Logs
 import csv
 import os
 import requests
@@ -14,26 +14,34 @@ class CentralLogger(Node):
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
 
-        self.log_file = os.path.join(log_dir, 'central_log.csv')
+        timestamp_str = datetime.now().strftime('%Y%m%d_%H%M%S')
+        self.log_file = os.path.join(log_dir, f'central_log_{timestamp_str}.csv')
 
-        if not os.path.isfile(self.log_file):
+        if not os.path.isfile(self.log_file) or os.stat(self.log_file).st_size == 0:
             with open(self.log_file, mode='w', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(['Timestamp', 'Node', 'Log Level', 'Message'])
 
-        self.log_subscriber = self.create_subscription(String, '/central_logs', self.log_callback, 10)
+        self.log_subscriber = self.create_subscription(Logs, '/central_logs', self.log_callback, 10)
         self.get_logger().info("Central Logger Node started, listening for logs...")
 
     def log_callback(self, msg):
         try:
-            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            node_name, log_level, message = msg.data.split('|', 2)
+            timestamp_sec = msg.timestamp.sec
+            formatted_time = datetime.fromtimestamp(timestamp_sec).strftime('%Y-%m-%d %H:%M:%S')
+
+            node_name = msg.node_name
+            log_level = msg.log_level
+            message = msg.message
+
+            formatted_message = f"[{formatted_time}] [{log_level}] {node_name}: {message}"
+            self.get_logger().info(formatted_message)
 
             with open(self.log_file, mode='a', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow([timestamp, node_name, log_level, message])
+                writer.writerow([formatted_time, node_name, log_level, message])
 
-            self.send_log_to_web(timestamp, node_name, log_level, message)
+            self.send_log_to_web(formatted_time, node_name, log_level, message)
 
         except Exception as e:
             self.get_logger().error(f"Error processing log message: {e}")
@@ -64,4 +72,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-

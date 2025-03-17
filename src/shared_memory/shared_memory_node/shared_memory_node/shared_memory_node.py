@@ -2,14 +2,13 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSHistoryPolicy, QoSReliabilityPolicy
 from robot_interfaces.srv import ShelfQuery, InventoryUpdate, GetRobotStatus, GetRobotFleetStatus, GetShelfList, GetPose
-from robot_interfaces.msg import ShelfStatus, FleetStatus, Order
+from robot_interfaces.msg import ShelfStatus, FleetStatus, Order, Logs
 from geometry_msgs.msg import Pose
-from std_msgs.msg import String
 from ament_index_python.packages import get_package_share_directory
 import json
 import os
 import csv
-
+from  builtin_interfaces.msg import Time
 
 class SharedMemoryNode(Node):
     def __init__(self):
@@ -26,7 +25,7 @@ class SharedMemoryNode(Node):
         self.shelves = []
 
         # Publishers
-        self.log_publisher = self.create_publisher(String, '/central_logs', 10)
+        self.log_publisher = self.create_publisher(Logs, '/central_logs', 10)
 
         self.load_inventory(database_file)
         self.database["shelves"] = self.shelves
@@ -62,10 +61,13 @@ class SharedMemoryNode(Node):
 
         self.log_to_central("INFO", "Database Module is ready.")
 
-    def log_to_central(self, level, message, robot_namespace=None, log_source="SharedMemory"):
+    def log_to_central(self, level, message):
         """Publishes logs to the central logging topic."""
-        log_msg = String()
-        log_msg.data = f"SharedMemory|{level}|{message}"
+        log_msg = Logs()
+        log_msg.timestamp =  self.get_clock().now().to_msg()
+        log_msg.node_name = "Shared Memory"
+        log_msg.log_level = level
+        log_msg.message = message
         self.log_publisher.publish(log_msg)
 
     def load_inventory(self, database_file):
@@ -127,7 +129,7 @@ class SharedMemoryNode(Node):
                     shelf.current_inventory -= product.quantity
                     self.shelves[idx] = shelf
                     self.log_to_central(
-                        "INFO", f"📉 Inventory updated: {shelf.current_inventory} items of type {shelf.product} left on shelf {shelf.shelf_id}")
+                        "INFO", f"Inventory updated: {shelf.current_inventory} items of type {shelf.product} left on shelf {shelf.shelf_id}")
 
     def fleet_status_callback(self, msg):
         self.robots = msg.robot_status_list
@@ -231,7 +233,7 @@ class SharedMemoryNode(Node):
 
         response.shelf_status_list = self.shelves
 
-        self.log_to_central("INFO", "Returning ShelfList with {} shelves.".format(len(self.shelves)))
+        #self.log_to_central("INFO", "Returning ShelfList with {} shelves.".format(len(self.shelves)))
         return response
 
     def get_drop_off_pose_callback(self, request, response):

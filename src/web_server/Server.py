@@ -8,11 +8,18 @@ from rclpy.node import Node
 import threading
 from datetime import datetime
 import csv
+import os
 import time
 import webbrowser
 
 rclpy.init()
 node = Node('web_server')
+
+log_dir = "published_orders"
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
+
+ORDERS_CSV_FILE = os.path.join(log_dir, "published_orders.csv")
 
 publisher = node.create_publisher(Order, '/order_requests', 10)
 shelf_list_client = node.create_client(GetShelfList, '/get_shelf_list')
@@ -70,6 +77,20 @@ def fetch_shelf_data():
             time.sleep(2)
         else:
             print("Service not available, retrying...")
+
+def log_order_to_csv(order):
+    """Logs the published order details into a CSV file."""
+    file_exists = os.path.isfile(ORDERS_CSV_FILE)
+
+    with open(ORDERS_CSV_FILE, mode='a', newline='') as file:
+        writer = csv.writer(file)
+
+        # Write header only if file is newly created
+        if not file_exists:
+            writer.writerow(["Order ID", "Shelf ID", "Quantity", "Timestamp"])
+
+        for shelf in order['shelves']:
+            writer.writerow([order['order_id'], shelf['shelf_id'], shelf['quantity'], order['timestamp']])
 
 @app.route('/')
 def index(): 
@@ -213,6 +234,8 @@ def submit_order():
     order = {'order_id': order_id, 'shelves': shelves, 'timestamp': timestamp}
     orders.append(order)
 
+    log_order_to_csv(order)
+
     order_msg = Order()
     order_msg.order_id = order_id
     for shelf in shelves:
@@ -248,6 +271,7 @@ def repeat_order(order_id):
     }
 
     orders.append(new_order)
+    log_order_to_csv(new_order)
 
     order_msg = Order()
     for shelf in new_order['shelves']:
