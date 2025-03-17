@@ -99,15 +99,21 @@ source ~/ros_ws/install/setup.bash
 The simulation environment replicates a warehouse with 8 shelves and includes:
 - **Gazebo**: For 3D simulation.
 - **Map Server**: For navigation.
-- **RViz**: For visualization.
+- **RViz**: For visualization (Optional).
 
 Launch the simulation environment using:
 
 ```bash
 ros2 launch simulation_env sim_with_nav.launch.py
 ```
+Alternatively, to launch the simulation with RViz enabled, use this command:
+```bash
+ros2 launch simulation_env sim_with_nav.launch.py enable_rviz:=true
+# The `enable_rviz` parameter, when set to `true`, launches RViz for visualizing the robots' navigation and tasks in real-time.
+```
+This launches usual simulation and additionally opens up RViz window for each robot for monitoring or testing individually.
 
-![Simulation Environment](docs/simulation_environment.png?raw=true)
+![Simulation Environment](docs/simulation_rviz.png?raw=true)
 
 ### 3. Launch the Warehouse Manager
 
@@ -136,6 +142,8 @@ cd ~/ros_ws/src/ws24-multi-robot-task-distribution/src/web_server
 
 Once started, access the Web Client through your browser to place orders and monitor the system in real-time.
 
+![Web GUI](docs/sim_web_gui.png)
+
 ---
 
 ## Architecture Overview
@@ -151,7 +159,7 @@ This architecture represents a **multi-robot task distribution system** with the
 
 The system ensures efficient task distribution, real-time fleet monitoring, and seamless coordination between robots, tasks, and inventory management.
 
-![Software Architecture](docs/MRTD_arch3.png)
+![Software Architecture](docs/MRTD_arch4.png)
 
 ---
 
@@ -289,6 +297,6 @@ The following diagram summarizes the interaction between the nodes:
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---

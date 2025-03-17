@@ -63,7 +63,7 @@ def generate_launch_description():
     # Namespace and number of robots
     namespace = "robot"
 
-    number_of_robots = LaunchConfiguration("number_of_robots", default="2")
+    number_of_robots = LaunchConfiguration("number_of_robots", default="3")
     declare_number_of_robots = DeclareLaunchArgument(
         name="number_of_robots",
         default_value=number_of_robots,
@@ -79,8 +79,8 @@ def generate_launch_description():
     robots = [
         {
             "name": f"{namespace}_{i+1}",
-            "x_pose": str((i - 2) * 0.75),
-            "y_pose": "-0.4",
+            "x_pose": str((i - 1) * 0.75),
+            "y_pose": "-0.2",
             "z_pose": "0.01",
         }
         for i in range(num_robots)
@@ -100,7 +100,7 @@ def generate_launch_description():
         description="Enable robot drive node",
     )
 
-    enable_rviz = LaunchConfiguration("enable_rviz", default="true")
+    enable_rviz = LaunchConfiguration("enable_rviz", default="false")
     declare_enable_rviz = DeclareLaunchArgument(
         name="enable_rviz", default_value=enable_rviz, description="Enable rviz launch"
     )
