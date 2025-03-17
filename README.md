@@ -4,15 +4,14 @@
 
 ### Description
 
-This project focuses on migrating a multi-robot task distribution system from ROS1 to ROS2. The system simulates robots collaborating in a warehouse environment to fetch items based on client requests. The migration ensures compatibility with ROS2’s improved communication features, long-term support, and advanced tools. ROS2 provides enhanced multi-robot communication, security, and real-time control features, making it a robust platform for modern robotics applications.
+This project implements a multi-robot task distribution system designed for warehouse automation. The system simulates robots collaborating in a warehouse environment to efficiently fetch and deliver items based on client requests. It leverages ROS2 for robust communication and coordination between multiple robots, ensuring seamless task allocation and execution.
 
 ### Key Features
 
-1. **ROS2 Compatibility**: Fully migrated to ROS2 for improved communication and scalability.
-2. **Task Distribution**: Efficient task allocation using a Broker-Worker architecture.
-3. **Simulation Environment**: A Gazebo-based warehouse simulation with 8 shelves for testing.
-4. **Shared Memory Module**: Logs robot activities and manages inventory in real-time.
-5. **Dynamic Scaling**: Supports dynamic addition of Worker Nodes using DDS discovery.
+1. **ROS2-Based Architecture**: Built on ROS2 for enhanced communication and scalability.
+2. **User-Friendly GUI**: Provides an intuitive interface for managing orders and monitoring system performance.
+3. **Task Distribution**: Efficient task allocation using a centralized architecture.
+4. **Centralized Logging**: Logs are published to a central logging topic for monitoring and debugging.
 
 ---
 
@@ -32,6 +31,7 @@ The project is designed to demonstrate the following:
 3. **Python**
 4. **Git**
 5. **DDS (Data Distribution Service)**
+6. **Flask**
 
 ---
 
@@ -70,6 +70,7 @@ Install the required dependencies:
 ```bash
 cd ~/ros_ws
 rosdep install --from-paths src --ignore-src -r -y
+pip install flask
 ```
 
 ### 4. Build the Package
@@ -93,8 +94,16 @@ Before launching any nodes, ensure the workspace is sourced:
 ```bash
 source ~/ros_ws/install/setup.bash
 ```
+### 2. Set the Number of Robots (Optional)
+The system allows you to configure the number of robots by setting the NUM_OF_ROBOTS environment variable. This variable, **if not set, takes default value of 2**.
 
-### 2. Launch the Simulation Environment
+To set the number of robots, use the following command:
+```bash
+export NUM_OF_ROBOTS=4  # Replace 4 with the desired number of robots
+```
+This value will be used by the Simulation Environment and Warehouse Manager both to initialize the robot fleet, so ensure this variable is exported in all terminals before launching the system.
+
+### 3. Launch the Simulation Environment
 
 The simulation environment replicates a warehouse with 8 shelves and includes:
 - **Gazebo**: For 3D simulation.
@@ -115,7 +124,7 @@ This launches usual simulation and additionally opens up RViz window for each ro
 
 ![Simulation Environment](docs/simulation_rviz.png?raw=true)
 
-### 3. Launch the Warehouse Manager
+### 4. Launch the Warehouse Manager
 
 The Warehouse Manager initializes the core nodes required for the system. It includes:
 - **Logger Node**: Logs simulation events and data.
@@ -129,7 +138,7 @@ Run the following command to launch the Warehouse Manager:
 ros2 launch simulation_env warehouse_manager.launch.py
 ```
 
-### 4. Start the Web Client
+### 5. Start the Web Client
 
 The Web Client provides a graphical interface for managing orders and monitoring the system. It interacts with the Shared Memory to access data.
 
