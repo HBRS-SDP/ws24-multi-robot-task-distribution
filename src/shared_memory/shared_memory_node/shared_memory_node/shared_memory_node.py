@@ -233,7 +233,7 @@ class SharedMemoryNode(Node):
 
         response.shelf_status_list = self.shelves
 
-        self.log_to_central("INFO", "Returning ShelfList with {} shelves.".format(len(self.shelves)))
+        #self.log_to_central("INFO", "Returning ShelfList with {} shelves.".format(len(self.shelves)))
         return response
 
     def get_drop_off_pose_callback(self, request, response):
