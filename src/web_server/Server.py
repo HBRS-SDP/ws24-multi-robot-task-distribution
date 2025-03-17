@@ -86,7 +86,7 @@ def index():
 @app.route('/add_log', methods=['POST'])
 def add_log():
     log_data = request.json
-    logs_list.append(log_data)  # Store in memory
+    logs_list.extend(log_data)  # Store in memory
 
     return jsonify({"success": True}), 200
 
