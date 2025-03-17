@@ -27,8 +27,8 @@ class CentralLogger(Node):
         # Buffer to hold incoming logs
         self.log_buffer = []
 
-        # Second buffer to manage CSV logs (last 2000 entries)
-        self.csv_buffer = deque(maxlen=2000)
+        # Second buffer to manage CSV logs (last 500 entries)
+        self.csv_buffer = deque(maxlen=500)
 
         # Load existing logs into the CSV buffer
         if os.path.isfile(self.log_file):
