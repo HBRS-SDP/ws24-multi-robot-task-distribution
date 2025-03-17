@@ -76,7 +76,7 @@ class CentralLogger(Node):
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
 
-        timestamp_str = datetime.now().strftime('%Y%m%d_%H%M%S')
+        timestamp_str = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
         self.log_file = os.path.join(log_dir, f'central_log_{timestamp_str}.csv')
 
         # Initialize CSV file with headers if it doesn't exist
