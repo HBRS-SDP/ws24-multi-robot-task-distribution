@@ -5,6 +5,7 @@ import csv
 import os
 import requests
 from datetime import datetime
+from collections import deque
 
 class CentralLogger(Node):
     def __init__(self):
@@ -26,10 +27,21 @@ class CentralLogger(Node):
         # Buffer to hold incoming logs
         self.log_buffer = []
 
+        # Second buffer to manage CSV logs (last 2000 entries)
+        self.csv_buffer = deque(maxlen=2000)
+
+        # Load existing logs into the CSV buffer
+        if os.path.isfile(self.log_file):
+            with open(self.log_file, mode='r', newline='') as file:
+                reader = csv.reader(file)
+                next(reader)  # Skip header
+                for row in reader:
+                    self.csv_buffer.append(tuple(row))
+
         # Create a subscription to the log topic
         self.log_subscriber = self.create_subscription(String, '/central_logs', self.log_callback, 10)
 
-        # Create a timer to process logs every 2 seconds
+        # Create a timer to process logs every 5 seconds
         self.timer = self.create_timer(5.0, self.process_logs)
 
         self.get_logger().info("Central Logger Node started, listening for logs...")
@@ -48,22 +60,26 @@ class CentralLogger(Node):
 
     def process_logs(self):
         """
-        Processes logs in the buffer every 2 seconds.
+        Processes logs in the buffer every 5 seconds.
         Writes logs to the CSV file and sends them to the web GUI.
         """
         if not self.log_buffer:
             return  # No logs to process
 
         try:
-            # Write logs to CSV
-            with open(self.log_file, mode='a', newline='') as file:
+            # Add new logs to the CSV buffer
+            self.csv_buffer.extend(self.log_buffer)
+
+            # Write the CSV buffer to the CSV file
+            with open(self.log_file, mode='w', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerows(self.log_buffer)
+                writer.writerow(['Timestamp', 'Node', 'Log Level', 'Message'])  # Write header
+                writer.writerows(self.csv_buffer)
 
             # Send logs to the web GUI
             self.send_logs_to_web(self.log_buffer)
 
-            # Clear the buffer after processing
+            # Clear the main buffer after processing
             self.log_buffer.clear()
 
             self.get_logger().info(f"Processed {len(self.log_buffer)} logs.")
