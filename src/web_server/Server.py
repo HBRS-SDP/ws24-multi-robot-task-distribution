@@ -1,3 +1,70 @@
+"""
+server.py
+
+This module implements a Flask-based web server that interfaces with a ROS 2 system to manage 
+warehouse inventory, order processing, and robot fleet monitoring. The server provides a web interface 
+for users to submit and track orders while integrating with ROS 2 for real-time inventory updates 
+and fleet status monitoring.
+
+Classes:
+    None (Uses Flask for routing and ROS 2 node creation)
+
+Functions:
+    - fleet_status_callback(msg): Updates the fleet status based on received ROS 2 messages.
+    - get_shelf_list_callback(response): Processes responses from the shelf list service.
+    - get_shelf_data(): Requests the latest shelf inventory from ROS 2.
+    - log_order_to_csv(order): Saves order details to a CSV file.
+    - add_log(): API endpoint to receive logs from other nodes.
+    - get_logs(): API endpoint to retrieve stored logs.
+    - get_inventory(): API endpoint to fetch current inventory status.
+    - get_robot_status(): API endpoint to fetch the status of robots.
+    - update_inventory(): API endpoint to update shelf inventory via ROS 2.
+    - submit_order(): Processes order submissions, validates inventory, and publishes orders to ROS 2.
+    - repeat_order(order_id): Repeats a previous order by republishing it to ROS 2.
+    - run_flask(): Starts the Flask web server.
+    - run_ros(): Runs the ROS 2 node using a single-threaded executor.
+
+Usage:
+    This script serves as a bridge between a web-based interface and a ROS 2-based warehouse management system.
+    To run the server, execute the script directly:
+        $ python3 server.py
+
+Dependencies:
+    - ROS 2 (rclpy)
+    - Flask (for web application)
+    - robot_interfaces.msg (Order, FleetStatus, Product)
+    - robot_interfaces.srv (GetShelfList, InventoryUpdate)
+    - threading (for running Flask and ROS 2 concurrently)
+    - datetime (for timestamp formatting)
+    - csv (for storing order logs)
+    - os (for directory and file management)
+    - webbrowser (to open the web interface automatically)
+
+Parameters:
+    - None explicitly defined.
+
+Topics:
+    - /fleet_status (FleetStatus): Subscribes to fleet status updates.
+    - /order_requests (Order): Publishes order requests for robots.
+
+Services:
+    - /get_shelf_list (GetShelfList): Requests current shelf inventory data.
+    - /update_inventory (InventoryUpdate): Updates inventory levels for specific shelves.
+
+Actions:
+    - None.
+
+Example:
+    To run the Flask-ROS 2 integration server:
+        1. Ensure ROS 2 is installed and sourced.
+        2. Install dependencies if needed:
+            $ pip install flask
+        3. Run the script:
+            $ python3 server.py
+        4. Open the web interface at `http://127.0.0.1:5000/`
+        5. Use the interface to submit orders, view robot status, and manage inventory.
+"""
+
 #!/usr/bin/env python3
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
