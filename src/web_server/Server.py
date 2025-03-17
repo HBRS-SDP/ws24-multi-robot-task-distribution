@@ -69,7 +69,7 @@ Example:
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import rclpy
-from robot_interfaces.msg import Order, FleetStatus, Product
+from robot_interfaces.msg import Order, FleetStatus, Product, Order
 from robot_interfaces.srv import GetShelfList, InventoryUpdate
 from rclpy.node import Node
 import threading
@@ -82,13 +82,11 @@ import os
 rclpy.init()
 node = Node('web_server')
 
-
 log_dir = "published_orders"
 if not os.path.exists(log_dir):
     os.makedirs(log_dir)
 
 ORDERS_CSV_FILE = os.path.join(log_dir, "published_orders.csv")
-
 
 publisher = node.create_publisher(Order, '/order_requests', 10)
 shelf_list_client = node.create_client(GetShelfList, '/get_shelf_list')
@@ -101,7 +99,7 @@ available_shelves = []
 shelf_to_product = {}
 robot_status_data = {}
 logs_list = []
-    
+
 def fleet_status_callback(msg):
     global robot_status_data
     robot_status_data = {}
@@ -113,41 +111,42 @@ def fleet_status_callback(msg):
 
 node.create_subscription(FleetStatus, 'fleet_status', fleet_status_callback, 10)
 
-def get_shelf_list_callback(response):
-    global available_shelves, shelf_to_product
-    available_shelves = [shelf for shelf in response.shelf_status_list if shelf.current_inventory > 0]
-    shelf_to_product = {shelf.shelf_id: shelf.product for shelf in available_shelves}
+def end_order_callback(msg):
+    """Callback for the /end_order topic. Fetches new shelf data when an order is completed."""
+    print("[DEBUG] Order finished. Fetching updated shelf data...")
+    fetch_shelf_data()
+
+# Subscribe to the /end_order topic
+node.create_subscription(Order, '/end_order', end_order_callback, 10)
 
 def fetch_shelf_data():
-    while rclpy.ok():
-        if shelf_list_client.wait_for_service(timeout_sec=1.0):
-            print("[DEBUG] Service available. Requesting shelf data...")
+    """Fetches the latest shelf data from the ROS 2 service."""
+    if shelf_list_client.wait_for_service(timeout_sec=1.0):
+        print("[DEBUG] Service available. Requesting shelf data...")
 
-            request = GetShelfList.Request()
-            future = shelf_list_client.call_async(request)
+        request = GetShelfList.Request()
+        request.id = "Web Server"
+        future = shelf_list_client.call_async(request)
 
-            # Wait for the service response
-            rclpy.spin_until_future_complete(node, future)
-            response = future.result()
+        # Wait for the service response
+        rclpy.spin_until_future_complete(node, future)
+        response = future.result()
 
-            if response:
-                global available_shelves, shelf_to_product
-                available_shelves = []
-                shelf_to_product = {}
+        if response:
+            global available_shelves, shelf_to_product
+            available_shelves = []
+            shelf_to_product = {}
 
-                for shelf in response.shelf_status_list:
-                    if shelf.current_inventory > 0:  # Only include shelves with stock
-                        available_shelves.append(shelf)
-                        shelf_to_product[shelf.shelf_id] = shelf.product
+            for shelf in response.shelf_status_list:
+                if shelf.current_inventory > 0:  # Only include shelves with stock
+                    available_shelves.append(shelf)
+                    shelf_to_product[shelf.shelf_id] = shelf.product
 
-            else:
-                print("[DEBUG] No response from service!")
-
-            time.sleep(2)
+            print("[DEBUG] Shelf data updated.")
         else:
-            print("Service not available, retrying...")
-
-
+            print("[DEBUG] No response from service!")
+    else:
+        print("Service not available, retrying...")
 
 def log_order_to_csv(order):
     """Logs the published order details into a CSV file."""
@@ -163,17 +162,15 @@ def log_order_to_csv(order):
         for shelf in order['shelves']:
             writer.writerow([order['order_id'], shelf['shelf_id'], shelf['quantity'], order['timestamp']])
 
-
-
 @app.route('/')
-def index(): 
+def index():
     global available_shelves, shelf_to_product
 
     attempts = 5
     while not available_shelves and attempts > 0:
         print("[DEBUG] Waiting for shelves to be fetched...")
         time.sleep(2)
-        attempts -= 1 
+        attempts -= 1
     print(f"Sending to HTML: {available_shelves}")
     return render_template('index.html', available_shelves=available_shelves, shelf_to_product=shelf_to_product, orders=orders, logs=logs_list)
 
@@ -197,6 +194,7 @@ def get_inventory():
     global available_shelves
 
     request = GetShelfList.Request()
+    request.id = "Web Server"
     future = shelf_list_client.call_async(request)
     rclpy.spin_until_future_complete(node, future)
     response = future.result()
@@ -220,19 +218,19 @@ def get_inventory():
 @app.route('/get_robot_status')
 def get_robot_status():
     return jsonify(robot_status_data)
-    
+
 @app.route('/update_inventory', methods=['POST'])
 def update_inventory():
     try:
-        
-        request_data = request.get_json()  
+
+        request_data = request.get_json()
 
         if not request_data or 'shelf_id' not in request_data or 'new_inventory' not in request_data:
              return jsonify({"success": False, "error": "Invalid request data"}), 400
 
         shelf_id = int(request_data['shelf_id'])
         new_inventory = int(request_data['new_inventory'])
-        
+
         request_msg = InventoryUpdate.Request()
         request_msg.shelf_id = shelf_id
         request_msg.new_inventory = new_inventory
@@ -251,9 +249,9 @@ def update_inventory():
 
 @app.route('/submit_order', methods=['POST'])
 def submit_order():
-    
+
     global orders, available_shelves, shelf_to_product
-    
+
     shelf_ids = request.form.getlist('shelf_id[]')
     quantities = request.form.getlist('quantity[]')
 
@@ -264,44 +262,44 @@ def submit_order():
     response = future.result()
 
     if not response:
-        return render_template('index.html', 
-                               available_shelves=available_shelves, 
-                               shelf_to_product=shelf_to_product, 
-                               orders=orders, 
+        return render_template('index.html',
+                               available_shelves=available_shelves,
+                               shelf_to_product=shelf_to_product,
+                               orders=orders,
                                error_message="Failed to fetch inventory data.")
 
     inventory_map = {shelf.shelf_id: shelf.current_inventory for shelf in response.shelf_status_list}
 
     shelves = []
     error_messages = []
-    
+
     for shelf_id, quantity in zip(shelf_ids, quantities):
         try:
             shelf_id, quantity = int(shelf_id), int(quantity)
 
             if shelf_id > 0 and quantity > 0:
-                
+
                 if shelf_id in inventory_map and quantity <= inventory_map[shelf_id]:
                     shelves.append({'shelf_id': shelf_id, 'quantity': quantity})
                 else:
                     product_name = shelf_to_product.get(shelf_id, "Unknown Product")
                     error_messages.append(f"Only {inventory_map.get(shelf_id, 0)} items available for product '{product_name}'!")
-                   
+
         except ValueError:
             continue
 
     if error_messages:
-        return render_template('index.html', 
-                               available_shelves=available_shelves, 
-                               shelf_to_product=shelf_to_product, 
-                               orders=orders, 
+        return render_template('index.html',
+                               available_shelves=available_shelves,
+                               shelf_to_product=shelf_to_product,
+                               orders=orders,
                                error_message="<br>".join(error_messages))  # Joining errors with line breaks
 
     if not shelves:
-        return render_template('index.html', 
-                               available_shelves=available_shelves, 
-                               shelf_to_product=shelf_to_product, 
-                               orders=orders, 
+        return render_template('index.html',
+                               available_shelves=available_shelves,
+                               shelf_to_product=shelf_to_product,
+                               orders=orders,
                                error_message="No valid products in the order!")
 
     # Create and publish order
@@ -321,10 +319,10 @@ def submit_order():
 
     publisher.publish(order_msg)
 
-    return render_template('index.html', 
-                           available_shelves=available_shelves, 
-                           shelf_to_product=shelf_to_product, 
-                           orders=orders, 
+    return render_template('index.html',
+                           available_shelves=available_shelves,
+                           shelf_to_product=shelf_to_product,
+                           orders=orders,
                            success_message="Order placed successfully!")
 
 @app.route('/repeat_order/<int:order_id>', methods=['POST'])
@@ -341,13 +339,13 @@ def repeat_order(order_id):
 
     new_order = {
         'order_id': new_order_id,
-        'shelves': order_to_repeat['shelves'],  
+        'shelves': order_to_repeat['shelves'],
         'timestamp': timestamp
     }
 
     orders.append(new_order)
     log_order_to_csv(new_order)
-    
+
     order_msg = Order()
     for shelf in new_order['shelves']:
         product = Product()
@@ -355,7 +353,7 @@ def repeat_order(order_id):
         product.quantity = shelf['quantity']
         order_msg.product_list.append(product)
 
-    publisher.publish(order_msg)  
+    publisher.publish(order_msg)
 
     print(f"[DEBUG] Repeated Order {new_order_id} published: {new_order}")
 
@@ -369,7 +367,8 @@ def run_flask():
     webbrowser.open(url)
 
 def run_ros():
-    fetch_shelf_data() 
+    # Fetch shelf data once at the start
+    fetch_shelf_data()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
