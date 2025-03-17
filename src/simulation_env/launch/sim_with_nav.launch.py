@@ -43,12 +43,17 @@ Environment Variables:
 Returns:
     LaunchDescription: The complete launch description for the simulation.
 """
+#!/usr/bin/env python3
+
+"""
+Launch file for simulating multiple TurtleBot3 robots with navigation in Gazebo.
+"""
 
 import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription, LaunchContext
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction
 from launch.substitutions import LaunchConfiguration
 from launch.actions import IncludeLaunchDescription, ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -80,7 +85,7 @@ def generate_launch_description():
     robots = [
         {
             "name": f"{namespace}_{i+1}",
-            "x_pose": str((i - 1) * 0.75),
+            "x_pose": str((i - 1.3) * 0.75),
             "y_pose": "-0.2",
             "z_pose": "0.01",
         }
@@ -274,18 +279,16 @@ def generate_launch_description():
             # Call add_action directly for the first robot to facilitate chain instantiation via RegisterEventHandler
             ld.add_action(turtlebot_state_publisher)
             ld.add_action(spawn_turtlebot3_burger)
-            ld.add_action(bringup_cmd)
-
+            ld.add_action(TimerAction(period=5.0, actions=[bringup_cmd]))  # Add delay before bringup
         else:
             # Use RegisterEventHandler to ensure next robot creation happens only after the previous one is completed.
-            # Simply calling ld.add_action for spawn_entity introduces issues due to parallel run.
             spawn_turtlebot3_event = RegisterEventHandler(
                 event_handler=OnProcessExit(
                     target_action=last_action,
                     on_exit=[
                         spawn_turtlebot3_burger,
                         turtlebot_state_publisher,
-                        bringup_cmd,
+                        TimerAction(period=5.0, actions=[bringup_cmd]),  # Add delay before bringup
                     ],
                 )
             )
@@ -317,7 +320,7 @@ def generate_launch_description():
                 "topic",
                 "pub",
                 "-t",
-                "3",
+                "5",
                 "--qos-reliability",
                 "reliable",
                 namespace + ["/initialpose"],
@@ -354,11 +357,15 @@ def generate_launch_description():
         post_spawn_event = RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=last_action,
-                on_exit=[initial_pose_cmd, rviz_cmd, drive_turtlebot3_burger],
+                on_exit=[
+                    TimerAction(period=5.0, actions=[initial_pose_cmd]),  # Add delay before initial pose
+                    rviz_cmd,
+                    drive_turtlebot3_burger,
+                ],
             )
         )
 
-        # Perform next rviz and other node instantiation after the previous intialpose request done
+        # Perform next rviz and other node instantiation after the previous initial pose request done
         last_action = initial_pose_cmd
 
         ld.add_action(post_spawn_event)
