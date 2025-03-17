@@ -1,3 +1,52 @@
+"""
+Shared Memory Node
+
+This node acts as a centralized shared memory module for the warehouse simulation. It manages and provides access to 
+data such as robot statuses, shelf inventories, and drop-off locations. The node interacts with other components 
+via ROS2 topics, services, and publishers to ensure efficient data sharing and synchronization.
+
+### Responsibilities:
+1. **Database Management**:
+   - Loads and maintains a database of shelves and robots.
+   - Updates inventory and robot statuses dynamically.
+
+2. **Logging**:
+   - Publishes logs to the `/central_logs` topic for centralized monitoring.
+
+3. **Service Interactions**:
+   - Provides services for querying shelf details, updating inventory, retrieving robot statuses, and getting fleet status.
+
+4. **Subscriptions**:
+   - Subscribes to topics such as `/end_order` to update inventory after task completion.
+   - Subscribes to `/fleet_status` to update robot statuses.
+
+### Topics:
+- **Subscribed**:
+  - `/end_order`: Updates inventory and robot statuses when an order is completed.
+  - `/fleet_status`: Updates the current status of the robot fleet.
+
+- **Published**:
+  - `/central_logs`: Publishes logs for centralized monitoring.
+
+### Services:
+- **Provided**:
+  - `/shelf_query`: Returns details of a specific shelf.
+  - `/update_inventory`: Updates the inventory of a shelf.
+  - `/get_robot_state`: Returns the current state of a specific robot.
+  - `/get_robot_fleet_status`: Returns the status of the entire robot fleet.
+  - `/get_shelf_list`: Returns a list of all shelves and their details.
+  - `/get_drop_off_pose`: Returns the drop-off location for completed tasks.
+
+### Key Features:
+- Loads inventory data from a CSV file and initializes the database.
+- Dynamically updates inventory and robot statuses based on incoming data.
+- Provides efficient querying and updating of shared memory data through services.
+- Logs all significant events and database changes for monitoring and debugging.
+
+### Execution:
+- The node is initialized and spun using ROS2, and it runs until shutdown.
+"""
+
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSHistoryPolicy, QoSReliabilityPolicy
