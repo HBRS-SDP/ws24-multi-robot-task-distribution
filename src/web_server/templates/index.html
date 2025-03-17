@@ -1,3 +1,61 @@
+<!--
+index.html
+
+This HTML file provides a web-based interface for managing warehouse operations, including 
+inventory monitoring, order processing, robot fleet status tracking, and log management. 
+The interface is built using Bootstrap for styling and JavaScript for dynamic content updates.
+
+Sections:
+    - Navigation Tabs:
+        - Orders: Allows users to place, view, and repeat orders.
+        - Inventory: Displays current inventory levels and enables manual updates.
+        - Robot Status: Shows real-time status and battery levels of the robot fleet.
+        - Logs: Displays system logs retrieved from the backend.
+
+Features:
+    - Order Management:
+        - Users can create and submit new orders.
+        - Orders are validated against available inventory before submission.
+        - Users can repeat previous orders.
+    - Inventory Management:
+        - Displays shelf-wise inventory information.
+        - Allows users to update inventory levels for a selected shelf.
+    - Robot Fleet Monitoring:
+        - Displays the status and battery level of each robot.
+    - Logging System:
+        - Shows logs retrieved from the backend.
+
+Dependencies:
+    - Bootstrap (CDN for styling)
+    - JavaScript (Fetch API for real-time updates)
+    - Flask Backend (server.py) for API communication
+    - ROS 2 integration for real-time inventory, order, and fleet updates
+
+JavaScript Functions:
+    - validateOrderForm(): Validates order inputs before submission.
+    - addShelf(): Dynamically adds an additional product selection field for orders.
+    - updateInventory(): Fetches and updates the inventory table dynamically.
+    - submitInventoryUpdate(event): Sends an inventory update request to the backend.
+    - updateLogs(): Fetches and updates log entries dynamically.
+    - updateRobotStatus(): Fetches and updates robot fleet status dynamically.
+
+Usage:
+    - Open the web interface in a browser at:
+        http://127.0.0.1:5000/
+    - Use the navigation tabs to manage orders, inventory, robot fleet status, and system logs.
+
+Example Workflow:
+    1. Navigate to the "Orders" tab and submit an order.
+    2. Monitor inventory levels in the "Inventory" tab.
+    3. Track robot activity in the "Robot Status" tab.
+    4. View logs in the "Logs" tab for system events.
+
+Updates:
+    - Inventory data refreshes every 30 seconds.
+    - Logs update every 3 seconds.
+    - Robot status refreshes every second.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -317,9 +375,11 @@
            }
         }, 5000);
 
-        setInterval(updateInventory, 5000);
-        setInterval(updateLogs, 1000);
-        setInterval(updateRobotStatus, 500);
+        setInterval(updateInventory, 30000);
+        setInterval(updateLogs, 3000);
+        setInterval(updateRobotStatus, 1000);
+
+        document.getElementById("inventory-tab").addEventListener("click", updateInventory);
         
         updateInventory();
         updateLogs();

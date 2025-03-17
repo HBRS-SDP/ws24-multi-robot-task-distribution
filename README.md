@@ -200,19 +200,19 @@ The **Fleet Manager** oversees the status of all robots and ensures smooth execu
 
 ### 3. **Central Logger**
 
-The **Central Logger** is responsible for collecting and storing critical logs from various nodes. These logs are essential for debugging, monitoring, and visualization on the Web Server.
+The **Central Logger** is responsible for collecting, storing critical and forwarding logs from various nodes. These logs are essential for debugging, monitoring, and visualization on the Web Server.
 
 #### Responsibilities:
-1. Collects logs from:
-   - **Shared Memory Module**: Inventory updates and robot activities.
-   - **Task Manager**: Task allocation details.
-   - **Fleet Manager**: Fleet status and task execution updates.
+1. Subscribes to log messages from different modules, including:
+   - **Shared Memory Module**: Logs inventory updates and robot activities.
+   - **Task Manager**: Logs task allocation and scheduling details.
+   - **Fleet Manager**: Logs fleet status updates and task execution progress.
 2. Stores logs in a centralized database.
-3. Provides logs to the Web Server for visualization.
+3. Sends logs to the Web Server for real-time visualization and monitoring.
 
 #### Communication:
 - **Input**: Logs from Shared Memory Module, Task Manager, and Fleet Manager (via ROS2 topics).
-- **Output**: Logs to a csv file.
+- **Output**: Logs to a csv file and forwarded to the Web Server via an HTTP request for remote access.
 
 ---
 
@@ -237,18 +237,19 @@ The **Shared Memory Module** acts as a centralized database for managing invento
 
 The **Web Server** provides a graphical user interface (GUI) for monitoring and managing the system. It allows users to:
 - Place orders and view their status.
-- Monitor the inventory and robot fleet in real-time.
-- Visualize logs and system performance.
+- Monitor the inventory and robot fleet status in real-time.
+- Visualize logs and system performance for debugging.
 
 #### Responsibilities:
-1. Sends order details to the Task Manager.
-2. Displays inventory status and robot fleet information.
-3. Visualizes logs from the Central Logger.
+1. Processes user-submitted orders and sends them to the Task Manager for execution
+2. Fetches and displays inventory data to track product availability.
+3. Retrieves and updates fleet status to monitor robot activity.
+4. Receives logs from the Central Logger and presents them for analysis.
 
 #### Communication:
 - **Input**: Inventory and Fleet status (via API and ROS2 topics).
 - **Input**: Logs from the log file updated by Central logger.
-- **Output**: Order details to the Task Manager (via ROS2 service).
+- **Output**: Order requests sent to the Task Manager via a ROS2 service.
 
 ---
 

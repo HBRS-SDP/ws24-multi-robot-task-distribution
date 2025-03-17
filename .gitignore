@@ -16,6 +16,7 @@ build/
 
 # Logger logs
 logs/*
+published_orders/*
 
 # Ignore generated docs
 *.dox
@@ -42,3 +43,4 @@ qtcreator-*
 # Colcon custom files
 COLCON_IGNORE
 AMENT_IGNORE
+src/web_server/published_orders/published_orders.csv
