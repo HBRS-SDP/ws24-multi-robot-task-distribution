@@ -79,8 +79,8 @@ class CentralLogger(Node):
         timestamp_str = datetime.now().strftime('%Y%m%d_%H%M%S')
         self.log_file = os.path.join(log_dir, f'central_log_{timestamp_str}.csv')
 
-        if not os.path.isfile(self.log_file) or os.stat(self.log_file).st_size == 0:
         # Initialize CSV file with headers if it doesn't exist
+        if not os.path.isfile(self.log_file) or os.stat(self.log_file).st_size == 0:
             with open(self.log_file, mode='w', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(['Timestamp', 'Node', 'Log Level', 'Message'])
