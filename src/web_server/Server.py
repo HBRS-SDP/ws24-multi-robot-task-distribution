@@ -86,8 +86,12 @@ def index():
 @app.route('/add_log', methods=['POST'])
 def add_log():
     log_data = request.json
+    global logs_list
     logs_list.extend(log_data)  # Store in memory
 
+    # Trim the logs_list to the last 500 entries
+    if len(logs_list) > 40:
+        logs_list = logs_list[-40:]
     return jsonify({"success": True}), 200
 
 @app.route('/get_logs', methods=['GET'])
