@@ -73,6 +73,7 @@ from builtin_interfaces.msg import Time
 
 class FleetManager(Node):
     def __init__(self, num_robots):
+        """Initializes the FleetManager node and sets up robots, publishers, and services."""
         super().__init__('fleet_manager')
        
         self.log_publisher = self.create_publisher(Logs, '/central_logs', 10)
@@ -122,10 +123,12 @@ class FleetManager(Node):
         self.log_publisher.publish(log_msg)
         
     def odom_callback(self, msg, robot_name):
-      if robot_name in self.robots:
-        self.robots[robot_name]["location"] = msg.pose.pose
+        """Updates the location of a robot based on Odometry messages."""
+        if robot_name in self.robots:
+            self.robots[robot_name]["location"] = msg.pose.pose
 
     def publish_fleet_status(self):
+        """Publishes the current status of the fleet to the 'fleet_status' topic."""
         fleet_status_msg = FleetStatus()
         fleet_status_msg.robot_status_list = []
         for robot in self.robots.values():
@@ -139,6 +142,7 @@ class FleetManager(Node):
         self.fleet_status_publisher.publish(fleet_status_msg)
 
     def handle_task_list(self, request, response):
+        """Handles incoming task list service requests and assigns tasks to robots."""
         try:
             if request.task_list:
                 robot_id = request.task_list[0].robot_id
@@ -164,6 +168,7 @@ class FleetManager(Node):
         return response
 
     def create_waypoints(self, task_list):
+        """Converts a list of tasks into waypoints for robot navigation."""
         waypoints = []
         for task in task_list:
             pose = PoseStamped()
@@ -173,6 +178,7 @@ class FleetManager(Node):
         return waypoints
 
     def send_goal(self, robot_namespace, waypoints):
+        """Sends a navigation goal to a robot using the FollowWaypoints action."""
         client = ActionClient(self, FollowWaypoints, f'/{robot_namespace}/follow_waypoints')
         goal_msg = FollowWaypoints.Goal()
         goal_msg.poses = waypoints
@@ -188,6 +194,7 @@ class FleetManager(Node):
         send_goal_future.add_done_callback(lambda future: self.goal_response_callback(future, robot_namespace, client))
 
     def feedback_callback(self, feedback_msg, goal_id):
+        """Handles feedback from the robot during task execution."""
         feedback = feedback_msg.feedback
         feedback_str = str(feedback)
 
@@ -204,6 +211,7 @@ class FleetManager(Node):
             self.previous_feedback[robot_namespace] = feedback_str
 
     def goal_response_callback(self, future, robot_namespace, client):
+        """Handles the response to a goal request, updating robot availability."""
         goal_handle = future.result()
         if not goal_handle.accepted:
             self.log_to_central('INFO', f'Goal rejected for {robot_namespace}', robot_namespace, "goal_response_callback")
@@ -217,11 +225,12 @@ class FleetManager(Node):
         self._get_result_future.add_done_callback(lambda future: self.get_result_callback(future, robot_namespace))
 
     def get_result_callback(self, future, robot_namespace):
+        """Processes the result of a completed goal and updates robot status."""
         result = future.result().result
         self.log_to_central('INFO', f'Result received for {robot_namespace}: {result}', robot_namespace, "get_result_callback")
         for goal_id, stored_robot_namespace in list(self.robot_to_goal_id.items()):
-          if stored_robot_namespace == robot_namespace:
-              del self.robot_to_goal_id[goal_id]
+            if stored_robot_namespace == robot_namespace:
+                del self.robot_to_goal_id[goal_id]
         goal_handle = self.goal_handles.pop(robot_namespace, None)
         if goal_handle:
             # Update robot status to available after task completion
@@ -229,6 +238,7 @@ class FleetManager(Node):
             self.robots[robot_namespace]["status"] = "idle"
 
 def main(args=None):
+    """Initializes the FleetManager node and starts the ROS 2 event loop."""
     rclpy.init(args=args)
     
     # Create a temporary node to declare and retrieve parameters

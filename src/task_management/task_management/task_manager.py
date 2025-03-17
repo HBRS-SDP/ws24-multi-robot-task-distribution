@@ -1,3 +1,68 @@
+"""
+Task Manager Node
+
+This node is responsible for managing and assigning tasks to a fleet of robots in a warehouse simulation. 
+It processes incoming orders, evaluates robot availability, and assigns tasks based on proximity, battery level, and availability. 
+The node interacts with other services and topics to ensure efficient task distribution and execution.
+
+### Responsibilities:
+1. **Order Management**:
+   - Subscribes to the `/order_requests` topic to receive new orders.
+   - Processes orders by assigning tasks to the most suitable robot.
+   - Publishes completed orders to the `/end_order` topic.
+
+2. **Task Assignment**:
+   - Allocates tasks to robots based on proximity to shelves, battery level, and availability.
+   - Creates task messages for robots to execute, including moving to shelves and drop-off locations.
+
+3. **Service Interactions**:
+   - Calls the `/get_robot_fleet_status` service to get the status of all robots.
+   - Calls the `/get_shelf_list` service to retrieve shelf details.
+   - Calls the `/get_drop_off_pose` service to determine the drop-off location.
+   - Calls the `/task_assignments` service to assign tasks to robots.
+
+4. **Logging**:
+   - Publishes logs to the `/central_logs` topic for centralized logging and monitoring.
+
+### Key Features:
+- Uses asynchronous programming with `asyncio` to handle service calls and task processing concurrently.
+- Implements a multi-threaded executor to allow concurrent service calls and callbacks.
+- Maintains an order queue to handle incoming orders sequentially.
+- Dynamically calculates the best robot for a task based on a scoring system.
+
+### Topics:
+- **Subscribed**:
+  - `/order_requests`: Receives new orders.
+- **Published**:
+  - `/end_order`: Publishes completed orders.
+  - `/central_logs`: Publishes logs for monitoring.
+
+### Services:
+- **Clients**:
+  - `/get_robot_fleet_status`: Retrieves the status of all robots.
+  - `/get_shelf_list`: Retrieves the list of shelves and their details.
+  - `/get_drop_off_pose`: Retrieves the drop-off location for completed tasks.
+  - `/task_assignments`: Assigns tasks to robots.
+
+### Methods:
+- `log_to_central(level, message)`: Publishes logs to the central logging topic.
+- `run_asyncio_loop()`: Runs the asyncio event loop in a separate thread.
+- `create_task(coroutine)`: Schedules an asyncio task in the event loop.
+- `order_callback(msg)`: Callback triggered when a new order is received.
+- `process_orders()`: Continuously processes orders from the queue.
+- `process_order(order)`: Processes a single order by calling necessary services and assigning tasks.
+- `call_robot_fleet_service()`: Calls the `/get_robot_fleet_status` service.
+- `call_shelf_list_service()`: Calls the `/get_shelf_list` service.
+- `get_drop_off_pose()`: Calls the `/get_drop_off_pose` service.
+- `allocate_task(robot_fleet_response, shelf_query_response, drop_off_pose, order)`: Allocates a task to the best robot.
+- `get_drop_off_task(robot_id, drop_off_pose)`: Creates a task for the robot to move to the drop-off location.
+- `call_task_assignment_service(task_list)`: Calls the `/task_assignments` service to assign tasks.
+- `calculate_distance(location1, location2)`: Calculates the distance between two locations.
+
+### Execution:
+- The node is initialized and spun using a `MultiThreadedExecutor` to handle concurrent callbacks and service calls.
+"""
+
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor

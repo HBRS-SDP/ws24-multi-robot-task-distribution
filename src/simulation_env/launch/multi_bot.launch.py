@@ -1,5 +1,45 @@
 #!/usr/bin/env python3
 
+"""
+Launch file for spawning multiple TurtleBot3 robots in a Gazebo simulation.
+
+This launch file performs the following tasks:
+1. Sets up the Gazebo simulation environment:
+   - Launches the Gazebo server (`gzserver`) with a specified world file.
+   - Optionally launches the Gazebo client (`gzclient`) for visualization.
+
+2. Spawns multiple TurtleBot3 robots:
+   - Dynamically generates namespaces and positions for each robot.
+   - Modifies the URDF/SDF files for each robot to include unique frame names.
+   - Spawns each robot in the simulation with its own namespace and configuration.
+
+3. Configures robot state publishers:
+   - Launches a `robot_state_publisher` for each robot to publish its state.
+
+4. Handles cleanup on shutdown:
+   - Deletes temporary SDF files created for each robot when the simulation shuts down.
+
+### Parameters:
+- `TURTLEBOT3_MODEL`: Specifies the TurtleBot3 model (e.g., `burger`, `waffle`, `waffle_pi`).
+- `namespace`: Base namespace for the robots (default: `robot`).
+- `number_of_robots`: Number of robots to spawn in the simulation (default: 3).
+- `pose`: List of initial positions for the robots in the simulation.
+- `use_sim_time`: Whether to use simulation time (default: `false`).
+
+### Key Features:
+- Dynamically modifies URDF/SDF files to ensure unique frame names for each robot.
+- Uses `GroupAction` and `PushRosNamespace` to manage namespaces for each robot.
+- Supports cleanup of temporary files on shutdown using `OnShutdown` event handlers.
+
+### Dependencies:
+- `turtlebot3_gazebo`: Provides TurtleBot3 models and Gazebo integration.
+- `gazebo_ros`: Provides Gazebo server and client launch files.
+- `simulation_env`: Provides the world file and additional configurations.
+
+### Returns:
+- `LaunchDescription`: The complete launch description for the multi-robot simulation.
+"""
+
 import os
 import xml.etree.ElementTree as ET
 
