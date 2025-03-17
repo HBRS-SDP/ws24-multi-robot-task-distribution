@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 server.py
 
@@ -64,8 +65,6 @@ Example:
         4. Open the web interface at `http://127.0.0.1:5000/`
         5. Use the interface to submit orders, view robot status, and manage inventory.
 """
-
-#!/usr/bin/env python3
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import rclpy
