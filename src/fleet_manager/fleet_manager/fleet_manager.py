@@ -112,7 +112,7 @@ class FleetManager(Node):
         # Create a service for task list
         self.srv = self.create_service(TaskList, 'task_list', self.handle_task_list)
      
-    def log_to_central(self, level, message):
+    def log_to_central(self, level, message, robot_namespace=None, log_source="FleetManager"):
         """Publishes logs to the central logging topic."""
         log_msg = Logs()
         log_msg.timestamp =  self.get_clock().now().to_msg()
