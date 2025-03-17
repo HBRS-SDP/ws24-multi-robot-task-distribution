@@ -317,9 +317,11 @@
            }
         }, 5000);
 
-        setInterval(updateInventory, 5000);
-        setInterval(updateLogs, 1000);
-        setInterval(updateRobotStatus, 500);
+        setInterval(updateInventory, 30000);
+        setInterval(updateLogs, 3000);
+        setInterval(updateRobotStatus, 1000);
+
+        document.getElementById("inventory-tab").addEventListener("click", updateInventory);
         
         updateInventory();
         updateLogs();

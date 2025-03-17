@@ -11,6 +11,8 @@ import csv
 import os
 import time
 import webbrowser
+from rclpy.executors import SingleThreadedExecutor
+
 
 rclpy.init()
 node = Node('web_server')
@@ -49,34 +51,33 @@ def get_shelf_list_callback(response):
     available_shelves = [shelf for shelf in response.shelf_status_list if shelf.current_inventory > 0]
     shelf_to_product = {shelf.shelf_id: shelf.product for shelf in available_shelves}
 
-def fetch_shelf_data():
-    while rclpy.ok():
-        if shelf_list_client.wait_for_service(timeout_sec=1.0):
-            print("[DEBUG] Service available. Requesting shelf data...")
+def get_shelf_data():
+    """Fetch shelf list data when needed instead of continuously polling."""
+    if shelf_list_client.wait_for_service(timeout_sec=2.0):
+        print("[DEBUG] Requesting latest shelf data...")
+        request = GetShelfList.Request()
+        future = shelf_list_client.call_async(request)
+        executor = SingleThreadedExecutor()
+        executor.add_node(node)
+        executor.spin_once(timeout_sec=2.0)  # Process a single event
+        executor.remove_node(node)
 
-            request = GetShelfList.Request()
-            future = shelf_list_client.call_async(request)
+        response = future.result()
+        response = future.result()
 
-            # Wait for the service response
-            rclpy.spin_until_future_complete(node, future)
-            response = future.result()
+        if response:
+            global available_shelves, shelf_to_product
+            available_shelves = []
+            shelf_to_product = {}
 
-            if response:
-                global available_shelves, shelf_to_product
-                available_shelves = []
-                shelf_to_product = {}
-
-                for shelf in response.shelf_status_list:
-                    if shelf.current_inventory > 0:  # Only include shelves with stock
-                        available_shelves.append(shelf)
-                        shelf_to_product[shelf.shelf_id] = shelf.product
-
-            else:
-                print("[DEBUG] No response from service!")
-
-            time.sleep(2)
+            for shelf in response.shelf_status_list:
+                if shelf.current_inventory > 0:  # Only include stocked shelves
+                    available_shelves.append(shelf)
+                    shelf_to_product[shelf.shelf_id] = shelf.product
         else:
-            print("Service not available, retrying...")
+            print("[DEBUG] No response from service!")
+    else:
+        print("[ERROR] Shelf list service unavailable!")
 
 def log_order_to_csv(order):
     """Logs the published order details into a CSV file."""
@@ -96,12 +97,10 @@ def log_order_to_csv(order):
 def index(): 
     global available_shelves, shelf_to_product
 
-    attempts = 5
-    while not available_shelves and attempts > 0:
-        print("[DEBUG] Waiting for shelves to be fetched...")
-        time.sleep(2)
-        attempts -= 1 
-    print(f"Sending to HTML: {available_shelves}")
+    print("[DEBUG] Fetching shelf data before rendering page...")
+    get_shelf_data()  # Fetch shelf data before rendering
+
+    print(f"[DEBUG] Sending to HTML: {len(available_shelves)} shelves")
     return render_template('index.html', available_shelves=available_shelves, shelf_to_product=shelf_to_product, orders=orders, logs=logs_list)
 
 @app.route('/add_log', methods=['POST'])
@@ -119,24 +118,17 @@ def get_logs():
 def get_inventory():
     global available_shelves
 
-    request = GetShelfList.Request()
-    future = shelf_list_client.call_async(request)
-    rclpy.spin_until_future_complete(node, future)
-    response = future.result()
+    get_shelf_data()
 
-    if response:
-        available_shelves = response.shelf_status_list
-        inventory_data = [
-            {
-                "shelf_id": shelf.shelf_id,
-                "product": shelf.product,
-                "capacity": shelf.shelf_capacity,
-                "current_inventory": shelf.current_inventory
-            }
-            for shelf in available_shelves
-        ]
-    else:
-        inventory_data = []
+    inventory_data = [
+        {
+            "shelf_id": shelf.shelf_id,
+            "product": shelf.product,
+            "capacity": shelf.shelf_capacity,
+            "current_inventory": shelf.current_inventory
+        }
+        for shelf in available_shelves
+    ]
 
     return jsonify(inventory_data)
 
@@ -176,24 +168,13 @@ def update_inventory():
 def submit_order():
     
     global orders, available_shelves, shelf_to_product
+
+    get_shelf_data()
     
     shelf_ids = request.form.getlist('shelf_id[]')
     quantities = request.form.getlist('quantity[]')
 
-    # Fetch current inventory data
-    request_msg = GetShelfList.Request()
-    future = shelf_list_client.call_async(request_msg)
-    rclpy.spin_until_future_complete(node, future)
-    response = future.result()
-
-    if not response:
-        return render_template('index.html', 
-                               available_shelves=available_shelves, 
-                               shelf_to_product=shelf_to_product, 
-                               orders=orders, 
-                               error_message="Failed to fetch inventory data.")
-
-    inventory_map = {shelf.shelf_id: shelf.current_inventory for shelf in response.shelf_status_list}
+    inventory_map = {shelf.shelf_id: shelf.current_inventory for shelf in available_shelves}
 
     shelves = []
     error_messages = []
@@ -293,11 +274,17 @@ def run_flask():
     time.sleep(3)
     webbrowser.open(url)
 
-def run_ros():
-    fetch_shelf_data() 
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+def run_ros(): 
+    global node
+    executor = SingleThreadedExecutor()
+    executor.add_node(node)
+    try:
+        executor.spin()  # Keep ROS node running
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
 
 if __name__ == '__main__':
 
